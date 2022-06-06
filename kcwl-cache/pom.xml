@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.kcwl.framework</groupId>
+        <artifactId>kcwl-framework</artifactId>
+        <version>6.0.0-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+    <artifactId>kcwl-cache</artifactId>
+    <packaging>jar</packaging>
+    <description>框架的示例项目</description>
+
+    <developers>
+        <developer>
+            <name>姚华成</name>
+            <email>yaohuacheng@126.com</email>
+        </developer>
+    </developers>
+    <dependencies>
+        <!-- redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.kcwl.framework</groupId>
+            <artifactId>kcwl-utils</artifactId>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,7 +1,5 @@
 package com.kcwl.framework.file.biz.service.dfs.fastdfs;
 
-import com.kcwl.framework.exception.BizException;
-import com.kcwl.framework.exception.ParamValidException;
 import com.kcwl.framework.file.FileProperties;
 import com.kcwl.framework.file.biz.service.IFileService;
 import com.kcwl.framework.utils.StreamUtil;
@@ -46,7 +44,8 @@ public class FastDfsServiceImpl implements IFileService {
     public String upload(String filename, @NotNull InputStream is, Map<String, String> descriptions, boolean absolutePath) {
         try {
             if (is.available() > fastdfs.getMaxFileSize()) {
-                throw new ParamValidException("上传文件超过最大大小！");
+                //throw new ParamValidException("上传文件超过最大大小！");
+                return "上传文件超过最大大小！";
             }
 
             // 文件名后缀
@@ -77,7 +76,8 @@ public class FastDfsServiceImpl implements IFileService {
                 String path = storageClient.upload_file1(fileData, suffix, nvps);
 
                 if (StringUtil.isEmpty(path)) {
-                    throw new BizException(API_RESULT_META_SUCCESS_FILE_UPLOAD_ERROR, "因服务器错误没有返回文件路径！");
+                    return "因服务器错误没有返回文件路径！";
+                    //throw new BizException(API_RESULT_META_SUCCESS_FILE_UPLOAD_ERROR, "因服务器错误没有返回文件路径！");
                 }
                 if (absolutePath) {
                     path = fastdfs.getHttpUrlRoot() + path;
@@ -89,8 +89,10 @@ public class FastDfsServiceImpl implements IFileService {
             }
         } catch (Exception ex) {
             log.error("文件上传FastDFS服务器出错！", ex);
-            throw new BizException(API_RESULT_META_SUCCESS_FILE_UPLOAD_ERROR, ex.getMessage());
+            //throw new BizException(API_RESULT_META_SUCCESS_FILE_UPLOAD_ERROR, ex.getMessage());
         }
+        //to do
+        return "ok";
     }
 
     @Override
@@ -107,7 +109,8 @@ public class FastDfsServiceImpl implements IFileService {
                 // 下载
                 byte[] fileByte = storageClient.download_file1(filepath);
                 if (fileByte == null) {
-                    throw new BizException(API_RESULT_META_SUCCESS_FILE_DOWNLOAD_ERROR, "没有下载到文件内容！");
+                    //throw new BizException(API_RESULT_META_SUCCESS_FILE_DOWNLOAD_ERROR, "没有下载到文件内容！");
+                    throw new RuntimeException("没有下载到文件内容！");
                 }
                 return fileByte;
             } finally {
@@ -116,7 +119,8 @@ public class FastDfsServiceImpl implements IFileService {
             }
         } catch (Exception ex) {
             log.error("从FastDFS服务器下载文件时出错！", ex);
-            throw new BizException(API_RESULT_META_SUCCESS_FILE_DOWNLOAD_ERROR, ex.getMessage());
+            throw new RuntimeException("从FastDFS服务器下载文件时出错！");
+            //throw new BizException(API_RESULT_META_SUCCESS_FILE_DOWNLOAD_ERROR, ex.getMessage());
         }
     }
 
@@ -145,7 +149,8 @@ public class FastDfsServiceImpl implements IFileService {
             }
         } catch (Exception ex) {
             log.error("获取文件信息出错！", ex);
-            throw new BizException(API_RESULT_META_SUCCESS_FILE_GET_INFO_ERROR, ex.getMessage());
+            throw new RuntimeException("从FastDFS服务器下载文件时出错！");
+            //throw new BizException(API_RESULT_META_SUCCESS_FILE_GET_INFO_ERROR, ex.getMessage());
         }
     }
 
@@ -177,7 +182,7 @@ public class FastDfsServiceImpl implements IFileService {
             try {
                 int status = storageClient.delete_file1(filepath);
                 if (status != 0) {
-                    throw new BizException(API_RESULT_META_SUCCESS_FILE_DELETE_ERROR, "返回的错误码为" + status);
+                    //throw new BizException(API_RESULT_META_SUCCESS_FILE_DELETE_ERROR, "返回的错误码为" + status);
                 }
             } finally {
                 // 返还对象
@@ -185,7 +190,7 @@ public class FastDfsServiceImpl implements IFileService {
             }
         } catch (Exception ex) {
             log.error("删除文件出错！", ex);
-            throw new BizException(API_RESULT_META_SUCCESS_FILE_DELETE_ERROR, ex.getMessage());
+            //throw new BizException(API_RESULT_META_SUCCESS_FILE_DELETE_ERROR, ex.getMessage());
         }
     }
 

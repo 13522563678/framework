@@ -1,6 +1,5 @@
 package com.kcwl.framework.file.biz.service.dfs.hwyun;
 
-import com.kcwl.framework.file.FileConstants;
 import com.kcwl.framework.file.FileProperties;
 import com.kcwl.framework.file.biz.service.IFileService;
 import com.kcwl.framework.file.biz.service.IMGConstant;

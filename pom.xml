@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.kcwl.framework</groupId>
     <artifactId>kcwl-framework</artifactId>
-    <version>6.0.0-SNAPSHOT</version>
+    <version>6.0.0-RELEASE</version>
     <packaging>pom</packaging>
     <scm>
         <connection>scm:git:https://gitlab.bjkcwl.com//architecture/kcwl-framework.git</connection>
@@ -53,9 +53,9 @@
             <id>test</id>
             <properties>
                 <kcwl-assembly.version>1.1.3-RELEASE</kcwl-assembly.version>
-                <kcwl-ks-util.version>6.0.0-SNAPSHOT</kcwl-ks-util.version>
-                <kcwl-ks-spi.version>6.0.0-SNAPSHOT</kcwl-ks-spi.version>
-                <kcwl-ks-crm.version>6.0.0-SNAPSHOT</kcwl-ks-crm.version>
+                <kcwl-ks-util.version>6.0.0-RELEASE</kcwl-ks-util.version>
+                <kcwl-ks-spi.version>6.0.0-RELEASE</kcwl-ks-spi.version>
+                <kcwl-ks-crm.version>6.0.0-RELEASE</kcwl-ks-crm.version>
             </properties>
         </profile>
         <profile>
@@ -75,7 +75,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <!--引入第三方包 -->
-        <kcwl-framework.version>6.0.0-SNAPSHOT</kcwl-framework.version>
+        <kcwl-framework.version>6.0.0-RELEASE</kcwl-framework.version>
         <spring-boot.version>2.3.12.RELEASE</spring-boot.version>
         <spring-cloud.version>2.2.0.RELEASE</spring-cloud.version>
         <spring-platform.version>Cairo-SR7</spring-platform.version>

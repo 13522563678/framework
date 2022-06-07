@@ -1,5 +1,4 @@
 package com.kcwl.framework.file.biz.service;
-import com.kcwl.framework.exception.BizException;
 import com.kcwl.framework.file.FileConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,7 +98,7 @@ public interface IFileService {
             os.write(download(filepath));
         } catch (Exception ex) {
             log.error("文件下载出错！", ex);
-            throw new BizException(FileConstants.API_RESULT_META_SUCCESS_FILE_DOWNLOAD_ERROR.getCode(), ex.getMessage());
+            //throw new BizException(FileConstants.API_RESULT_META_SUCCESS_FILE_DOWNLOAD_ERROR.getCode(), ex.getMessage());
         }
     }
 

@@ -19,6 +19,7 @@ public class UserAgent {
     public static final String FILED_SESSION_ID ="sessionId";
     public static final String FILED_PRODUCT="product";
     public static final String FILED_APPVERSION="version";
+    public static final String FILED_REQUEST_DEPTH="depth";
     public static final String FIELD_USER_SSID = "x-user-ssid";
     public static final String FILED_REQUEST="request";
 
@@ -101,9 +102,22 @@ public class UserAgent {
         userAgent.put(FILED_REQUEST, requestType);
     }
 
+    public int getRequestDepth() {
+        String depth = userAgent.get(FILED_REQUEST_DEPTH);
+        return (depth !=null ) ? Integer.parseInt(depth) : 0;
+    }
+
     public boolean isServerRequest() {
         String request = userAgent.get(FILED_REQUEST);
         return (request != null) && request.equals(REQUEST_SERVER_TYPE);
+    }
+
+    public UserAgent nextRequestUserAgent() {
+        UserAgent requestUserAgent = new UserAgent();
+        Map<String, String> data = new HashMap<>(this.userAgent);
+        data.put(FILED_REQUEST_DEPTH, String.valueOf(this.getRequestDepth()+1));
+        requestUserAgent.userAgent = data;
+        return requestUserAgent;
     }
 
     @Override

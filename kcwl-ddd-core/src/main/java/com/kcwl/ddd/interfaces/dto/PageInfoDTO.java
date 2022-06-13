@@ -17,12 +17,12 @@ public class PageInfoDTO extends BaseDTO implements Serializable {
     /**
      * 当前页
      */
-    private int curPagerNo = FIRST_PAGE_NO;
+    private long curPagerNo = FIRST_PAGE_NO;
 
     /**
      * 每页显示的记录
      */
-    private int pageSize =DEFAULT_PAGE_SIZE;
+    private long pageSize =DEFAULT_PAGE_SIZE;
 
     /**
      * 记录行数
@@ -32,7 +32,7 @@ public class PageInfoDTO extends BaseDTO implements Serializable {
     /**
      * 页数
      */
-    private int totalPageNumber;
+    private long totalPageNumber;
 
     private List list;
 
@@ -74,7 +74,7 @@ public class PageInfoDTO extends BaseDTO implements Serializable {
     }
 
     // getPageSize：返回分页大小
-    public int getPageSize() {
+    public long getPageSize() {
         return pageSize;
     }
 
@@ -84,7 +84,7 @@ public class PageInfoDTO extends BaseDTO implements Serializable {
     }
 
     // getPageCount：返回总页数
-    public int getTotalPageNumber() {
+    public long getTotalPageNumber() {
         return totalPageNumber=(int) Math.ceil((double) rowsCount / pageSize);
     }
 
@@ -94,17 +94,17 @@ public class PageInfoDTO extends BaseDTO implements Serializable {
     }
 
     // 最后一页
-    public int last() {
+    public long last() {
         return totalPageNumber;
     }
 
     // 上一页
-    public int previous() {
+    public long previous() {
         return (curPagerNo - 1 < 1) ? 1 : curPagerNo - 1;
     }
 
     // 下一页
-    public int next() {
+    public long next() {
         return (curPagerNo + 1 > totalPageNumber) ? totalPageNumber : curPagerNo + 1;
     }
 
@@ -137,11 +137,11 @@ public class PageInfoDTO extends BaseDTO implements Serializable {
                 '}';
     }
 
-    public int getCurPagerNo() {
+    public long getCurPagerNo() {
         return curPagerNo;
     }
 
-    public void setCurPagerNo(int curPagerNo) {
+    public void setCurPagerNo(long curPagerNo) {
         this.curPagerNo = curPagerNo;
     }
 
@@ -154,7 +154,7 @@ public class PageInfoDTO extends BaseDTO implements Serializable {
     }
 
 
-    public void setPageSize(int pageSize) {
+    public void setPageSize(long pageSize) {
         this.pageSize = pageSize;
     }
 
@@ -162,7 +162,7 @@ public class PageInfoDTO extends BaseDTO implements Serializable {
         this.rowsCount = rowsCount;
     }
 
-    public void setTotalPageNumber(int pageCount) {
+    public void setTotalPageNumber(long pageCount) {
         this.totalPageNumber = pageCount;
     }
 

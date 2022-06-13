@@ -11,6 +11,9 @@ public class PrefixConstant {
 
     public static final String REQUEST_USER_INFO = "user_info";
 
+    public static final  String REDIS_USER_SESSION = "user:session:";
+
+
     //司机登录前缀
     public static final  String REDIS_CARRIER_LOGIN_TOKEN = "carrier_login_";
 

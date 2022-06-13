@@ -55,6 +55,19 @@ public class ResponseHelper {
 
     /**
      * 返回正确结果
+     * @param
+     * @return
+     */
+    public static ResponseMessage success() {
+        ResponseMessage responseMessage = new ResponseMessage();
+        responseMessage.setCode(CommonCode.SUCCESS.getCode());
+        responseMessage.setMessage(CommonCode.SUCCESS.getDescription());
+        responseMessage.setResult("");
+        return responseMessage;
+    }
+
+    /**
+     * 返回正确结果
      * @param result
      * @return
      */

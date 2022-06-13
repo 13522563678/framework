@@ -19,11 +19,8 @@ public class GlobalConstant {
     public static final String NULL_STRING = "null";
     public static final String EMPTY_STRING = "";
 
-    public static  final String PROP_FILE_NAME = "tenant.properties";
-    public static  final String PROP_KEY_DEFAULT_TENANT = "kcwl.tenant.platformNo";
-    public static  final String PROP_KEY_TENANT_TABLES = "kcwl.tenant.tenantTables";
-    public static  final String PROP_KEY_TENANT_ENABLED = "kcwl.tenant.enabled";
-    public static  final String PROP_KEY_FILTER_SQL = "kcwl.tenant.filterSql";
+    public static final int BIZ_ERROR_CODE_LENGHT = 5;
+
 
     /**
      * 请求头的灰度标记key

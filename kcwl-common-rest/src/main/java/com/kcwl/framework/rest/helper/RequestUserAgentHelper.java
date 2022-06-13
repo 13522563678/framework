@@ -1,7 +1,6 @@
 package com.kcwl.framework.rest.helper;
 
 
-import com.kcwl.ddd.application.constants.ProductEnum;
 import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.constants.GlobalConstant;
 import com.kcwl.framework.utils.RequestUtil;
@@ -20,11 +19,7 @@ public class RequestUserAgentHelper {
             return new UserAgent(userAgent);
         }
 
-        UserAgent requestUserAgent = getKsRequestUserAgent(request);
-
-        if ( requestUserAgent == null ) {
-            requestUserAgent = getKsRequestUserAgent(request);
-        }
+        UserAgent requestUserAgent = getRequestUserAgentFromCookie(request);
 
         setKcTokenAndTrace(requestUserAgent, request);
 
@@ -40,28 +35,12 @@ public class RequestUserAgentHelper {
             requestUserAgent.setProduct(product);
             requestUserAgent.setPlatform(platform);
             requestUserAgent.setToken(RequestUtil.getCookieValue(request, UserAgent.FILED_TOKEN));
-            if ( ProductEnum.CARRIER_APP.equals(product) ) {
-                requestUserAgent.setSessionId(RequestUtil.getCookieValue(request, UserAgent.FILED_SESSION_ID));
-            } else {
-                requestUserAgent.setSessionId(request.getHeader(UserAgent.FIELD_USER_SSID));
-            }
+            requestUserAgent.setSessionId(RequestUtil.getCookieValue(request, UserAgent.FILED_SESSION_ID));
             requestUserAgent.setAppVersion(RequestUtil.getCookieValue(request, UserAgent.FILED_APPVERSION));
         }
         return requestUserAgent;
     }
 
-
-    private static UserAgent getKsRequestUserAgent(HttpServletRequest request) {
-        UserAgent  requestUserAgent = null;
-        String sessionId = request.getHeader(UserAgent.FIELD_USER_SSID);
-        if ( sessionId != null ) {
-            requestUserAgent = new UserAgent();
-            requestUserAgent.setSessionId(sessionId);
-            requestUserAgent.setProduct(ProductEnum.SHIPPER_WEB.getCode());
-            requestUserAgent.setPlatform(getPlatformNo(request));
-        }
-        return requestUserAgent;
-    }
 
     private static String getPlatformNo(HttpServletRequest request) {
         String platformNo = request.getHeader(GlobalConstant.AGENT_TENANT_FIELD_NAME);

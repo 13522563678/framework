@@ -46,7 +46,8 @@ public class AliyunOSSServiceImpl implements IFileService {
         ossClient.putObject(getBucketName(descriptions), filename, file);
         String fileUrl = this.getUrl(ossClient, filename, descriptions);
         closeOSSClient(ossClient);
-        return fileUrl;    }
+        return fileUrl;
+    }
 
     @Override
     public byte[] download(String filepath) {

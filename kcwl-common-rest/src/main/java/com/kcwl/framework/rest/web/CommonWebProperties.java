@@ -30,6 +30,8 @@ public class CommonWebProperties {
     private Crypt crypt = new Crypt();
     private HttpContent httpContent = new HttpContent();
     private HttpClient httpClient = new HttpClient();
+    private ServiceInfo service =new ServiceInfo();
+
 
     /**
      * http客户端类型支持：
@@ -156,5 +158,10 @@ public class CommonWebProperties {
          * 响应最大大小
          */
         private int maxResponseSize = 8192;
+    }
+
+    @Data
+    public static class ServiceInfo {
+        private String type="00";
     }
 }

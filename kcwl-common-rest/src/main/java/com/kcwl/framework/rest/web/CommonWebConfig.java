@@ -39,15 +39,11 @@ public class CommonWebConfig implements WebMvcConfigurer {
     @Resource
     private CommonWebProperties webProperties;
     @Resource
-    ICacheService cacheService;
-
-    @Resource
-    ICacheService userTokenCache;
+    SessionCacheProxy sessionCacheProxy;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //session拦截器
-        SessionCacheProxy sessionCacheProxy = new SessionCacheProxy(cacheService, userTokenCache);
         CommonWebProperties.ApiAuthConfig sessionConfig = webProperties.getSession();
         addApiAuthInterceptor(sessionConfig, registry, new UserSessionInterceptor(sessionCacheProxy, sessionConfig.getIgnorePathPatterns(), sessionConfig.isIgnoreSession()));
 

@@ -35,7 +35,7 @@ public class CacheConfiguration {
         if ( userTokenRedisConnectionFactory == null ) {
             userTokenRedisConnectionFactory = redisConnectionFactory;
         }
-        return new TokenCacheServiceImpl(userTokenRedisConnectionFactory);
+        return new RedisCacheServiceImpl(userTokenRedisConnectionFactory);
     }
 
     public RedisConnectionFactory userTokenRedisConnectionFactory(){

@@ -1,11 +1,8 @@
 package com.kcwl.framework.file;
 import com.kcwl.framework.file.biz.service.IFileService;
 import com.kcwl.framework.file.biz.service.dfs.aliyun.AliyunOSSServiceImpl;
-import com.kcwl.framework.file.biz.service.dfs.fastdfs.FastDfsServiceImpl;
-import com.kcwl.framework.file.biz.service.dfs.fastdfs.StorageClientPool;
 import com.kcwl.framework.file.biz.service.dfs.hwyun.HwyunOBSServiceImpl;
 import com.kcwl.framework.file.biz.service.dfs.local.LocalFileServiceImpl;
-import org.csource.fastdfs.ClientGlobal;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

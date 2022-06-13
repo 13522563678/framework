@@ -31,7 +31,7 @@ public class FeignRequestInterceptor implements RequestInterceptor {
         }
         UserAgent requestUserAgent = SessionContext.getRequestUserAgent();
         if (requestUserAgent != null) {
-            template.header(UserAgent.REQUEST_AGENT_HEADER_NAME, requestUserAgent.toString());
+            template.header(UserAgent.REQUEST_AGENT_HEADER_NAME, requestUserAgent.nextRequestUserAgent().toString());
         }
         template.header(UserAgent.REQUEST_AGENT_CLIENT_FIELD_NAME, UserAgent.AGENT_CLIENT_FEIGN);
         template.header(GlobalConstant.APP_SECRET_FIELD_NAME, this.appSecretKey);

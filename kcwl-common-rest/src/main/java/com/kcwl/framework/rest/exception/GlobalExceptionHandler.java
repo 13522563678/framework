@@ -6,6 +6,7 @@ import com.kcwl.ddd.infrastructure.api.ResponseMessage;
 import com.kcwl.ddd.infrastructure.exception.BaseException;
 import com.kcwl.ddd.infrastructure.exception.BizException;
 import com.kcwl.ddd.infrastructure.session.SessionContext;
+import com.kcwl.framework.rest.helper.ResponseDecorator;
 import com.kcwl.framework.utils.ServiceHttpStatus;
 import com.kcwl.framework.utils.StringUtil;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -31,6 +33,9 @@ import java.util.stream.Collectors;
  */
 @ControllerAdvice
 public class GlobalExceptionHandler extends AbstractExceptionHandler {
+
+    @Resource
+    ResponseDecorator responseDecorator;
 
     @ResponseBody
     @ExceptionHandler(value = BizException.class)
@@ -51,7 +56,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     @ExceptionHandler(value = {ValidationException.class})
     public ResponseEntity validateExceptionHandler(HttpServletRequest request, ValidationException e) {
         printRequest(request, e);
-        return fail(CommonCode.FIELD_ERROR.getCode(), e.getMessage(), null);
+        return fail(CommonCode.FIELD_ERROR.getCode(), CommonCode.FIELD_ERROR.getDescription(), null);
     }
 
     @ResponseBody
@@ -167,7 +172,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
 
     private ResponseMessage createResponseMessage(String code, String message) {
         ResponseMessage responseMessage = new ResponseMessage();
-        responseMessage.setCode(code);
+        responseMessage.setCode(responseDecorator.paddingResponseCode(code));
         responseMessage.setMessage(message);
         return responseMessage;
     }

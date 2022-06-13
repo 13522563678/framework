@@ -36,7 +36,7 @@ public class RestTemplateInterceptor implements ClientHttpRequestInterceptor {
         }
         UserAgent requestUserAgent = SessionContext.getRequestUserAgent();
         if (requestUserAgent != null) {
-            headers.add(UserAgent.REQUEST_AGENT_HEADER_NAME, requestUserAgent.toString());
+            headers.add(UserAgent.REQUEST_AGENT_HEADER_NAME, requestUserAgent.nextRequestUserAgent().toString());
         }
         headers.add(UserAgent.REQUEST_AGENT_CLIENT_FIELD_NAME, UserAgent.AGENT_CLIENT_FEIGN);
         headers.add(GlobalConstant.APP_SECRET_FIELD_NAME, this.appSecretKey);

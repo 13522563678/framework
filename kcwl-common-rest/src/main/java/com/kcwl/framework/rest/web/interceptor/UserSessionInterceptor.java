@@ -36,6 +36,7 @@ public class UserSessionInterceptor extends HandlerInterceptorAdapter {
         SessionData sessionData = null;
         UserAgent requestUserAgent = RequestUserAgentHelper.getRequestUserAgent(request);
         if ( requestUserAgent != null ) {
+            SessionContext.setRequestUserAgent(requestUserAgent);
             //是否是直接从服务器端发起的请求，如job
             if (!requestUserAgent.isServerRequest()) {
                 if (!ignoreSession && !ignoreRequestUri(request)) {
@@ -45,7 +46,6 @@ public class UserSessionInterceptor extends HandlerInterceptorAdapter {
                 setUserAgentPlatform(requestUserAgent, request, sessionData);
                 TenantDataHolder.set(requestUserAgent.getPlatform());
             }
-            SessionContext.setRequestUserAgent(requestUserAgent);
         }
         String apiVersion = request.getHeader("x-api-version");
         if (!StringUtil.isEmpty(apiVersion) ) {
@@ -82,7 +82,7 @@ public class UserSessionInterceptor extends HandlerInterceptorAdapter {
         if ( !StringUtil.isEmpty(reqTenantId) ) {
             requestUserAgent.setPlatform(reqTenantId);
         } else if (sessionData != null) {
-            String userTenantId = sessionData.getTenantId();
+            String userTenantId = sessionData.getPlatformNo();
             if ( !StringUtil.isEmpty(userTenantId) ) {
                 requestUserAgent.setPlatform(userTenantId);
             }

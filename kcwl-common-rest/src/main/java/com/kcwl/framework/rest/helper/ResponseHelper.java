@@ -1,5 +1,6 @@
 package com.kcwl.framework.rest.helper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.google.gson.Gson;
 import com.kcwl.ddd.infrastructure.api.CommonCode;
 import com.kcwl.ddd.infrastructure.api.ResponseMessage;
@@ -112,8 +113,18 @@ public class ResponseHelper {
      * @return
      */
     public static ResponseMessage successPage(PageInfoDTO page) {
-        PageResultDTO pageQueryInfo = new PageResultDTO(page);
-        return success(pageQueryInfo);
+        PageResultDTO pageResultDTO = new PageResultDTO(page);
+        return success(pageResultDTO);
+    }
+    /**
+     * 返回分页结果
+     * @param page
+     * @return
+     */
+    public static ResponseMessage successPage(IPage page) {
+        PageInfoDTO pageInfoDTO = new PageInfoDTO(page.getTotal(), (int)page.getCurrent(),  (int)page.getSize(), page.getRecords());
+        PageResultDTO pageResultDTO = new PageResultDTO(pageInfoDTO);
+        return success(pageResultDTO);
     }
 
     /**

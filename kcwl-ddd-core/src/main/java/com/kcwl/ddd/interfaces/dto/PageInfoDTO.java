@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @author ckwl
  */
-public class PageInfoDTO extends BaseDTO implements Serializable {
+public class PageInfoDTO<T> extends BaseDTO implements Serializable {
 
     private static final long serialVersionUID = 8572943675678665226L;
 
@@ -34,7 +34,7 @@ public class PageInfoDTO extends BaseDTO implements Serializable {
      */
     private long totalPageNumber;
 
-    private List list;
+    private List<T> list;
 
     /**
      * 适配APP端，判断是否第一页或最后一页
@@ -145,11 +145,11 @@ public class PageInfoDTO extends BaseDTO implements Serializable {
         this.curPagerNo = curPagerNo;
     }
 
-    public List getList() {
+    public List<T> getList() {
         return list;
     }
 
-    public void setList(List list) {
+    public void setList(List<T> list) {
         this.list = list;
     }
 

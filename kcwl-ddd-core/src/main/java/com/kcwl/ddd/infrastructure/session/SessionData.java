@@ -55,7 +55,12 @@ public class SessionData implements Serializable {
     /**
      * 用户所属机构名称
      */
-    private Long orgName;
+    private String orgName;
+
+    /**
+     * 用户所属机构类型
+     */
+    private Integer orgType;
     /**
      * 用户所属部门id
      */
@@ -64,6 +69,11 @@ public class SessionData implements Serializable {
      * 用户所属部门名称
      */
     private String deptName;
+
+    /**
+     * 部门名称类型
+     */
+    private Integer deptType;
     /**
      * 用户所属角色：角色id，是多个用',’分隔
      */
@@ -159,12 +169,8 @@ public class SessionData implements Serializable {
         this.orgId = orgId;
     }
 
-    public Long getOrgName() {
+    public String getOrgName() {
         return orgName;
-    }
-
-    public void setOrgName(Long orgName) {
-        this.orgName = orgName;
     }
 
     public Long getDeptId() {
@@ -270,33 +276,6 @@ public class SessionData implements Serializable {
         this.headPic = headPic;
     }
 
-    @Override
-    public String toString() {
-        return "SessionData{" +
-                "sessionId='" + sessionId + '\'' +
-                ", token='" + token + '\'' +
-                ", userId=" + userId +
-                ", mobile='" + mobile + '\'' +
-                ", userName='" + userName + '\'' +
-                ", realName='" + realName + '\'' +
-                ", identityId='" + identityId + '\'' +
-                ", identityType=" + identityType +
-                ", headPic='" + headPic + '\'' +
-                ", orgId=" + orgId +
-                ", orgName=" + orgName +
-                ", deptId=" + deptId +
-                ", deptName='" + deptName + '\'' +
-                ", roles='" + roles + '\'' +
-                ", authTag=" + authTag +
-                ", userTag=" + userTag +
-                ", loginTime=" + loginTime +
-                ", key='" + key + '\'' +
-                ", platformNo='" + platformNo + '\'' +
-                ", product=" + product +
-                ", extra=" + extra +
-                '}';
-    }
-
     public String getToken() {
         return token;
     }
@@ -311,5 +290,54 @@ public class SessionData implements Serializable {
 
     public void setIdentityId(String identityId) {
         this.identityId = identityId;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
+    public Integer getOrgType() {
+        return orgType;
+    }
+
+    public void setOrgType(Integer orgType) {
+        this.orgType = orgType;
+    }
+
+    public Integer getDeptType() {
+        return deptType;
+    }
+
+    public void setDeptType(Integer deptType) {
+        this.deptType = deptType;
+    }
+
+    @Override
+    public String toString() {
+        return "SessionData{" +
+                "sessionId='" + sessionId + '\'' +
+                ", token='" + token + '\'' +
+                ", userId=" + userId +
+                ", mobile='" + mobile + '\'' +
+                ", userName='" + userName + '\'' +
+                ", realName='" + realName + '\'' +
+                ", identityId='" + identityId + '\'' +
+                ", identityType=" + identityType +
+                ", headPic='" + headPic + '\'' +
+                ", orgId=" + orgId +
+                ", orgName='" + orgName + '\'' +
+                ", orgType=" + orgType +
+                ", deptId=" + deptId +
+                ", deptName='" + deptName + '\'' +
+                ", deptType=" + deptType +
+                ", roles='" + roles + '\'' +
+                ", authTag=" + authTag +
+                ", userTag=" + userTag +
+                ", loginTime=" + loginTime +
+                ", key='" + key + '\'' +
+                ", platformNo='" + platformNo + '\'' +
+                ", product=" + product +
+                ", extra=" + extra +
+                '}';
     }
 }

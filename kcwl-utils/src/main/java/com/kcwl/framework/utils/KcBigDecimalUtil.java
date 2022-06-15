@@ -8,7 +8,7 @@ import java.math.RoundingMode;
 /**
  * @author ckwl
  */
-public class BigDecimalUtil {
+public class KcBigDecimalUtil {
     private static final int DEFAULT_LENGTH = 16;
 
     /**
@@ -255,5 +255,52 @@ public class BigDecimalUtil {
             throw new NumberFormatException("this string is not a valid number");
         }
         return new BigDecimal(str);
+    }
+
+    /**
+     * 金额 分转元
+     *
+     * @param v
+     * @return
+     */
+    public static BigDecimal centToYuan(Long v) {
+        if (v == null) {
+            return null;
+        }
+        return new BigDecimal(v + "").divide(new BigDecimal("100")).setScale(2);
+    }
+
+
+    /**
+     * 金额 分转元
+     *
+     * @param v
+     * @return
+     */
+    public static BigDecimal centToYuan(Integer v) {
+        if (v == null) {
+            return null;
+        }
+        return new BigDecimal(v + "").divide(new BigDecimal("100")).setScale(2);
+    }
+
+    /**
+     * 元转分
+     *
+     * @param v
+     * @return Long
+     */
+    public static Long yuanToCent(BigDecimal v) {
+        if (v == null) {
+            return null;
+        }
+        return new BigDecimal(v + "").multiply(new BigDecimal("100")).longValue();
+    }
+
+    public static String stringValue(BigDecimal v) {
+        if (v == null){
+            return "";
+        }
+        return v.toString();
     }
 }

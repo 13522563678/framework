@@ -19,7 +19,7 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-context</artifactId>
-            <version>${spring.cloud.context.version}</version>
+            <version>${spring.cloud.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

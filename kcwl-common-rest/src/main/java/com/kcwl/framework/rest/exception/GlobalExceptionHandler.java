@@ -9,6 +9,7 @@ import com.kcwl.ddd.infrastructure.session.SessionContext;
 import com.kcwl.framework.rest.helper.ResponseDecorator;
 import com.kcwl.framework.utils.ServiceHttpStatus;
 import com.kcwl.framework.utils.StringUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.*;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
  * @author 姚华成
  * @date 2017-11-14
  */
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler extends AbstractExceptionHandler {
 
@@ -127,8 +129,10 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
             } else if (exception != null) {
                 responseMessage.setMessage(exception.getMessage());
             }
+            log.error("http-status={}, code={}, message={}", ServiceHttpStatus.SERVICE_EXCEPTION_STATUS, responseMessage.getCode(), responseMessage.getMessage());
             return ResponseEntity.status(ServiceHttpStatus.SERVICE_EXCEPTION_STATUS).body(responseMessage);
         }
+        log.error("http-status={}, code={}, message={}", HttpStatus.OK.value(), responseMessage.getCode(), responseMessage.getMessage());
         return ResponseEntity.status(HttpStatus.OK.value()).body(responseMessage);
     }
 

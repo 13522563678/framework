@@ -21,13 +21,13 @@ public enum SmsTypeEnum {
     KS_APP_REGISTER_SIMS_VERILY(31, "发运APP注册短信验证码"),
     KS_APP_FORGOT_PASSWORD_VERILY(32, "发运APP用户忘记密码短信验证码"),
     KS_APP_RESET__PASSWORD_VERILY(33, "发运APP用户重置密码短信验证码"),
-    CARRIER_PREPAYMENT_OPEN(40, "开通运费预付款短信验证码"),
-    CARRIER_PREPAYMENT_PAID_OFF(41, "本期预付费已还清短信验证码"),
-    CARRIER_PREPAYMENT_AVAILABLE_AMOUNT(42, "运费预付费可用额度短信验证码"),
-    PCARRIER_REPAYMENT_REPAID(43, "本期预付费待还款短信验证码"),
-    CARRIER_OIL_GAS_CONSUME(50, "油气消费短信验证码"),
-    CARRIER_FREIGHT_COLLECTION_SET(60, "设置运费代收人短信验证码"),
-    CARRIER_FREIGHT_COLLECTION_CANCEL(61, "解除运费代收人关系短信验证码"),
+    CARRIER_PREPAYMENT_OPEN(40, "司机开通运费预付款短信验证码"),
+    CARRIER_PREPAYMENT_PAID_OFF(41, "司机本期预付费已还清短信验证码"),
+    CARRIER_PREPAYMENT_AVAILABLE_AMOUNT(42, "司机运费预付费可用额度短信验证码"),
+    PCARRIER_REPAYMENT_REPAID(43, "司机本期预付费待还款短信验证码"),
+    CARRIER_OIL_GAS_CONSUME(50, "司机油气消费短信验证码"),
+    CARRIER_FREIGHT_COLLECTION_SET(60, "司机设置运费代收人短信验证码"),
+    CARRIER_FREIGHT_COLLECTION_CANCEL(61, "司机解除运费代收人关系短信验证码"),
     CRM_COALMINE_REFUND_VERILY(71, "crm运销部退款短信验证码");
 
     private int code;

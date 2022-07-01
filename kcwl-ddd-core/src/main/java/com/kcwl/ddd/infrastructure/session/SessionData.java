@@ -246,7 +246,7 @@ public class SessionData implements Serializable {
 
     public Object getExtraData(String key) {
         Object val = null;
-        if ( extra == null ) {
+        if ( extra != null ) {
             val = extra.get(key);
         }
         return val;

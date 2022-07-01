@@ -10,7 +10,7 @@ import java.util.Base64;
 /**
  *
  */
-public class EncryptAesUtil {
+public class KcEncryptAesUtil {
 
     private static final String TRANSFORMATION = "AES/CBC/PKCS5Padding";
     private static final String ALGORITHM = "AES";

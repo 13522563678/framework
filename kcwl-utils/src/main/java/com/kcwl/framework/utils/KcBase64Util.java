@@ -5,7 +5,7 @@ import org.springframework.util.Base64Utils;
  * @author 姚华成
  * @date 2018-03-23
  */
-public class Base64Util extends Base64Utils {
+public class KcBase64Util extends Base64Utils {
 
     public static final byte BASE64_PAD_CHAR = '=';
 

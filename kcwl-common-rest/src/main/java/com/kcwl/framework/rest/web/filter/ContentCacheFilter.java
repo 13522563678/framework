@@ -1,6 +1,7 @@
 package com.kcwl.framework.rest.web.filter;
 
 import com.kcwl.framework.rest.web.filter.reqeust.ContentCachingRequestWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;

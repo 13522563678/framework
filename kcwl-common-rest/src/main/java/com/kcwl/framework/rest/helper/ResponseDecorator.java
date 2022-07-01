@@ -7,10 +7,18 @@ import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.framework.utils.StringPaddingBuilder;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 @Component
 public class ResponseDecorator {
+
+    private static ResponseDecorator decorator;
+
+    public static ResponseDecorator getDecorator() {
+        return decorator;
+    }
+
     @Resource
     CommonWebProperties commonWebProperties;
     public String paddingResponseCode(String code) {
@@ -31,5 +39,10 @@ public class ResponseDecorator {
             product = userAgent.getProduct();
         }
         return (product != null) ? product : "00";
+    }
+
+    @PostConstruct
+    private void init() {
+        ResponseDecorator.decorator = this;
     }
 }

@@ -5,6 +5,7 @@ import com.kcwl.ddd.infrastructure.api.ResponseMessage;
 import com.kcwl.ddd.interfaces.dto.ListResultDTO;
 import com.kcwl.ddd.interfaces.dto.PageInfoDTO;
 import com.kcwl.ddd.interfaces.dto.PageResultDTO;
+import com.kcwl.framework.rest.helper.ResponseHelper;
 
 
 import java.util.List;
@@ -20,21 +21,16 @@ public class UserBaseController {
      * @return
      */
     public ResponseMessage success(Object result) {
-        ResponseMessage responseMessage = new ResponseMessage();
-        responseMessage.setCode(CommonCode.SUCCESS.getCode());
-        responseMessage.setMessage(CommonCode.SUCCESS.getDescription());
-        responseMessage.setResult(result);
-        return responseMessage;
+        return ResponseHelper.success(result);
     }
 
     /**
      * 返回分页结果
-     * @param pageInfo
+     * @param pageInfoDTO
      * @return
      */
-    public ResponseMessage successPage(PageInfoDTO pageInfo) {
-        PageResultDTO pageQueryInfo = new PageResultDTO(pageInfo);
-        return success(pageQueryInfo);
+    public ResponseMessage successPage(PageInfoDTO pageInfoDTO) {
+        return ResponseHelper.successPage(pageInfoDTO);
     }
 
     /**
@@ -43,7 +39,7 @@ public class UserBaseController {
      * @return
      */
     public ResponseMessage successList(List list) {
-        return success(new ListResultDTO(list));
+        return ResponseHelper.successList(list);
     }
 
     /**
@@ -53,10 +49,6 @@ public class UserBaseController {
      * @return
      */
     public ResponseMessage fail(String code, String message) {
-        ResponseMessage responseMessage = new ResponseMessage();
-        responseMessage.setCode(code);
-        responseMessage.setMessage(message);
-        responseMessage.setResult("");
-        return responseMessage;
+        return ResponseHelper.fail(code, message);
     }
 }

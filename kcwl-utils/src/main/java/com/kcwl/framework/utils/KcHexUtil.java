@@ -3,7 +3,7 @@ package com.kcwl.framework.utils;
  * @author 姚华成
  * @date 2018-03-23
  */
-public class HexUtil {
+public class KcHexUtil {
     private static final char[] HEX_CHARS = "0123456789abcdef".toCharArray();
 
     public static String encodeHex(byte[] bytes) {

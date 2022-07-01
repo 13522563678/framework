@@ -32,7 +32,7 @@ public class HmacDigestUtil {
      * @return 以16进制字符串表示的数据的签名
      */
     public static String hmacSha256AsHex(String key, String data) {
-        return HexUtil.encodeHex(hmacSha256(key.getBytes(), data.getBytes()));
+        return KcHexUtil.encodeHex(hmacSha256(key.getBytes(), data.getBytes()));
     }
 
     /**
@@ -43,7 +43,7 @@ public class HmacDigestUtil {
      * @return 以Base64编码的数据的签名
      */
     public static String hmacSha256AsBase64(String key, String data) {
-        return Base64Util.encodeToString(hmacSha256(key.getBytes(), data.getBytes()));
+        return KcBase64Util.encodeToString(hmacSha256(key.getBytes(), data.getBytes()));
     }
 
     /**
@@ -54,7 +54,7 @@ public class HmacDigestUtil {
      * @return 以URL安全的Base64编码的数据的签名
      */
     public static String hmacSha256AsBase64UrlSafe(String key, String data) {
-        return Base64Util.encodeToUrlSafeString(hmacSha256(key.getBytes(), data.getBytes()));
+        return KcBase64Util.encodeToUrlSafeString(hmacSha256(key.getBytes(), data.getBytes()));
     }
 
     public static byte[] digestData(String algorithm, Key key, byte[] data) {

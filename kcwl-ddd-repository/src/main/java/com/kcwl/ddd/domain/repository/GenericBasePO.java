@@ -1,7 +1,5 @@
 package com.kcwl.ddd.domain.repository;
 
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-
 import java.util.Date;
 
 public class GenericBasePO <T extends BasePO<?>> extends BasePO<T> {

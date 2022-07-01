@@ -47,7 +47,6 @@ public class CommonWebAutoConfiguration {
     @Resource
     private CommonWebProperties webProperties;
 
-
     @Bean("highCorsFilter")
     public FilterRegistrationBean<CorsFilter> highCorsFilter() {
         // addCorsMappings是跨域全局配置

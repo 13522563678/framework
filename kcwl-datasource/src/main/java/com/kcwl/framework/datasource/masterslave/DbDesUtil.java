@@ -1,6 +1,6 @@
 package com.kcwl.framework.datasource.masterslave;
 
-import com.kcwl.framework.utils.Base64Util;
+import com.kcwl.framework.utils.KcBase64Util;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -27,7 +27,7 @@ public class DbDesUtil {
     public static String encrypt(String data) {
         try {
             byte[] bt = encrypt(data.getBytes(), getKey().getBytes());
-            return Base64Util.encodeToString(bt);
+            return KcBase64Util.encodeToString(bt);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -42,7 +42,7 @@ public class DbDesUtil {
         }
         try {
 
-            byte[] buf = Base64Util.decodeFromString(data);
+            byte[] buf = KcBase64Util.decodeFromString(data);
             byte[] bt = decrypt(buf, getKey().getBytes());
             return new String(bt);
         } catch (Exception e) {

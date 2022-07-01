@@ -1,6 +1,5 @@
 package com.kcwl.ddd.interfaces.dto;
 
-
 public class PageResultDTO<T> extends BaseDTO {
     private PageInfoDTO<T> page;
 

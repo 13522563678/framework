@@ -1,8 +1,6 @@
-package com.kcwl.ddd.interfaces.dto;
+package com.kcwl.ddd.interfaces.query;
 
-@Deprecated
-public class QueryDTO extends BaseDTO {
-
+public class BaseQuery {
     private String platformNo;
 
     public String getPlatformNo() {

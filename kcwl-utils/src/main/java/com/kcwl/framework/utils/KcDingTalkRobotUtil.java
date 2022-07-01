@@ -21,11 +21,11 @@ import java.util.List;
 /**
  * 钉钉机器人发消息
  *
- * 简单发送 {@link DingTalkRobotUtil#sendText(java.lang.String, java.lang.String)}
- * 复杂发送 {@link DingTalkRobotUtil#send(com.kcwl.framework.utils.DingTalkRobotUtil.Message)}
+ * 简单发送 {@link KcDingTalkRobotUtil#sendText(java.lang.String, java.lang.String)}
+ * 复杂发送 {@link KcDingTalkRobotUtil#send(KcDingTalkRobotUtil.Message)}
  */
 @Slf4j
-public class DingTalkRobotUtil {
+public class KcDingTalkRobotUtil {
 
     /**
      * 钉钉机器人发消息
@@ -52,7 +52,7 @@ public class DingTalkRobotUtil {
     /**
      * 钉钉机器人发消息 markdown 格式
      *
-     * @see DingTalkRobotUtil#sendText(String, String)
+     * @see KcDingTalkRobotUtil#sendText(String, String)
      */
     public static HttpResponse sendMarkdown(String webhook, String content) {
         return send(webhook, null, content, MessageType.markdown);
@@ -61,7 +61,7 @@ public class DingTalkRobotUtil {
     /**
      * 钉钉机器人发消息 markdown 格式
      *
-     * @see DingTalkRobotUtil#sendText(String, String, String)
+     * @see KcDingTalkRobotUtil#sendText(String, String, String)
      */
     public static HttpResponse sendMarkdown(String webhook, String secret, String content) {
         return send(webhook, secret, content, MessageType.markdown);
@@ -157,7 +157,7 @@ public class DingTalkRobotUtil {
         private boolean atAll = false;
 
         public HttpResponse send() {
-            return DingTalkRobotUtil.send(this);
+            return KcDingTalkRobotUtil.send(this);
         }
     }
 

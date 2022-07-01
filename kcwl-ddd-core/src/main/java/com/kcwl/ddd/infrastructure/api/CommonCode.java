@@ -21,6 +21,7 @@ public enum CommonCode {
     FIELD_ERROR("00007","字段格式不正确"),
     UN_LOGIN("00008","未登录"),
     UN_AUTH("00011","未认证"),
+    BODY_EMPTY_FAIL("00105","请求参数不能为空"),
     OTHER_EQUIPMENT_LOGIN("00009","该账户在别的设备登录"),
     STRING_LENGTH_ERROR("00010","字符串长度不符合格式"),
     INVALID_USER_AGENT("00900","该功能需要升级您的APP版本。"),

@@ -2,8 +2,10 @@ package com.kcwl.framework.rest.helper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.google.gson.Gson;
+import com.kcwl.ddd.domain.entity.KcPage;
 import com.kcwl.ddd.infrastructure.api.CommonCode;
 import com.kcwl.ddd.infrastructure.api.ResponseMessage;
+import com.kcwl.ddd.interfaces.dto.ApiMetaDTO;
 import com.kcwl.ddd.interfaces.dto.ListResultDTO;
 import com.kcwl.ddd.interfaces.dto.PageInfoDTO;
 import com.kcwl.ddd.interfaces.dto.PageResultDTO;
@@ -69,6 +71,15 @@ public class ResponseHelper {
 
     /**
      * 返回正确结果
+     * @param
+     * @return
+     */
+    public static ResponseMessage success(ApiMetaDTO apiMetaDTO) {
+        return createFailMessage(apiMetaDTO.getCode(), apiMetaDTO.getMessage());
+    }
+
+    /**
+     * 返回正确结果
      * @param result
      * @return
      */
@@ -122,10 +133,11 @@ public class ResponseHelper {
      * @return
      */
     public static ResponseMessage successPage(IPage page) {
-        PageInfoDTO pageInfoDTO = new PageInfoDTO(page.getTotal(), (int)page.getCurrent(),  (int)page.getSize(), page.getRecords());
+        PageInfoDTO pageInfoDTO = new PageInfoDTO(page.getTotal(), page.getCurrent(),  page.getSize(), page.getRecords());
         PageResultDTO pageResultDTO = new PageResultDTO(pageInfoDTO);
         return success(pageResultDTO);
     }
+
 
     /**
      * 返回分页结果
@@ -143,8 +155,17 @@ public class ResponseHelper {
      * @return
      */
     public static ResponseMessage fail(String code, String message) {
+        return createFailMessage(code, message);
+    }
+
+    public static ResponseMessage createFailMessage(String code, String message) {
         ResponseMessage responseMessage = new ResponseMessage();
-        responseMessage.setCode(code);
+        ResponseDecorator decorator = ResponseDecorator.getDecorator();
+        if (  decorator != null ) {
+            responseMessage.setCode(decorator.paddingResponseCode(code));
+        } else {
+            responseMessage.setCode(code);
+        }
         responseMessage.setMessage(message);
         responseMessage.setResult(EMPTY_OBJECT);
         return responseMessage;

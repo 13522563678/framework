@@ -31,7 +31,7 @@ public class CipherUtil {
      * @return data经过des加密后，以16进制表示的数据
      */
     public static String desEncryptToHex(String key, String data) {
-        return HexUtil.encodeHex(desEncrypt(key.getBytes(), data.getBytes()));
+        return KcHexUtil.encodeHex(desEncrypt(key.getBytes(), data.getBytes()));
     }
 
     /**
@@ -40,7 +40,7 @@ public class CipherUtil {
      * @return data经过des解密后的字符串数据
      */
     public static String desDecryptFromHex(String key, String data) {
-        return new String(desDecrypt(key.getBytes(), HexUtil.decodeHex(data)));
+        return new String(desDecrypt(key.getBytes(), KcHexUtil.decodeHex(data)));
     }
 
     /**
@@ -49,7 +49,7 @@ public class CipherUtil {
      * @return data经过des加密后，以Base64编码的数据
      */
     public static String desEncryptToBase64(String key, String data) {
-        return Base64Util.encodeToString(desEncrypt(key.getBytes(), data.getBytes()));
+        return KcBase64Util.encodeToString(desEncrypt(key.getBytes(), data.getBytes()));
     }
 
     /**
@@ -58,7 +58,7 @@ public class CipherUtil {
      * @return data经过des解密后的字符串数据
      */
     public static String desDecryptFromBase64(String key, String data) {
-        return new String(desDecrypt(key.getBytes(), Base64Util.decodeFromString(data)));
+        return new String(desDecrypt(key.getBytes(), KcBase64Util.decodeFromString(data)));
     }
 
     /**
@@ -67,7 +67,7 @@ public class CipherUtil {
      * @return data经过des加密后，以URL安全的Base64编码的数据
      */
     public static String desEncryptToBase64UrlSafe(String key, String data) {
-        return Base64Util.encodeToUrlSafeString(desEncrypt(key.getBytes(), data.getBytes()));
+        return KcBase64Util.encodeToUrlSafeString(desEncrypt(key.getBytes(), data.getBytes()));
     }
 
     /**
@@ -76,7 +76,7 @@ public class CipherUtil {
      * @return data经过des解密后的字符串数据
      */
     public static String desDecryptFromBase64UrlSafe(String key, String data) {
-        return new String(desDecrypt(key.getBytes(), Base64Util.decodeFromUrlSafeString(data)));
+        return new String(desDecrypt(key.getBytes(), KcBase64Util.decodeFromUrlSafeString(data)));
     }
 
     /**
@@ -105,7 +105,7 @@ public class CipherUtil {
      * @return data经过3des加密后，以16进制表示的数据
      */
     public static String des3EncryptToHex(String key, String data) {
-        return HexUtil.encodeHex(des3Encrypt(key.getBytes(), data.getBytes()));
+        return KcHexUtil.encodeHex(des3Encrypt(key.getBytes(), data.getBytes()));
     }
 
     /**
@@ -114,7 +114,7 @@ public class CipherUtil {
      * @return data经过3des解密后的字符串数据
      */
     public static String des3DecryptFromHex(String key, String data) {
-        return new String(des3Decrypt(key.getBytes(), HexUtil.decodeHex(data)));
+        return new String(des3Decrypt(key.getBytes(), KcHexUtil.decodeHex(data)));
     }
 
     /**
@@ -123,7 +123,7 @@ public class CipherUtil {
      * @return data经过3des加密后，以Base64编码的数据
      */
     public static String des3EncryptToBase64(String key, String data) {
-        return Base64Util.encodeToString(des3Encrypt(key.getBytes(), data.getBytes()));
+        return KcBase64Util.encodeToString(des3Encrypt(key.getBytes(), data.getBytes()));
     }
 
     /**
@@ -132,7 +132,7 @@ public class CipherUtil {
      * @return data经过3des解密后的字符串数据
      */
     public static String des3DecryptFromBase64(String key, String data) {
-        return new String(des3Decrypt(key.getBytes(), Base64Util.decodeFromString(data)));
+        return new String(des3Decrypt(key.getBytes(), KcBase64Util.decodeFromString(data)));
     }
 
     /**
@@ -141,7 +141,7 @@ public class CipherUtil {
      * @return data经过3des加密后，以URL安全的Base64编码的数据
      */
     public static String des3EncryptToBase64UrlSafe(String key, String data) {
-        return Base64Util.encodeToUrlSafeString(des3Encrypt(key.getBytes(), data.getBytes()));
+        return KcBase64Util.encodeToUrlSafeString(des3Encrypt(key.getBytes(), data.getBytes()));
     }
 
     /**
@@ -150,7 +150,7 @@ public class CipherUtil {
      * @return data经过3des解密后的字符串数据
      */
     public static String des3DecryptFromBase64UrlSafe(String key, String data) {
-        return new String(des3Decrypt(key.getBytes(), Base64Util.decodeFromUrlSafeString(data)));
+        return new String(des3Decrypt(key.getBytes(), KcBase64Util.decodeFromUrlSafeString(data)));
     }
 
     /**
@@ -179,7 +179,7 @@ public class CipherUtil {
      * @return data经过aes加密后，以16进制表示的数据
      */
     public static String aesEncryptToHex(String key, String data) {
-        return HexUtil.encodeHex(aesEncrypt(key.getBytes(), data.getBytes()));
+        return KcHexUtil.encodeHex(aesEncrypt(key.getBytes(), data.getBytes()));
     }
 
     /**
@@ -188,7 +188,7 @@ public class CipherUtil {
      * @return data经过aes解密后的字符串数据
      */
     public static String aesDecryptFromHex(String key, String data) {
-        return new String(aesDecrypt(key.getBytes(), HexUtil.decodeHex(data)));
+        return new String(aesDecrypt(key.getBytes(), KcHexUtil.decodeHex(data)));
     }
 
     /**
@@ -197,7 +197,7 @@ public class CipherUtil {
      * @return data经过aes加密后，以Base64编码的数据
      */
     public static String aesEncryptToBase64(String key, String data) {
-        return Base64Util.encodeToString(aesEncrypt(key.getBytes(), data.getBytes()));
+        return KcBase64Util.encodeToString(aesEncrypt(key.getBytes(), data.getBytes()));
     }
 
     /**
@@ -206,7 +206,7 @@ public class CipherUtil {
      * @return data经过aes解密后的字符串数据
      */
     public static String aesDecryptFromBase64(String key, String data) {
-        return new String(aesDecrypt(key.getBytes(), Base64Util.decodeFromString(data)));
+        return new String(aesDecrypt(key.getBytes(), KcBase64Util.decodeFromString(data)));
     }
 
     /**
@@ -215,7 +215,7 @@ public class CipherUtil {
      * @return data经过aes加密后，以URL安全的Base64编码的数据
      */
     public static String aesEncryptToBase64UrlSafe(String key, String data) {
-        return Base64Util.encodeToUrlSafeString(aesEncrypt(key.getBytes(), data.getBytes()));
+        return KcBase64Util.encodeToUrlSafeString(aesEncrypt(key.getBytes(), data.getBytes()));
     }
 
     /**
@@ -224,7 +224,7 @@ public class CipherUtil {
      * @return data经过aes解密后的字符串数据
      */
     public static String aesDecryptFromBase64UrlSafe(String key, String data) {
-        return new String(aesDecrypt(key.getBytes(), Base64Util.decodeFromUrlSafeString(data)));
+        return new String(aesDecrypt(key.getBytes(), KcBase64Util.decodeFromUrlSafeString(data)));
     }
 
     public static KeyPair genRsaKeyPair() {
@@ -249,7 +249,7 @@ public class CipherUtil {
      * @return data经过rsa加密后，以16进制表示的数据
      */
     public static String rsaEncryptToHex(Key key, String data) {
-        return HexUtil.encodeHex(rsaEncrypt(key, data.getBytes()));
+        return KcHexUtil.encodeHex(rsaEncrypt(key, data.getBytes()));
     }
 
     /**
@@ -258,7 +258,7 @@ public class CipherUtil {
      * @return data经过rsa解密后的字符串数据
      */
     public static String rsaDecryptFromHex(Key key, String data) {
-        return new String(rsaDecrypt(key, HexUtil.decodeHex(data)));
+        return new String(rsaDecrypt(key, KcHexUtil.decodeHex(data)));
     }
 
     /**
@@ -267,7 +267,7 @@ public class CipherUtil {
      * @return data经过rsa加密后，以Base64编码的数据
      */
     public static String rsaEncryptToBase64(Key key, String data) {
-        return Base64Util.encodeToString(rsaEncrypt(key, data.getBytes()));
+        return KcBase64Util.encodeToString(rsaEncrypt(key, data.getBytes()));
     }
 
     /**
@@ -276,7 +276,7 @@ public class CipherUtil {
      * @return data经过rsa解密后的字符串数据
      */
     public static String rsaDecryptFromBase64(Key key, String data) {
-        return new String(rsaDecrypt(key, Base64Util.decodeFromString(data)));
+        return new String(rsaDecrypt(key, KcBase64Util.decodeFromString(data)));
     }
 
     /**
@@ -285,7 +285,7 @@ public class CipherUtil {
      * @return data经过rsa加密后，以URL安全的Base64编码的数据
      */
     public static String rsaEncryptToBase64UrlSafe(Key key, String data) {
-        return Base64Util.encodeToUrlSafeString(rsaEncrypt(key, data.getBytes()));
+        return KcBase64Util.encodeToUrlSafeString(rsaEncrypt(key, data.getBytes()));
     }
 
     /**
@@ -294,7 +294,7 @@ public class CipherUtil {
      * @return data经过rsa解密后的字符串数据
      */
     public static String rsaDecryptFromBase64UrlSafe(Key key, String data) {
-        return new String(rsaDecrypt(key, Base64Util.decodeFromUrlSafeString(data)));
+        return new String(rsaDecrypt(key, KcBase64Util.decodeFromUrlSafeString(data)));
     }
 
     public static KeyPair genDsaKeyPair() {

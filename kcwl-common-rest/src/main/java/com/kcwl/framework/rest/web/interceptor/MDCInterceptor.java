@@ -3,6 +3,7 @@ package com.kcwl.framework.rest.web.interceptor;
 import cn.hutool.core.util.StrUtil;
 import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.session.SessionContext;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -14,6 +15,7 @@ import static com.kcwl.ddd.infrastructure.constants.GlobalConstant.*;
 /**
  * Log 上下文 拦截器
  */
+@Slf4j
 public class MDCInterceptor extends HandlerInterceptorAdapter {
 
     @Override
@@ -42,6 +44,11 @@ public class MDCInterceptor extends HandlerInterceptorAdapter {
 
         if (StrUtil.isNotBlank(kcToken)) {
             MDC.put(KC_TOKEN, kcToken);
+        }
+
+        if ( log.isInfoEnabled())
+        if ( log.isDebugEnabled() ) {
+            log.debug("reqUri={}, userAgent={}", request.getRequestURI(),requestUserAgent);
         }
 
         return super.preHandle(request, response, handler);

@@ -2,7 +2,7 @@ package com.kcwl.framework.rest.web.interceptor.impl;
 
 import com.kcwl.common.web.ApiAuthInfo;
 import com.kcwl.framework.rest.service.IAuthService;
-import com.kcwl.framework.utils.EncryptAesUtil;
+import com.kcwl.framework.utils.KcEncryptAesUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -38,7 +38,7 @@ public class SignAuthServiceImpl implements IAuthService {
             //偏移量，必须16位
             String key  = authInfo.getKey().substring(0, AUTH_KEY_SIZE);
             String iv = key;
-            String signInfo = EncryptAesUtil.encrypt( sb.toString(), key, iv);
+            String signInfo = KcEncryptAesUtil.encrypt( sb.toString(), key, iv);
             String md5Hex = DigestUtils.md5Hex(signInfo);
             log.debug("key={}; md5Hex={}; src={}", key, md5Hex, sb.toString());
             if ( md5Hex.equals(authInfo.getSign()) ) {

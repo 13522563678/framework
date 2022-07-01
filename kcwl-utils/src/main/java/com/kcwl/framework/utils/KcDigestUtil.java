@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
  * @author 姚华成
  * @date 2018-03-23
  */
-public class DigestUtil {
+public class KcDigestUtil {
     private static final String ALGORITHM_MD5 = "MD5";
     private static final String ALGORITHM_SHA224 = "SHA-224";
     private static final String ALGORITHM_SHA256 = "SHA-256";
@@ -30,7 +30,7 @@ public class DigestUtil {
      * @return 以16进制字符串表示的数据的签名
      */
     public static String md5AsHex(String data) {
-        return HexUtil.encodeHex(md5(data.getBytes()));
+        return KcHexUtil.encodeHex(md5(data.getBytes()));
     }
 
     /**
@@ -40,7 +40,7 @@ public class DigestUtil {
      * @return 以Base64编码的数据的签名
      */
     public static String md5AsBase64(String data) {
-        return Base64Util.encodeToString(md5(data.getBytes()));
+        return KcBase64Util.encodeToString(md5(data.getBytes()));
     }
 
     /**
@@ -50,7 +50,7 @@ public class DigestUtil {
      * @return 以URL安全的Base64编码的数据的签名
      */
     public static String md5AsBase64UrlSafe(String data) {
-        return Base64Util.encodeToUrlSafeString(md5(data.getBytes()));
+        return KcBase64Util.encodeToUrlSafeString(md5(data.getBytes()));
     }
 
     /**
@@ -70,7 +70,7 @@ public class DigestUtil {
      * @return 以16进制字符串表示的数据的签名
      */
     public static String sha224AsHex(String data) {
-        return HexUtil.encodeHex(sha224(data.getBytes()));
+        return KcHexUtil.encodeHex(sha224(data.getBytes()));
     }
 
     /**
@@ -80,7 +80,7 @@ public class DigestUtil {
      * @return 以Base64编码的数据的签名
      */
     public static String sha224AsBase64(String data) {
-        return Base64Util.encodeToString(sha224(data.getBytes()));
+        return KcBase64Util.encodeToString(sha224(data.getBytes()));
     }
 
     /**
@@ -90,7 +90,7 @@ public class DigestUtil {
      * @return 以URL安全的Base64编码的数据的签名
      */
     public static String sha224AsBase64UrlSafe(String data) {
-        return Base64Util.encodeToUrlSafeString(sha224(data.getBytes()));
+        return KcBase64Util.encodeToUrlSafeString(sha224(data.getBytes()));
     }
 
     /**
@@ -110,7 +110,7 @@ public class DigestUtil {
      * @return 以16进制字符串表示的数据的签名
      */
     public static String sha256AsHex(String data) {
-        return HexUtil.encodeHex(sha256(data.getBytes()));
+        return KcHexUtil.encodeHex(sha256(data.getBytes()));
     }
 
     /**
@@ -120,7 +120,7 @@ public class DigestUtil {
      * @return 以Base64编码的数据的签名
      */
     public static String sha256AsBase64(String data) {
-        return Base64Util.encodeToString(sha256(data.getBytes()));
+        return KcBase64Util.encodeToString(sha256(data.getBytes()));
     }
 
     /**
@@ -130,7 +130,7 @@ public class DigestUtil {
      * @return 以URL安全的Base64编码的数据的签名
      */
     public static String sha256AsBase64UrlSafe(String data) {
-        return Base64Util.encodeToUrlSafeString(sha256(data.getBytes()));
+        return KcBase64Util.encodeToUrlSafeString(sha256(data.getBytes()));
     }
 
     /**
@@ -150,7 +150,7 @@ public class DigestUtil {
      * @return 以16进制字符串表示的数据的签名
      */
     public static String sha384AsHex(String data) {
-        return HexUtil.encodeHex(sha384(data.getBytes()));
+        return KcHexUtil.encodeHex(sha384(data.getBytes()));
     }
 
     /**
@@ -160,7 +160,7 @@ public class DigestUtil {
      * @return 以Base64编码的数据的签名
      */
     public static String sha384AsBase64(String data) {
-        return Base64Util.encodeToString(sha384(data.getBytes()));
+        return KcBase64Util.encodeToString(sha384(data.getBytes()));
     }
 
     /**
@@ -170,7 +170,7 @@ public class DigestUtil {
      * @return 以URL安全的Base64编码的数据的签名
      */
     public static String sha384AsBase64UrlSafe(String data) {
-        return Base64Util.encodeToUrlSafeString(sha384(data.getBytes()));
+        return KcBase64Util.encodeToUrlSafeString(sha384(data.getBytes()));
     }
 
     /**
@@ -190,7 +190,7 @@ public class DigestUtil {
      * @return 以16进制字符串表示的数据的签名
      */
     public static String sha512AsHex(String data) {
-        return HexUtil.encodeHex(sha512(data.getBytes()));
+        return KcHexUtil.encodeHex(sha512(data.getBytes()));
     }
 
     /**
@@ -200,7 +200,7 @@ public class DigestUtil {
      * @return 以Base64编码的数据的签名
      */
     public static String sha512AsBase64(String data) {
-        return Base64Util.encodeToString(sha512(data.getBytes()));
+        return KcBase64Util.encodeToString(sha512(data.getBytes()));
     }
 
     /**
@@ -210,7 +210,7 @@ public class DigestUtil {
      * @return 以URL安全的Base64编码的数据的签名
      */
     public static String sha512AsBase64UrlSafe(String data) {
-        return Base64Util.encodeToUrlSafeString(sha512(data.getBytes()));
+        return KcBase64Util.encodeToUrlSafeString(sha512(data.getBytes()));
     }
 
     private static MessageDigest getDigest(String algorithm) {

@@ -18,6 +18,16 @@
     </developers>
     <dependencies>
         <dependency>
+            <groupId>com.kcwl.framework</groupId>
+            <artifactId>kcwl-ddd-core</artifactId>
+            <version>${kcwl-framework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.kcwl.framework</groupId>
+            <artifactId>kcwl-utils</artifactId>
+            <version>${kcwl-framework.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-extension</artifactId>
             <version>${baomidou.mybatisplus.version}</version>

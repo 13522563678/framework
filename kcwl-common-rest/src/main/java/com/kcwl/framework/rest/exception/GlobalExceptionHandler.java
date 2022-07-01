@@ -6,12 +6,13 @@ import com.kcwl.ddd.infrastructure.api.ResponseMessage;
 import com.kcwl.ddd.infrastructure.exception.BaseException;
 import com.kcwl.ddd.infrastructure.exception.BizException;
 import com.kcwl.ddd.infrastructure.session.SessionContext;
-import com.kcwl.framework.rest.helper.ResponseDecorator;
+import com.kcwl.framework.rest.helper.ResponseHelper;
 import com.kcwl.framework.utils.ServiceHttpStatus;
 import com.kcwl.framework.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -35,9 +35,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler extends AbstractExceptionHandler {
-
-    @Resource
-    ResponseDecorator responseDecorator;
 
     @ResponseBody
     @ExceptionHandler(value = BizException.class)
@@ -91,7 +88,9 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     public ResponseEntity methodValidateExceptionHandler(HttpServletRequest request, Exception e) {
         printRequest(request, e);
-        return fail(CommonCode.FIELD_ERROR.getCode(), CommonCode.FIELD_ERROR.getDescription(), e);
+        MethodArgumentNotValidException ex = (MethodArgumentNotValidException)e;
+        String validateMsg = getMethodValidateMessage(ex.getBindingResult(), CommonCode.FIELD_ERROR.getDescription());
+        return fail(CommonCode.FIELD_ERROR.getCode(), validateMsg, e);
     }
 
 
@@ -100,8 +99,15 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     public ResponseEntity missingSParameterExceptionHandler(HttpServletRequest request, Exception e) {
         printRequest(request, e);
         MissingServletRequestParameterException exp = (MissingServletRequestParameterException) e;
-        String errorMesssage = String.format("：%s不能为空！", exp.getParameterName());
+        //String errorMesssage = String.format("：%s不能为空！", exp.getParameterName());
         return fail(CommonCode.FIELD_NULL.getCode(), CommonCode.FIELD_NULL.getDescription(), e);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    public ResponseEntity bodyEmptyExceptionHandler(HttpServletRequest request, Exception e) {
+        printRequest(request, e);
+        return fail(CommonCode.BODY_EMPTY_FAIL.getCode(), CommonCode.BODY_EMPTY_FAIL.getDescription(), e);
     }
 
     @ResponseBody
@@ -161,6 +167,17 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
         return errorMesssage;
     }
 
+    private String getMethodValidateMessage(BindingResult bindingResult, String defaultMsg) {
+        StringBuilder sb = new StringBuilder();
+        bindingResult.getAllErrors().forEach((error) -> {
+            if ( sb.length() > 0 ) {
+                sb.append("；");
+            }
+            sb.append(error.getDefaultMessage());
+        });
+        return (sb.length() > 0) ? sb.toString() : defaultMsg;
+    }
+
     private String getValidationMessage(Set<ConstraintViolation<?>> bindingResult) {
         String errorMesssage = "";
         for (ConstraintViolation<?> fieldError : bindingResult) {
@@ -175,10 +192,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     }
 
     private ResponseMessage createResponseMessage(String code, String message) {
-        ResponseMessage responseMessage = new ResponseMessage();
-        responseMessage.setCode(responseDecorator.paddingResponseCode(code));
-        responseMessage.setMessage(message);
-        return responseMessage;
+        return ResponseHelper.createFailMessage(code, message);
     }
 
 }

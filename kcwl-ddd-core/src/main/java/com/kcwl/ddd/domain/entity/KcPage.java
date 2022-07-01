@@ -1,12 +1,8 @@
-package com.kcwl.ddd.interfaces.dto;
+package com.kcwl.ddd.domain.entity;
 
-import java.io.Serializable;
 import java.util.List;
 
-/**
- * @author ckwl
- */
-public class PageInfoDTO<T> extends BaseDTO implements Serializable {
+public class KcPage<T> extends BaseEntity {
 
     private static final long serialVersionUID = 8572943675678665226L;
 
@@ -36,12 +32,6 @@ public class PageInfoDTO<T> extends BaseDTO implements Serializable {
 
     private List<T> list;
 
-    /**
-     * 适配APP端，判断是否第一页或最后一页
-     */
-    private boolean first;
-
-    private boolean last;
 
     /**
      * @param allCount
@@ -49,28 +39,22 @@ public class PageInfoDTO<T> extends BaseDTO implements Serializable {
      * @param pageSize
      *            每页显示的记录数
      */
-    public PageInfoDTO(long allCount, long curPagerNo, long pageSize, List list) {
+    public KcPage(long allCount, long curPagerNo, long pageSize, List list) {
         this.curPagerNo = curPagerNo;
         this.pageSize = pageSize;
         this.rowsCount = allCount;
         this.list = list;
         this.totalPageNumber = (int) Math.ceil((double) allCount / pageSize);
-        this.first = checkFirst();
-        this.last = checkLast();
     }
 
-    public PageInfoDTO() {
-        this.first = checkFirst();
-        this.last = checkLast();
+    public KcPage() {
     }
 
-    public PageInfoDTO(PageInfoDTO pager) {
+    public KcPage(KcPage pager) {
         this.curPagerNo = pager.curPagerNo;
         this.pageSize = pager.pageSize;
         this.rowsCount = pager.rowsCount;
         this.list = pager.list;
-        this.first = checkFirst();
-        this.last = checkLast();
     }
 
     // getPageSize：返回分页大小
@@ -106,24 +90,6 @@ public class PageInfoDTO<T> extends BaseDTO implements Serializable {
     // 下一页
     public long next() {
         return (curPagerNo + 1 > totalPageNumber) ? totalPageNumber : curPagerNo + 1;
-    }
-
-    // 第一页
-     public boolean isFirst() {
-        return this.first;
-    }
-
-    // 最后一页
-    public boolean isLast() {
-        return this.last;
-    }
-
-    private boolean checkFirst() {
-        return (curPagerNo == 1) ? true : false;
-    }
-
-    private boolean checkLast() {
-        return (curPagerNo == totalPageNumber || totalPageNumber==0) ? true : false;
     }
 
     @Override
@@ -166,7 +132,7 @@ public class PageInfoDTO<T> extends BaseDTO implements Serializable {
         this.totalPageNumber = pageCount;
     }
 
-    public void appendPage(PageInfoDTO pager) {
+    public void appendPage(KcPage pager) {
         if ( pager != null ) {
             this.curPagerNo = curPagerNo;
             this.pageSize = pageSize;
@@ -175,7 +141,7 @@ public class PageInfoDTO<T> extends BaseDTO implements Serializable {
             this.list.addAll(pager.list);
         }
     }
-    public void setPageInfo(long pageNo, long pageSize) {
+    public void setPageInfo(int pageNo, int pageSize) {
         this.curPagerNo = pageNo;
         this.pageSize = pageSize;
     }

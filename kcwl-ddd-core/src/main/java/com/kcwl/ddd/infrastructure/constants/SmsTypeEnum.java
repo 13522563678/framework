@@ -20,6 +20,7 @@ public enum SmsTypeEnum {
     SHIPPER_CHANGE_LOGIN_PWD_SIMS_VERILY(26, "货主修改登录密码短信验证码"),
     SHIPPER_DESTROY_SIMS_VERILY(27, "货主注销用户短信验证码"),
     SHIPPER_CHANGE_MOBILE_VERILY(28, "货主修改用户手机号"),
+    KS_WEB_TRANSFER_VERILY(25, "发运web转账短信验证码"),
     KS_APP_LOGIN_SIMS_VERILY(30, "发运APP登录短信验证码"),
     KS_APP_REGISTER_SIMS_VERILY(31, "发运APP注册短信验证码"),
     KS_APP_FORGOT_PASSWORD_VERILY(32, "发运APP用户忘记密码短信验证码"),

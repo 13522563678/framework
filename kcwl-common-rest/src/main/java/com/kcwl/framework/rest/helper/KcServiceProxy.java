@@ -32,7 +32,8 @@ public class KcServiceProxy {
     public void forward(String serviceName, HttpServletRequest request, HttpServletResponse response) {
         String queryString = request.getQueryString();
         String apiUrl = getServiceApiUrl(serviceName, getPublishUri(request), queryString);
-        String contentType = request.getContentType();
+        //String contentType = request.getContentType();
+        String contentType = "application/json;charset=UTF-8";
 
         Object params = getRequestBody(contentType, request);
         if ( log.isDebugEnabled() ) {

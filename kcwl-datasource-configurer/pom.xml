@@ -61,5 +61,10 @@
             <artifactId>kcwl-tenant</artifactId>
             <version>${kcwl-framework.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.kcwl.framework</groupId>
+            <artifactId>kcwl-ddd-core</artifactId>
+            <version>${kcwl-framework.version}</version>
+        </dependency>
     </dependencies>
 </project>

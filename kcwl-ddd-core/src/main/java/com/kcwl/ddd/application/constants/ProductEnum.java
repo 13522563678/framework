@@ -5,7 +5,7 @@ import java.util.List;
 
 public enum ProductEnum {
     CARRIER_APP(1, "CARRIER","司机APP"),
-    OPMS_WEB(4, "BPMS","综合运营"),
+    OPMS_WEB(4, "OPMS","综合运营"),
     TMS_WEB(5, "TMS","TMS"),
     BPMS_WEB(6, "BPMS","业绩系统"),
     SHIPPER_WEB(7, "SHIPPER_WEB","客商Web"),

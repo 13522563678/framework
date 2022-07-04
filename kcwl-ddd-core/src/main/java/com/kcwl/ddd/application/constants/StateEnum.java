@@ -1,6 +1,8 @@
 package com.kcwl.ddd.application.constants;
 
-public enum StateEnum {
+import com.kcwl.ddd.domain.entity.ValueObject;
+
+public enum StateEnum implements ValueObject<StateEnum> {
     /**
      * 有效
      */
@@ -60,5 +62,11 @@ public enum StateEnum {
             }
         }
         return null;
+    }
+
+
+    @Override
+    public boolean sameValueAs(StateEnum other) {
+        return this.equals(other);
     }
 }

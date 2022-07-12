@@ -1,12 +1,10 @@
 package com.kcwl.ddd.domain.event;
 
-import java.util.Date;
-
 public class DomainEvent {
     private String id;
     private String name;
     private Integer type;
-    Date timestamp;
+    Long timestamp;
 
     public String getId() {
         return id;
@@ -24,11 +22,11 @@ public class DomainEvent {
         this.name = name;
     }
 
-    public Date getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 

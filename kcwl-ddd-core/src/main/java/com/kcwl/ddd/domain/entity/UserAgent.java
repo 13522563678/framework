@@ -21,6 +21,8 @@ public class UserAgent {
     public static final String FILED_APPVERSION="version";
     public static final String FILED_REQUEST_DEPTH="depth";
     public static final String FIELD_USER_SSID = "x-user-ssid";
+    public static final String FILED_OPERATING_SYSTEM ="operatingSystem";
+
     public static final String FILED_REQUEST="request";
 
     public static final String AGENT_CLIENT_FEIGN = "feign";
@@ -105,6 +107,10 @@ public class UserAgent {
     public int getRequestDepth() {
         String depth = userAgent.get(FILED_REQUEST_DEPTH);
         return (depth !=null ) ? Integer.parseInt(depth) : 0;
+    }
+
+    public String getOperatingSystem() {
+        return userAgent.get(FILED_OPERATING_SYSTEM);
     }
 
     public boolean isServerRequest() {

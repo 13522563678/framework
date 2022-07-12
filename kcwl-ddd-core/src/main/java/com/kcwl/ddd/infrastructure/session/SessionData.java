@@ -233,15 +233,20 @@ public class SessionData implements Serializable {
         return extra;
     }
 
-    public void setExtra(HashMap extra) {
-        this.extra = extra;
+    public void addExtraData(String key, Integer data) {
+        saveExtraData(key, data);
     }
 
-    public void addExtraData(String key, Object data) {
-        if ( extra == null ) {
-            extra = new HashMap();
-        }
-        extra.put(key, data);
+    public void addExtraData(String key, Long data) {
+        saveExtraData(key, data);
+    }
+
+    public void addExtraData(String key, String data) {
+        saveExtraData(key, data);
+    }
+
+    public void addExtraData(String key, Byte data) {
+        saveExtraData(key, data);
     }
 
     public Object getExtraData(String key) {
@@ -339,5 +344,12 @@ public class SessionData implements Serializable {
                 ", product=" + product +
                 ", extra=" + extra +
                 '}';
+    }
+
+    private void saveExtraData(String key, Object data) {
+        if ( extra == null ) {
+            extra = new HashMap();
+        }
+        extra.put(key, data);
     }
 }

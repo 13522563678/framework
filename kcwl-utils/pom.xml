@@ -21,6 +21,16 @@
             <artifactId>hutool-all</artifactId>
             <version>${hutool.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.passay</groupId>
+            <artifactId>passay</artifactId>
+            <version>${passay.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.kcwl.framework</groupId>
+            <artifactId>kcwl-ddd-core</artifactId>
+            <version>${kcwl-framework.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

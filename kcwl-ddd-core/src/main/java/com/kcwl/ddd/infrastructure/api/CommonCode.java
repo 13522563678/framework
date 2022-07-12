@@ -6,12 +6,13 @@ package com.kcwl.ddd.infrastructure.api;
 
 public enum CommonCode {
     SUCCESS("000000200", "请求成功"),
-
+    FAIL("00099", "系统开小差请稍后再试"),
     AUTH_ERROR_CODE("00101","秘钥无效"),
     PARAM_VALID_ERROR_CODE("00102","字段为空"),
     DATA_LOGIC_ERROR_CODE("00103","字段格式不正确"),
-
-    FAIL("00104", "请求失败"),
+    REQUEST_NOT_FOUND("00104", "请求不存在"),
+    REQUEST_METHOD_NOT_SUPPORT("00105", "不支持请求类型"),
+    ACCESS_DB_FAIL("00106", "无效的数据"),
     DATA_MESSAGE_NULL("00001","数据报文为空"),
     DATA_MESSAGE_UN_EXIST("00002","报文指令不存在"),
     DATA_MESSAGE_DECODE_FAIL("00003","报文无法解密"),

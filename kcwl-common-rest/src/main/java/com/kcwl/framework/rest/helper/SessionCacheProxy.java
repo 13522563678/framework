@@ -67,6 +67,15 @@ public class SessionCacheProxy {
         }
     }
 
+    /**
+     * 从缓存删除sessionData
+     * @param
+     */
+    public void deleteSession(String product, String sessionId) {
+        String sessionKey = getSessionKey(product, sessionId);
+        userTokenCache.remove(sessionKey);
+    }
+
     private String getSessionKey(Object product, String sessionId) {
         StringBuilder sb = new StringBuilder();
         sb.append(PrefixConstant.REDIS_USER_SESSION).append(product).append(":").append(sessionId);

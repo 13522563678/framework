@@ -3,6 +3,7 @@ package com.kcwl.ddd.infrastructure.session;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class SessionData implements Serializable {
     /**
@@ -243,6 +244,14 @@ public class SessionData implements Serializable {
 
     public void addExtraData(String key, String data) {
         saveExtraData(key, data);
+    }
+
+    /**
+     * @param key
+     * @param list  list里的属性值必须是基本数据类型：Integer，Long，String
+     */
+    public void addExtraData(String key, List list) {
+        saveExtraData(key, list);
     }
 
     public void addExtraData(String key, Byte data) {

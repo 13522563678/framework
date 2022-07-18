@@ -1,12 +1,13 @@
 package com.kcwl.ddd.domain.repository;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.kcwl.ddd.domain.entity.KcPage;
 import com.kcwl.framework.utils.KcBeanConverter;
 
 import java.util.List;
 
-public interface IBaseRepository {
+public interface IBaseRepository<T> extends IService<T> {
 
     default KcPage getPage(IPage iPage) {
         return new KcPage(iPage.getTotal(), iPage.getCurrent(), iPage.getSize(), iPage.getRecords());

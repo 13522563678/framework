@@ -189,7 +189,7 @@ public class KcPasswordUtil {
 
         @Override
         public String getCharacters() {
-            return ",.;:?/'\"|_~`!@#$%^&=+\\-)(][{}*";
+            return ",.;:?/'\"|_~`!@#$%^&=+-)(][{}*";
         }
     });
 

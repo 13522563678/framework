@@ -2,10 +2,13 @@ package com.kcwl.ddd.interfaces.dto;
 
 import java.util.List;
 
-public class ListResultDTO extends BaseDTO{
-    private List list;
+public class ListResultDTO<T> extends BaseDTO{
+    private List<T> list;
 
-    public ListResultDTO(List list) {
+    public ListResultDTO() {
+    }
+
+    public ListResultDTO(List<T> list) {
         this.list = list;
     }
 
@@ -13,7 +16,7 @@ public class ListResultDTO extends BaseDTO{
         return list;
     }
 
-    public void setList(List list) {
+    public void setList(List<T> list) {
         this.list = list;
     }
 }

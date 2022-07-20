@@ -30,7 +30,9 @@ public enum SmsTypeEnum {
     ICMS_RETRIEVE_PASSWORD_VERILY(72, "数智平台找回密码短信验证码"),
     ICMS_PARTNER_REFUND(73, "数智平台合作关系申请退款短信验证码"),
     BPMS_LOGIN_VERILY(81, "业绩系统登录短信验证码"),
-    BPMS_RETRIEVE_PASSWORD_VERILY(82, "业绩系统找回密码短信验证码");
+    BPMS_RETRIEVE_PASSWORD_VERILY(82, "业绩系统找回密码短信验证码"),
+    OPMS_LOGIN_VERILY(91, "综合管理平台登录短信验证码"),
+    OPMS_RETRIEVE_PASSWORD_VERILY(92, "综合管理平台找回密码短信验证码");
 
     private int code;
     private String desc;

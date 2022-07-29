@@ -1,6 +1,9 @@
 package com.kcwl.ddd.domain.entity;
 
 public class BaseEntity<T> {
+
+    Long id;
+
     /**
      * Entities compare by identity, not by attributes.
      *
@@ -9,5 +12,13 @@ public class BaseEntity<T> {
      */
     boolean sameIdentityAs(T other){
         return  (other != null) && (this.equals(other));
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

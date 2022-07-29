@@ -1,14 +1,10 @@
 package com.kcwl.ddd.domain.entity;
 
-import java.io.Serializable;
-
 /**
- * ValueObject interface
- *
- * @author haoxin
- * @date 2021-02-01
- **/
-public interface ValueObject<T> extends Serializable {
+ * 值对象标记接口
+ * @param <T>
+ */
+public interface ValueObject<T> extends MarkerInterface {
 
     /**
      * Value objects compare by the values of their attributes, they don't have an identity.

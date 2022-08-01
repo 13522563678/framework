@@ -10,7 +10,9 @@ public enum IdentityTypeEnum {
     COMPANY_VEHICLE_ADMIN(7, "企业车队管理员"),
     PERSONAL_VEHICLE_ADMIN(8, "车老板"),
     DRIVER(9,"司机"),
-    DRIVER_COLLECTOR(11, "运力辅助人(代收人)");
+    DRIVER_COLLECTOR(11, "运力辅助人(代收人)"),
+    PERSONAL_TRANSPORT_ASSISTANT(12, "个体运力辅助服务商"),
+    COMPANY_TRANSPORT_ASSISTANT(13, "企业运力辅助服务商");
 
     private Integer  type;
     private String  desc;
@@ -26,5 +28,17 @@ public enum IdentityTypeEnum {
     IdentityTypeEnum(int type, String desc) {
         this.type = type;
         this.desc = desc;
+    }
+
+    public static IdentityTypeEnum of(Integer value) {
+        if (value == null) {
+            return null;
+        }
+        for (IdentityTypeEnum identityTypeEnum : values()) {
+            if (identityTypeEnum.type.equals(value)) {
+                return identityTypeEnum;
+            }
+        }
+        return null;
     }
 }

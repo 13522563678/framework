@@ -1,5 +1,8 @@
 package com.kcwl.ddd.application.constants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum IdentityTypeEnum {
     SHIPPER(1, "货主"),
     SHIPPER_COMPLETED_AGENT(2, "代理货主(全托管)"),
@@ -40,5 +43,29 @@ public enum IdentityTypeEnum {
             }
         }
         return null;
+    }
+
+    /**
+     * 获取个体运力列表
+     * @return
+     */
+    public static List<Integer> getPersonalCarrierCodeList() {
+        List<Integer> codes = new ArrayList<>();
+        codes.add(IdentityTypeEnum.DRIVER.getCode());
+        codes.add(IdentityTypeEnum.DRIVER_COLLECTOR.getCode());
+        codes.add(IdentityTypeEnum.PERSONAL_VEHICLE_ADMIN.getCode());
+        codes.add(IdentityTypeEnum.PERSONAL_TRANSPORT_ASSISTANT.getCode());
+        return codes;
+    }
+
+    /**
+     * 获取企业运力列表
+     * @return
+     */
+    public static List<Integer> getCompanyCarrierCodeList() {
+        List<Integer> codes = new ArrayList<>();
+        codes.add(IdentityTypeEnum.COMPANY_VEHICLE_ADMIN.getCode());
+        codes.add(IdentityTypeEnum.COMPANY_TRANSPORT_ASSISTANT.getCode());
+        return codes;
     }
 }

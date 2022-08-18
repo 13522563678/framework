@@ -106,6 +106,7 @@
         <jaxb.version>2.3.0</jaxb.version>
         <gson.version>2.8.5</gson.version>
         <passay.version>1.6.1</passay.version>
+        <jvalidation.version>2.0.1.Final</jvalidation.version>
     </properties>
 
     <!--依赖jar包管理 -->
@@ -281,6 +282,11 @@
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-core</artifactId>
             <version>${jaxb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${jvalidation.version}</version>
         </dependency>
         <!--    <dependency>
                 <groupId>com.aliyun.oss</groupId>

@@ -1,6 +1,6 @@
 package com.kcwl.framework.utils;
 
-import org.apache.commons.beanutils.BeanUtils;
+import cn.hutool.core.bean.BeanUtil;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class TreeUtils {
         List<T> topList = new ArrayList<>();
         for (int i = 0; i < originalList.size(); i++) {
             T t = originalList.get(i);
-            String parentId = BeanUtils.getProperty(t, parentFieldName);
+            String parentId = BeanUtil.getProperty(t, parentFieldName);
             if (StringUtil.isBlank(parentId) || new Integer(parentId).intValue() == 0) {
                 topList.add(t);
             }
@@ -67,10 +67,10 @@ public class TreeUtils {
      */
     public static <T> List<T> fillChildren(T parent, List<T> originalList, String keyName, String parentFieldName, String childrenFieldName) throws Exception {
         List<T> childList = new ArrayList<>();
-        String parentId = BeanUtils.getProperty(parent, keyName);
+        String parentId = BeanUtil.getProperty(parent, keyName);
         for (int i = 0; i < originalList.size(); i++) {
             T t = originalList.get(i);
-            String childParentId = BeanUtils.getProperty(t, parentFieldName);
+            String childParentId = BeanUtil.getProperty(t, parentFieldName);
             if (parentId.equals(childParentId)) {
                 childList.add(t);
             }

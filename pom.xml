@@ -46,6 +46,7 @@
         <module>kcwl-sentinel-client</module>
         <module>kcwl-common-rest</module>
         <module>kcwl-ddd-repository</module>
+        <module>kcwl-actuator</module>
     </modules>
 
     <!--定义jar版本信息 -->
@@ -107,6 +108,8 @@
         <gson.version>2.8.5</gson.version>
         <passay.version>1.6.1</passay.version>
         <jvalidation.version>2.0.1.Final</jvalidation.version>
+
+        <kcwl-actuator.version>6.0.0-SNAPSHOT</kcwl-actuator.version>
     </properties>
 
     <!--依赖jar包管理 -->

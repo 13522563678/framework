@@ -1,6 +1,8 @@
 package com.kcwl.framework.rest.web.filter;
 
+import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.api.CommonCode;
+import com.kcwl.ddd.infrastructure.encrypt.KcKeyManager;
 import com.kcwl.framework.rest.helper.ResponseHelper;
 import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.framework.rest.web.filter.reqeust.FormToJsonRequestWrapper;
@@ -40,7 +42,10 @@ public class DecryptParamFilter extends OncePerRequestFilter {
             return;
         }
         try {
-            Map<String ,Object> param =DecryptUtil.decryptParam(encryptionData);
+            String product = getProductType(httpServletRequest);
+            String cryptKey = KcKeyManager.getInstance().getParamPrivateKey(product);
+
+            Map<String ,Object> param =DecryptUtil.decryptParam(encryptionData, cryptKey);
             if(param==null){
                 ResponseHelper.buildResponseBody(CommonCode.JSON_DECODE_FAIL, httpServletResponse);
                 return;
@@ -83,5 +88,9 @@ public class DecryptParamFilter extends OncePerRequestFilter {
             return true;
         }
         return false;
+    }
+
+    private String getProductType(HttpServletRequest httpServletRequest) {
+       return RequestUtil.getCookieValue(httpServletRequest, UserAgent.FILED_PRODUCT);
     }
 }

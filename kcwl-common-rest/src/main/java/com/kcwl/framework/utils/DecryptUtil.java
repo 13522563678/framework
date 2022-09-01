@@ -18,21 +18,20 @@ public class DecryptUtil {
 	/**
 	 * 秘钥
 	 */
-	//public static final String key="876543kcwl345678";
 	public static final String key="123456kcwl654321";
 	/**
 	 * 参数解密
 	 * @return
 	 */
-	public static Map<String,Object> decryptParam(String paramdata){
+	public static Map<String,Object> decryptParam(String param, String pwd){
 		Map<String,Object> result = null;
 		try {
-			String newData = decryptStr(paramdata);
+			String newData = decryptStr(param, pwd);
 			result = JsonUtil.toMap(newData);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
 
@@ -40,27 +39,29 @@ public class DecryptUtil {
 	 * 参数解密
 	 * @return
 	 */
-	public static String encryptParam(Map<String,Object> paramdata){
+	public static String encryptParam(Map<String,Object> param, String pwd){
 		String result = null;
 		try {
-			String newData = JsonUtil.toJson(paramdata);
-			result = encryptAES(newData, key);
+			String newData = JsonUtil.toJson(param);
+			result = encryptAES(newData, pwd);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 解密字符串
 	 * @param str
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public static String decryptStr(String str) throws Exception{
-		return decryptAES(str, key);
+	public static String decryptStr(String str, String pwd) throws Exception{
+		return decryptAES(str, pwd);
 	}
+
 	static final public byte[] KEY_VI = { 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8 };
+
 	public static final String bm = "UTF-8";
 
 	/**
@@ -71,20 +72,13 @@ public class DecryptUtil {
 	 * @throws Exception
 	 */
 	public static String encryptAES( String cleartext,String dataPassword) throws Exception {
-		
+
 		IvParameterSpec zeroIv = new IvParameterSpec(KEY_VI);
 		SecretKeySpec key = new SecretKeySpec(dataPassword.getBytes(bm), "AES");
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		cipher.init(Cipher.ENCRYPT_MODE, key, zeroIv);
 		byte[] encryptedData = cipher.doFinal(cleartext.getBytes(bm));
 		return new String (parseByte2HexStr(encryptedData));
-		/**
-		 * 
-	
-		 * 
-		 * 
-		 * 
-		 */
 	}
 
 	/**
@@ -109,7 +103,7 @@ public class DecryptUtil {
 
 	/**
 	 * 将16进制转换为二进制
-	 * 
+	 *
 	 * @param hexStr
 	 * @return
 	 */
@@ -128,7 +122,7 @@ public class DecryptUtil {
 
 	/**
 	 * 将二进制转换成16进制
-	 * 
+	 *
 	 * @param buf
 	 * @return
 	 */

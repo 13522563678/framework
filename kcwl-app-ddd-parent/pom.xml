@@ -99,6 +99,21 @@
             <version>${jaxb.version}</version>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+
+        <dependencies>
+
+            <dependency>
+                <groupId>com.kcwl.framework</groupId>
+                <artifactId>kcwl-actuator</artifactId>
+                <version>${kcwl-actuator.version}</version>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
     <build>
         <plugins>
             <plugin>

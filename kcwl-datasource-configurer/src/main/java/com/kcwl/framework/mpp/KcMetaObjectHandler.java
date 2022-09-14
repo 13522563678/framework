@@ -17,9 +17,6 @@ public class KcMetaObjectHandler implements MetaObjectHandler {
         if ( metaObject.hasGetter("createTime") ) {
             this.setFieldValByName("createTime", currentDate, metaObject);
         }
-        if ( metaObject.hasGetter("updateTime") ) {
-            this.setFieldValByName("updateTime", currentDate, metaObject);
-        }
         if ( metaObject.hasGetter("createUserId") ) {
             SessionData sessionData = SessionContext.getSessionData();
             if (sessionData != null) {
@@ -28,6 +25,7 @@ public class KcMetaObjectHandler implements MetaObjectHandler {
                 this.setFieldValByName("createUserId", EmptyObject.INTEGER_ZERO, metaObject);
             }
         }
+        updateFill(metaObject);
     }
 
     @Override

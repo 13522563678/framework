@@ -46,7 +46,6 @@ public class MDCInterceptor extends HandlerInterceptorAdapter {
             MDC.put(KC_TOKEN, kcToken);
         }
 
-        if ( log.isInfoEnabled())
         if ( log.isDebugEnabled() ) {
             log.debug("reqUri={}, userAgent={}", request.getRequestURI(),requestUserAgent);
         }

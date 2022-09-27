@@ -32,10 +32,16 @@ public class KcServiceProxy {
     public void forward(String serviceName, HttpServletRequest request, HttpServletResponse response) {
         String queryString = request.getQueryString();
         String apiUrl = getServiceApiUrl(serviceName, getPublishUri(request), queryString);
-        //String contentType = request.getContentType();
-        String contentType = "application/json;charset=UTF-8";
+        Object params = null;
+        String contentType = request.getContentType();
+        if ( log.isDebugEnabled() ) {
+            log.debug("contentType={}", contentType);
+        }
+        if ( contentType == null ) {
+            contentType = MediaType.APPLICATION_FORM_URLENCODED_VALUE;
+        }
+        params = getRequestBody(contentType, request);
 
-        Object params = getRequestBody(contentType, request);
         if ( log.isDebugEnabled() ) {
             log.debug("apiUrl={}; queryString={}", apiUrl, queryString);
             log.debug("contentType={}; requestBody={}", contentType, params);
@@ -76,7 +82,12 @@ public class KcServiceProxy {
     private HttpEntity<MultiValueMap<String, Object>> createFormRequestEntity(Map<String, String> paramsMap, String contentType) {
         MultiValueMap<String, Object> multiValueMap = new LinkedMultiValueMap<String, Object>();
         for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
-            multiValueMap.add(entry.getKey(), entry.getValue());
+            Object val = entry.getValue();
+            if ( val instanceof String[] ) {
+                multiValueMap.add(entry.getKey(), ((String[])val)[0]);
+            } else {
+                multiValueMap.add(entry.getKey(), entry.getValue());
+            }
         }
 
         return new HttpEntity<MultiValueMap<String, Object>>(multiValueMap, createHeaders(contentType));

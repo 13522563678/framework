@@ -24,6 +24,7 @@ public enum CommonCode {
     UN_AUTH("00011","未认证"),
     BODY_EMPTY_FAIL("00105","请求参数不能为空"),
     RESOURCE_LOCK_FAIL("00106","无法获取资源"),
+    API_MOCK_FAIL("00107","执行mock接口失败"),
     OTHER_EQUIPMENT_LOGIN("00009","该账户在别的设备登录"),
     STRING_LENGTH_ERROR("00010","字符串长度不符合格式"),
     INVALID_USER_AGENT("00900","该功能需要升级您的APP版本。"),

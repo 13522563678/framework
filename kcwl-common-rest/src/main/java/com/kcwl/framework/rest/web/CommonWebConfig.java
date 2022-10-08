@@ -4,6 +4,7 @@ import cn.hutool.cache.CacheUtil;
 import com.google.gson.*;
 import com.google.gson.internal.LinkedTreeMap;
 import com.kcwl.framework.cache.ICacheService;
+import com.kcwl.framework.rest.helper.KcServiceProxy;
 import com.kcwl.framework.rest.helper.SessionCacheProxy;
 import com.kcwl.framework.rest.web.interceptor.*;
 import com.kcwl.framework.rest.web.interceptor.impl.ReplayProtectService;
@@ -40,6 +41,8 @@ public class CommonWebConfig implements WebMvcConfigurer {
     private CommonWebProperties webProperties;
     @Resource
     SessionCacheProxy sessionCacheProxy;
+    @Resource
+    KcServiceProxy kcServiceProxy;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -73,6 +76,10 @@ public class CommonWebConfig implements WebMvcConfigurer {
         // MDC 拦截器
         registry.addInterceptor(new MDCInterceptor()).addPathPatterns(ALL_API_PATH_PATTERN);
 
+        if ( !StringUtil.isEmpty(webProperties.getMockUrl() ) ) {
+            CommonWebProperties.ApiAuthConfig mockConfig = webProperties.getMock();
+            addApiAuthInterceptor(mockConfig, registry, new ApiMockInterceptor(webProperties.getMockUrl(), kcServiceProxy));
+        }
     }
 
     private void addApiAuthInterceptor(CommonWebProperties.ApiAuthConfig apiAuthConfig, InterceptorRegistry registry, HandlerInterceptorAdapter interceptor) {

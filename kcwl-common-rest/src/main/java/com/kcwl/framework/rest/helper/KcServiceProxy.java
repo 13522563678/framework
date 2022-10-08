@@ -20,18 +20,27 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.StringJoiner;
 
 @Slf4j
 @Component
 public class KcServiceProxy {
 
+    private static final int MODE_LOAD_BALANCED = 1;
+    private static final int MODE_SINGLE_HOST = 2;
+
     @Resource
     RestTemplate feignRestTemplate;
+
+    @Resource
+    RestTemplate restTemplate;
+
 
     @SneakyThrows
     public void forward(String serviceName, HttpServletRequest request, HttpServletResponse response) {
         String queryString = request.getQueryString();
-        String apiUrl = getServiceApiUrl(serviceName, getPublishUri(request), queryString);
+        int restMode = choiceRestMode(serviceName);
+        String apiUrl = getServiceApiUrl(serviceName, getPublishUri(request), queryString, restMode);
         Object params = null;
         String contentType = request.getContentType();
         if ( log.isDebugEnabled() ) {
@@ -46,19 +55,26 @@ public class KcServiceProxy {
             log.debug("apiUrl={}; queryString={}", apiUrl, queryString);
             log.debug("contentType={}; requestBody={}", contentType, params);
         }
-        String resp = invoke(apiUrl, queryString, params, contentType, HttpMethod.resolve(request.getMethod()));
+        String resp = invoke(apiUrl, queryString, params, contentType, HttpMethod.resolve(request.getMethod()), restMode);
 
         reply(response, resp);
     }
 
-   public String invoke(String apiUrl, String queryString, Object params, String contentType, HttpMethod httpMethod) {
+   public String invoke(String apiUrl, String queryString, Object params, String contentType, HttpMethod httpMethod, int restMode) {
         HttpEntity<Object> requestEntity = null; //new HttpEntity<Object>(params, createHeaders(header));
         if ( params instanceof  Map ) {
             requestEntity = createFormRequestEntity((Map)params, contentType);
         } else {
             requestEntity = new HttpEntity<Object>(params, createHeaders(contentType));
         }
-        ResponseEntity<String> response = feignRestTemplate.exchange(apiUrl, httpMethod, requestEntity, String.class);
+
+        ResponseEntity<String> response;
+
+        if ( MODE_LOAD_BALANCED == restMode ) {
+            response = feignRestTemplate.exchange(apiUrl, httpMethod, requestEntity, String.class);
+        } else {
+            response = restTemplate.exchange(apiUrl, httpMethod, requestEntity, String.class);
+        }
         return response.getBody();
     }
     private HttpHeaders createHeaders(String contentType) {
@@ -72,9 +88,14 @@ public class KcServiceProxy {
         return httpHeaders;
     }
 
-    private String getServiceApiUrl(String serviceName, String apiPath, String queryString) throws UnsupportedEncodingException {
+    private String getServiceApiUrl(String serviceName, String apiPath, String queryString, int restMode) throws UnsupportedEncodingException {
         String originalQueryString = decodeQueryString(queryString);
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://" + serviceName  + "/" + apiPath).query(originalQueryString);
+        StringBuffer sbApiUrl = new StringBuffer();
+        if ( MODE_LOAD_BALANCED == restMode ) {
+            sbApiUrl.append("http://").append(serviceName);
+        }
+        sbApiUrl.append(serviceName).append("/").append(apiPath);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(sbApiUrl.toString()).query(originalQueryString);
         UriComponents uriComponents = uriBuilder.build();
         return  uriComponents.toUriString();
     }
@@ -123,5 +144,9 @@ public class KcServiceProxy {
 
     private String decodeQueryString(String queryString) throws UnsupportedEncodingException {
         return !StringUtil.isEmpty(queryString) ? URLDecoder.decode(queryString, "utf-8") : queryString;
+    }
+
+    private int choiceRestMode(String serviceName) {
+        return  serviceName.startsWith("http") ? MODE_SINGLE_HOST : MODE_LOAD_BALANCED;
     }
 }

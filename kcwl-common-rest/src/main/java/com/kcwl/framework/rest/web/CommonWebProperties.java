@@ -26,12 +26,14 @@ public class CommonWebProperties {
     private ApiAuthConfig crm = new ApiAuthConfig(false);
     private ApiAuthConfig deny = new ApiAuthConfig();
     private ApiAuthConfig session = new ApiAuthConfig(DEFAULT_ALL_PATH_PATTERN);
+    private ApiAuthConfig mock = new ApiAuthConfig(false);
+
     private Tenant tenant = new Tenant();
     private Crypt crypt = new Crypt();
     private HttpContent httpContent = new HttpContent();
     private HttpClient httpClient = new HttpClient();
     private ServiceInfo service =new ServiceInfo();
-
+    private String mockUrl;
 
     /**
      * http客户端类型支持：
@@ -163,5 +165,15 @@ public class CommonWebProperties {
     @Data
     public static class ServiceInfo {
         private String type="00";
+    }
+
+    @Data
+    static class MockInfo{
+        private boolean enabled = false;
+        private String mockUrl;
+        /*
+         * 需要拦截的请求路径
+         */
+        private List<String> pathPatterns = new ArrayList<>();
     }
 }

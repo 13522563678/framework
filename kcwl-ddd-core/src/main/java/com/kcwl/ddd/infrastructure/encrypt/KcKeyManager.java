@@ -30,8 +30,12 @@ public class KcKeyManager {
         paramPriKeyMap.put(ProductEnum.CARRIER_APP.getId().toString(), defaultKey);
         paramPriKeyMap.put(ProductEnum.SHIPPER_APP.getId().toString(), defaultKey);
         paramPriKeyMap.put(ProductEnum.SHIPPER_WEB.getId().toString(), "sw7109@kcwl#ygds");
+        paramPriKeyMap.put(ProductEnum.OPMS_WEB.getId().toString(), "op1102$kcwl#sxty");
         paramPriKeyMap.put(ProductEnum.ICMS_WEB.getId().toString(), "ic8112$kcwl#sxty");
         paramPriKeyMap.put(ProductEnum.TMS_WEB.getId().toString(), "tm5113$kcwl@qycd");
         paramPriKeyMap.put(ProductEnum.BPMS_WEB.getId().toString(), "bp6114$kcwl#jymm");
+        paramPriKeyMap.put(ProductEnum.FMGT_WEB.getId().toString(), "fg1102$kcwl#sxty");
+        paramPriKeyMap.put(ProductEnum.DA_WEB.getId().toString(), "da1102$kcwl#sxty");
+
     }
 }

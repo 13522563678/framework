@@ -92,7 +92,7 @@ public class KcServiceProxy {
         String originalQueryString = decodeQueryString(queryString);
         StringBuffer sbApiUrl = new StringBuffer();
         if ( MODE_LOAD_BALANCED == restMode ) {
-            sbApiUrl.append("http://").append(serviceName);
+            sbApiUrl.append("http://");
         }
         sbApiUrl.append(serviceName).append("/").append(apiPath);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(sbApiUrl.toString()).query(originalQueryString);

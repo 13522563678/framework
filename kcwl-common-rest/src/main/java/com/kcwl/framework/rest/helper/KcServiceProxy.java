@@ -105,7 +105,12 @@ public class KcServiceProxy {
         for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
             Object val = entry.getValue();
             if ( val instanceof String[] ) {
-                multiValueMap.add(entry.getKey(), ((String[])val)[0]);
+                String[] arrayValues = (String[])val;
+                if ( arrayValues.length > 0 ) {
+                    multiValueMap.add(entry.getKey(), arrayValues[0]);
+                } else {
+                    multiValueMap.add(entry.getKey(), arrayValues);
+                }
             } else {
                 multiValueMap.add(entry.getKey(), entry.getValue());
             }

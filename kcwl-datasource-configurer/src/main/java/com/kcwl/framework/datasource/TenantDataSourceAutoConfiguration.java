@@ -27,7 +27,6 @@ import static com.alibaba.druid.util.Utils.getBoolean;
  * @author 姚华成
  * @date 2017-12-19
  */
-@ConditionalOnProperty(value = "kcwl.tenant.datasource.enabled", matchIfMissing = true)
 @EnableConfigurationProperties({TenantDataSourceProperties.class})
 @AutoConfigureBefore({DruidDataSourceAutoConfigure.class, DataSourceAutoConfiguration.class})
 public class TenantDataSourceAutoConfiguration {

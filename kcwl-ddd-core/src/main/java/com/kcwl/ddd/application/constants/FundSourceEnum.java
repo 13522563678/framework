@@ -3,7 +3,8 @@ package com.kcwl.ddd.application.constants;
 public enum FundSourceEnum {
     ABC(1, "abc", "农业银行"),
     CEB(2, "ceb", "光大银行"),
-    CITIC(3, "citic", "中信银行");
+    CITIC(3, "citic", "中信银行"),
+    SPDB(4, "spdb", "浦发银行");
 
     private int code;
     private String bankCode;

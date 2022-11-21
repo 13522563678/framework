@@ -121,6 +121,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = NoHandlerFoundException.class)
     public ResponseEntity requestNotFoundExceptionHandler(HttpServletRequest request, Exception e) {
+        printRequest(request, e);
         log.error("请求[{}]不存在", request.getRequestURI());
         return fail(CommonCode.REQUEST_NOT_FOUND.getCode(), CommonCode.REQUEST_NOT_FOUND.getDescription(), e);
     }
@@ -128,6 +129,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     public ResponseEntity requestMethodNotSupportedExceptionHandler(HttpServletRequest request, Exception e) {
+        printRequest(request, e);
         log.error("{}不支持{}请求类型", request.getRequestURI(),request.getMethod());
         return fail(CommonCode.REQUEST_METHOD_NOT_SUPPORT.getCode(), CommonCode.REQUEST_METHOD_NOT_SUPPORT.getDescription(), e);
     }
@@ -135,6 +137,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = MyBatisSystemException.class)
     public ResponseEntity myBatisSystemExceptionHandler(HttpServletRequest request, Exception e) {
+        printRequest(request, e);
         log.error("数据库异常：[{}]", request.getRequestURI());
         return fail(CommonCode.ACCESS_DB_FAIL.getCode(), CommonCode.ACCESS_DB_FAIL.getDescription(), e);
     }

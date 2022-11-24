@@ -53,7 +53,7 @@ public class KcServiceProxy {
 
         if ( log.isDebugEnabled() ) {
             log.debug("apiUrl={}; queryString={}", apiUrl, queryString);
-            log.debug("contentType={}; requestBody={}", contentType, params);
+            log.debug("httpMethod={}; contentType={}; requestBody={}", HttpMethod.resolve(request.getMethod()), contentType, params);
         }
         String resp = invoke(apiUrl, queryString, params, contentType, HttpMethod.resolve(request.getMethod()), restMode);
 

@@ -4,10 +4,10 @@ package com.kcwl.ddd.interfaces.query;
 import com.kcwl.ddd.domain.entity.PageCondition;
 
 public class PageQuery extends BaseQuery {
-    private int curPagerNo = PageCondition.FIRST_PAGE_NO;
-    private int pageSize = PageCondition.DEFAULT_PAGE_SIZE;
+    private long curPagerNo = PageCondition.FIRST_PAGE_NO;
+    private long pageSize = PageCondition.DEFAULT_PAGE_SIZE;
 
-    public int getCurPagerNo() {
+    public long getCurPagerNo() {
         return curPagerNo;
     }
 
@@ -15,7 +15,7 @@ public class PageQuery extends BaseQuery {
         this.curPagerNo = curPagerNo;
     }
 
-    public int getPageSize() {
+    public long getPageSize() {
         return pageSize;
     }
 
@@ -23,7 +23,7 @@ public class PageQuery extends BaseQuery {
         this.pageSize = pageSize;
     }
 
-    public int getOffset() {
+    public long getOffset() {
         return (getCurPagerNo() - 1) * getPageSize();
     }
 }

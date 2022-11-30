@@ -7,6 +7,7 @@ import com.kcwl.framework.cache.ICacheService;
 import com.kcwl.framework.rest.helper.KcServiceProxy;
 import com.kcwl.framework.rest.helper.SessionCacheProxy;
 import com.kcwl.framework.rest.web.interceptor.*;
+import com.kcwl.framework.rest.web.interceptor.impl.ApiMockRepository;
 import com.kcwl.framework.rest.web.interceptor.impl.ReplayProtectService;
 import com.kcwl.framework.rest.web.interceptor.impl.SignAuthServiceImpl;
 import com.kcwl.framework.utils.ClassUtil;
@@ -43,6 +44,8 @@ public class CommonWebConfig implements WebMvcConfigurer {
     SessionCacheProxy sessionCacheProxy;
     @Resource
     KcServiceProxy kcServiceProxy;
+    @Resource
+    ApiMockRepository apiMockRepository;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -76,10 +79,9 @@ public class CommonWebConfig implements WebMvcConfigurer {
         // MDC 拦截器
         registry.addInterceptor(new MDCInterceptor()).addPathPatterns(ALL_API_PATH_PATTERN);
 
-        if ( !StringUtil.isEmpty(webProperties.getMockUrl() ) ) {
-            CommonWebProperties.ApiAuthConfig mockConfig = webProperties.getMock();
-            addApiAuthInterceptor(mockConfig, registry, new ApiMockInterceptor(webProperties.getMockUrl(), kcServiceProxy));
-        }
+        //mock接口拦截处理
+        CommonWebProperties.ApiAuthConfig mockConfig = webProperties.getMock();
+        addApiMockInterceptor(mockConfig, registry, new ApiMockInterceptor(apiMockRepository, kcServiceProxy));
     }
 
     private void addApiAuthInterceptor(CommonWebProperties.ApiAuthConfig apiAuthConfig, InterceptorRegistry registry, HandlerInterceptorAdapter interceptor) {
@@ -96,7 +98,14 @@ public class CommonWebConfig implements WebMvcConfigurer {
         }
     }
 
-    @Override
+    private void addApiMockInterceptor(CommonWebProperties.ApiAuthConfig apiAuthConfig, InterceptorRegistry registry, HandlerInterceptorAdapter interceptor) {
+        if ( apiAuthConfig.isEnabled() ) {
+            InterceptorRegistration registration = registry.addInterceptor(interceptor);
+            registration.addPathPatterns(ALL_API_PATH_PATTERN);
+        }
+    }
+
+        @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         // swagger比较特殊，需要使用用专用的序列化类
         // 将MappingJackson2HttpMessageConverter和默认的GsonHttpMessageConverter都删除

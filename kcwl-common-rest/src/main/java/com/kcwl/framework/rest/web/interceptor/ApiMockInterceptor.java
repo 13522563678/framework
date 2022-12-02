@@ -26,10 +26,10 @@ public class ApiMockInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if ( log.isDebugEnabled() ) {
-            log.debug("mock：{}/{}", apiMockRepository.getMockUrl(), request.getRequestURI());
-        }
         if ( apiMockRepository.isMockApi(request.getRequestURI()) ) {
+            if ( log.isDebugEnabled() ) {
+                log.debug("mock：{}/{}", apiMockRepository.getMockUrl(), request.getRequestURI());
+            }
             try {
                 kcServiceProxy.forward(apiMockRepository.getMockUrl(), request, response);
             }catch (Exception e) {

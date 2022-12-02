@@ -1,16 +1,15 @@
 package com.kcwl.framework.securtiy;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import com.kcwl.framework.securtiy.properties.DbEncryptProperties;
 
 public class DbEncryptManager {
 
     private static DbEncryptManager instance;
 
-    private Map<String, String> encryptKey;
+    DbEncryptProperties encryptProperties;
 
     private DbEncryptManager() {
-        encryptKey = new ConcurrentHashMap<String, String>();
+
     }
 
     public static DbEncryptManager getInstance() {
@@ -21,10 +20,10 @@ public class DbEncryptManager {
     }
 
     public String getEncryptKey(String encryptType){
-        return this.encryptKey.get(encryptType);
+        return encryptProperties.getEncryptKey(encryptType);
     }
 
-    public void setEncryptKey(String encryptType, String encryptKey) {
-        this.encryptKey.put(encryptType, encryptKey);
+    public void initDbEncryptProperties(DbEncryptProperties encryptProperties ) {
+        this.encryptProperties = encryptProperties;
     }
 }

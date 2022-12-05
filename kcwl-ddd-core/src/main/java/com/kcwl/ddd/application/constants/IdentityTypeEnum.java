@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum IdentityTypeEnum {
-    SHIPPER_INTERNAL_USER(1, 1,"货主-内部部门用户"),
-    SHIPPER_EXTERNAL_USER(3, 3,"货主-外部部门用户"),
-    PLATFORM_FUNDING_AGENCY(4, 4,"平台方-垫资人"),
+    SHIPPER_INTERNAL_USER(1, 10,"货主-内部部门用户"),
+    SHIPPER_EXTERNAL_USER(3, 30,"货主-外部部门用户"),
+    PLATFORM_FUNDING_AGENCY(4, 40,"平台方-垫资人"),
     PLATFORM_OPERATOR(99, 99,"平台方-运营"),
     CARRIER_TCOM_MANAGER(6, 5,"承运方-物流公司管理者"),
     CARRIER_SFLTOP(7, 3,"承运方-车老板"),

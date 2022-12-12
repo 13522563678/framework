@@ -7,6 +7,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TreeUtils {
+
+    /**
+     * 把列表转换为树结构
+     *
+     * @param originalList 原始list数据
+     * @param keyName 作为唯一标示的字段名称
+     * @param parentFieldName 父节点字段名称
+     * @param childrenFieldName 子节点字段名称
+     * @return 组装后的集合
+     */
+    public static <T> List<T> getTree(T top,List<T> originalList, String keyName, String parentFieldName, String childrenFieldName) throws Exception {
+        // 获取根节点，即找出父节点为空的对象
+        List<T> topList = new ArrayList<>();
+        topList.add(top);
+        for (int i = 0; i < originalList.size(); i++) {
+            T t = originalList.get(i);
+            String parentId = BeanUtil.getProperty(t, parentFieldName);
+            if (StringUtil.isBlank(parentId) || parentId.equals("0")) {
+                topList.add(t);
+            }
+        }
+
+        // 将根节点从原始list移除，减少下次处理数据
+        originalList.removeAll(topList);
+
+        // 递归封装树
+        fillTree(topList, originalList, keyName, parentFieldName, childrenFieldName);
+
+        return topList;
+    }
+
     /**
      * 把列表转换为树结构
      *

@@ -82,6 +82,10 @@ public class DecryptParamFilter extends OncePerRequestFilter {
     }
 
     private DecryptRequestWrapper createDecryptRequestWrapper(HttpServletRequest httpServletRequest, Map<String ,Object> param, boolean isJsonContent) {
+        if ( log.isDebugEnabled() ) {
+            log.debug("isJsonContent from param {}", param.get("isJsonContent"));
+            log.debug("enableFormToJson={}, isJsonContent={}", httpContent.isEnableFormToJson(), isJsonContent);
+        }
         if ( httpContent.isEnableFormToJson() && isJsonContent ) {
             return new FormToJsonRequestWrapper(httpServletRequest, param);
         }

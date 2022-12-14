@@ -102,7 +102,11 @@ public class DecryptParamFilter extends OncePerRequestFilter {
     }
 
     private boolean isJsonContentRequest(Map<String ,Object> param) {
-        return "1".equals(param.get("isJsonContent"));
+        Integer jsonContentValue = MapParamUtil.getInteger(param, "isJsonContent");
+        if ( jsonContentValue  != null ) {
+            return jsonContentValue.equals(YesNoEnum.YEA.getValue());
+        }
+        return false;
     }
 
     private String getProductType(HttpServletRequest httpServletRequest) {

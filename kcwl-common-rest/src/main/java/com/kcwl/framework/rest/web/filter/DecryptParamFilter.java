@@ -83,7 +83,8 @@ public class DecryptParamFilter extends OncePerRequestFilter {
 
     private DecryptRequestWrapper createDecryptRequestWrapper(HttpServletRequest httpServletRequest, Map<String ,Object> param, boolean isJsonContent) {
         if ( log.isDebugEnabled() ) {
-            log.debug("isJsonContent from param {}", param.get("isJsonContent"));
+            Object paramJsonContent = param.get("isJsonContent");
+            log.debug("isJsonContent from param {}, class {}", paramJsonContent, paramJsonContent.getClass());
             log.debug("enableFormToJson={}, isJsonContent={}", httpContent.isEnableFormToJson(), isJsonContent);
         }
         if ( httpContent.isEnableFormToJson() && isJsonContent ) {
@@ -101,7 +102,7 @@ public class DecryptParamFilter extends OncePerRequestFilter {
     }
 
     private boolean isJsonContentRequest(Map<String ,Object> param) {
-        return YesNoEnum.YEA.getValue().equals(param.get("isJsonContent"));
+        return "1".equals(param.get("isJsonContent"));
     }
 
     private String getProductType(HttpServletRequest httpServletRequest) {

@@ -4,7 +4,7 @@ public enum BizOfficeType {
     TOP(1, "TOP", "总部"),
     OFFICE(2, "OFFICE", "办事处"),
     DIVISION(3, "DIVISION", "事业部"),
-    BRANCH_COMPANY(4, "BRANCH_company", "分子公司"),
+    BRANCH_COMPANY(4, "BRANCH_COMPANY", "分子公司"),
     JOINT_COMPANY(5, "JOINT_COMPANY", "合资公司"),
     INTERNAL_DEPART(6, "INTERNAL_DEPART", "内部部门"),
     ;

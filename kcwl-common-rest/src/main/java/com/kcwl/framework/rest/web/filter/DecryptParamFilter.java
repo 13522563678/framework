@@ -1,5 +1,6 @@
 package com.kcwl.framework.rest.web.filter;
 
+import com.kcwl.ddd.application.constants.YesNoEnum;
 import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.api.CommonCode;
 import com.kcwl.ddd.infrastructure.encrypt.KcKeyManager;
@@ -50,16 +51,21 @@ public class DecryptParamFilter extends OncePerRequestFilter {
                 ResponseHelper.buildResponseBody(CommonCode.JSON_DECODE_FAIL, httpServletResponse);
                 return;
             }
-            for (Map.Entry<String, String[]> entry : httpServletRequest.getParameterMap().entrySet()) {
-                if ("encryptionData".equalsIgnoreCase(entry.getKey())) {
-                    continue;
-                }
-                String[] entryValues = entry.getValue();
-                if (entryValues != null) {
-                    param.put(entry.getKey(), entryValues.length == 1 ? entryValues[0] : entryValues);
+
+            boolean isJsonContent = isJsonContentRequest(param);
+
+            if ( !isJsonContent ) {
+                for (Map.Entry<String, String[]> entry : httpServletRequest.getParameterMap().entrySet()) {
+                    if ("encryptionData".equalsIgnoreCase(entry.getKey())) {
+                        continue;
+                    }
+                    String[] entryValues = entry.getValue();
+                    if (entryValues != null) {
+                        param.put(entry.getKey(), entryValues.length == 1 ? entryValues[0] : entryValues);
+                    }
                 }
             }
-            DecryptRequestWrapper requestWrapper = createDecryptRequestWrapper(httpServletRequest, param);
+            DecryptRequestWrapper requestWrapper = createDecryptRequestWrapper(httpServletRequest, param, isJsonContent);
             filterChain.doFilter(requestWrapper, httpServletResponse);
         } catch (Exception e) {
             log.error("出错了："+e.getMessage(),e);
@@ -75,8 +81,11 @@ public class DecryptParamFilter extends OncePerRequestFilter {
         this.httpContent = httpContent;
     }
 
-    private DecryptRequestWrapper createDecryptRequestWrapper(HttpServletRequest httpServletRequest, Map<String ,Object> param) {
-        if ( httpContent.isEnableFormToJson() ) {
+    private DecryptRequestWrapper createDecryptRequestWrapper(HttpServletRequest httpServletRequest, Map<String ,Object> param, boolean isJsonContent) {
+        if ( log.isDebugEnabled() ) {
+            log.debug("enableFormToJson={}, isJsonContent={}", httpContent.isEnableFormToJson(), isJsonContent);
+        }
+        if ( httpContent.isEnableFormToJson() && isJsonContent ) {
             return new FormToJsonRequestWrapper(httpServletRequest, param);
         }
         return new DecryptRequestWrapper(httpServletRequest, MapParamUtil.convertToMultiValueMap(param)) ;
@@ -86,6 +95,17 @@ public class DecryptParamFilter extends OncePerRequestFilter {
         String path = RequestUtil.getRequestPath(httpServletRequest);
         if ( MediaType.APPLICATION_FORM_URLENCODED_VALUE.equalsIgnoreCase(httpServletRequest.getContentType()) && httpContent.isFormToJson(path) ) {
             return true;
+        }
+        return false;
+    }
+
+    private boolean isJsonContentRequest(Map<String ,Object> param) {
+        Integer jsonContentValue = MapParamUtil.getInteger(param, "isJsonContent");
+        if ( log.isDebugEnabled() ) {
+            log.debug("jsonContentValue={} ", jsonContentValue);
+        }
+        if ( jsonContentValue  != null ) {
+            return jsonContentValue.equals(YesNoEnum.YEA.getValue());
         }
         return false;
     }

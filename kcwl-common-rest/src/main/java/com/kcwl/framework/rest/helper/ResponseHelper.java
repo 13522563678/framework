@@ -41,6 +41,12 @@ public class ResponseHelper {
      */
     public static void buildResponseBody(String code, String message, HttpServletResponse response)throws Exception{
         ResponseMessage responseMessage = new ResponseMessage();
+        ResponseDecorator decorator = ResponseDecorator.getDecorator();
+        if (  decorator != null ) {
+            responseMessage.setCode(decorator.paddingResponseCode(code));
+        } else {
+            responseMessage.setCode(code);
+        }
         responseMessage.setMessage(message);
         responseMessage.setCode(code);
         response(response,responseMessage);

@@ -34,6 +34,7 @@ public class CommonWebProperties {
     private HttpClient httpClient = new HttpClient();
     private ServiceInfo service =new ServiceInfo();
     private String mockUrl;
+    private AppAuthInfo auth = new AppAuthInfo();
 
     /**
      * http客户端类型支持：
@@ -175,5 +176,12 @@ public class CommonWebProperties {
          * 需要拦截的请求路径
          */
         private List<String> pathPatterns = new ArrayList<>();
+    }
+
+    @Data
+    public static  class AppAuthInfo{
+        private boolean enabled = false;
+        private String appId;
+        private String appSecret;
     }
 }

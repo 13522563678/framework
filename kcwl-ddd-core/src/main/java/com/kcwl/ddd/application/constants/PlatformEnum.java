@@ -14,12 +14,12 @@ public enum PlatformEnum {
     PLATFORM_UNION_V1("100", "快成", "快成联盟(旧)"),
     PLATFORM_UNION_V2("200", "快成", "快成联盟(新)");
 
-    private  String platformNo;
-    private  String shortName;
-    private  String fullName;
+    private String platformNo;
+    private String shortName;
+    private String fullName;
 
     PlatformEnum(String platformNo, String shortName, String fullName) {
-        this.platformNo= platformNo;
+        this.platformNo = platformNo;
         this.shortName = shortName;
         this.fullName = fullName;
     }
@@ -34,5 +34,23 @@ public enum PlatformEnum {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public static String getPlatformShortNameByPlatformNo(String platformNo) {
+        for (PlatformEnum e : values()) {
+            if (e.platformNo.equals(platformNo)) {
+                return e.getShortName();
+            }
+        }
+        return "";
+    }
+
+    public static String getPlatformFullNameByPlatformNo(String platformNo) {
+        for (PlatformEnum e : values()) {
+            if (e.platformNo.equals(platformNo)) {
+                return e.getFullName();
+            }
+        }
+        return "";
     }
 }

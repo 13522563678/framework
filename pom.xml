@@ -110,6 +110,7 @@
         <jvalidation.version>2.0.1.Final</jvalidation.version>
 
         <kcwl-actuator.version>6.0.0-SNAPSHOT</kcwl-actuator.version>
+        <kcwl-event.version>2.3.0-SNAPSHOT</kcwl-event.version>
     </properties>
 
     <!--依赖jar包管理 -->
@@ -205,6 +206,25 @@
                 <artifactId>jasypt-spring-boot-starter</artifactId>
                 <version>${ulisesbocchio.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.kcwl.app</groupId>
+                <artifactId>kcwl-spring-event-starter</artifactId>
+                <version>${kcwl-event.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kcwl.app</groupId>
+                <artifactId>kcwl-redis-event-starter</artifactId>
+                <version>${kcwl-event.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kcwl.app</groupId>
+                <artifactId>kcwl-rabbit-event-starter</artifactId>
+                <version>${kcwl-event.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <dependencies>

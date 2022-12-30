@@ -111,14 +111,14 @@ public class CommonWebAutoConfiguration {
     @Bean
     public RestTemplate feignRestTemplate() {
         RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory());
-        RestTemplateInterceptor restTemplateInterceptor = new RestTemplateInterceptor(webProperties.getInner().getAppSecret());
+        RestTemplateInterceptor restTemplateInterceptor = new RestTemplateInterceptor(webProperties.getAuth());
         restTemplate.setInterceptors(Collections.singletonList(restTemplateInterceptor));
         return restTemplate;
     }
 
     @Bean
     public FeignRequestInterceptor tenantFeignRequestInterceptor() {
-        return new FeignRequestInterceptor(webProperties.getInner().getAppSecret());
+        return new FeignRequestInterceptor(webProperties.getAuth());
     }
 
     @Bean

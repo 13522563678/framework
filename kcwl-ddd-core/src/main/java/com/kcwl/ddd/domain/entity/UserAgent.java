@@ -22,6 +22,10 @@ public class UserAgent {
     public static final String FILED_REQUEST_DEPTH="depth";
     public static final String FIELD_USER_SSID = "x-user-ssid";
     public static final String FILED_OPERATING_SYSTEM ="operatingSystem";
+    public static final String FILED_APP_ID="appId";
+    public static final String FILED_APP_TYPE="appType";
+    public static final String FILED_OS_TYPE="osType";
+
 
     public static final String FILED_REQUEST="request";
 
@@ -102,6 +106,18 @@ public class UserAgent {
 
     public void setRequestType(String requestType) {
         userAgent.put(FILED_REQUEST, requestType);
+    }
+
+    public String getValue(String name) {
+        return userAgent.get(name);
+    }
+
+    public String getAppId() {
+        return userAgent.get(FILED_APP_ID);
+    }
+
+    public String getOsType() {
+        return userAgent.get(FILED_OS_TYPE);
     }
 
     public int getRequestDepth() {

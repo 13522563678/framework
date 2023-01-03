@@ -35,6 +35,7 @@ public class CommonWebProperties {
     private ServiceInfo service =new ServiceInfo();
     private String mockUrl;
     private AppAuthInfo auth = new AppAuthInfo();
+    private AppPodInfo appPod = new AppPodInfo();
 
     /**
      * http客户端类型支持：
@@ -183,5 +184,10 @@ public class CommonWebProperties {
         private boolean enabled = false;
         private String appId;
         private String appSecret;
+    }
+
+    @Data
+    public static class AppPodInfo{
+        private boolean isolation=false;
     }
 }

@@ -36,6 +36,7 @@ public class CommonWebProperties {
     private String mockUrl;
     private AppAuthInfo auth = new AppAuthInfo();
     private AppPodInfo appPod = new AppPodInfo();
+    private SsoAuthInfo sso = new SsoAuthInfo();
 
     /**
      * http客户端类型支持：
@@ -189,5 +190,10 @@ public class CommonWebProperties {
     @Data
     public static class AppPodInfo{
         private boolean isolation=false;
+    }
+
+    @Data
+    public static class SsoAuthInfo{
+        private List<String> supportProducts;
     }
 }

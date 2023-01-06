@@ -54,7 +54,7 @@ public class CommonWebConfig implements WebMvcConfigurer {
         addApiAuthInterceptor(sessionConfig, registry, new UserSessionInterceptor(sessionCacheProxy, sessionConfig.getIgnorePathPatterns(), sessionConfig.isIgnoreSession()));
 
         //user接口接口
-        addApiAuthInterceptor(webProperties.getApi(), registry, new UserApiRequestInterceptor());
+        addApiAuthInterceptor(webProperties.getApi(), registry, new UserApiRequestInterceptor(webProperties.getSso().getSupportProducts()));
 
         //拒绝超级管理员调用的接口
         //CommonWebProperties.ApiAuthConfig denyApiConfig = webProperties.getDeny();

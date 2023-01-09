@@ -26,4 +26,15 @@ public class PageQuery extends BaseQuery {
     public long getOffset() {
         return (getCurPagerNo() - 1) * getPageSize();
     }
+
+
+    public void setCurPagerNo(long curPagerNo) {
+        this.curPagerNo = curPagerNo;
+    }
+
+    public void setPageSize(long pageSize) {
+        this.pageSize = pageSize;
+    }
+
+
 }

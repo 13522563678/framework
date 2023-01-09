@@ -9,23 +9,23 @@ public enum VersionEnum implements ValueObject<VersionEnum> {
     /**
      * 2.0版本
      */
-    V_2(20,"2.0版本"),
+    V_2("20","2.0版本"),
 
     /**
      * 5.4版本
      */
-    V_5(54,"5.4版本"),
+    V_5("54","5.4版本"),
     /**
      * 6.0版本
      */
-    V_6(60,"6.0版本");
+    V_6("60","6.0版本");
 
 
-    private Integer value;
+    private String value;
 
     private String label;
 
-    VersionEnum(Integer value, String label) {
+    VersionEnum(String value, String label) {
         this.value = value;
         this.label = label;
     }
@@ -34,11 +34,11 @@ public enum VersionEnum implements ValueObject<VersionEnum> {
         return label;
     }
 
-    public Integer getValue() {
+    public String getValue() {
         return value;
     }
 
-    public static String getLabelByValue(Integer value){
+    public static String getLabelByValue(String value){
         for (VersionEnum s : VersionEnum.values()) {
             if(value.equals(s.getValue())){
                 return s.getLabel();
@@ -47,7 +47,7 @@ public enum VersionEnum implements ValueObject<VersionEnum> {
         return "";
     }
 
-    public static VersionEnum getStatusEnum(Integer value){
+    public static VersionEnum getVersionEnum(String value){
         if(value == null) {
             return null;
         }

@@ -14,7 +14,8 @@ public class UserAgent {
     public static final String REQUEST_AGENT_HEADER_NAME ="x-user-agent";
     public static final String REQUEST_AGENT_CLIENT_FIELD_NAME = "x-agent-client";
 
-    public static final String FIELD_PLATFORM="platform";
+    public static final String FIELD_COOKIE_PLATFORM="platform";
+    public static final String FIELD_USER_PLATFORM="platformNo";
     public static final String FILED_TOKEN="token";
     public static final String FILED_SESSION_ID ="sessionId";
     public static final String FILED_PRODUCT="product";
@@ -52,11 +53,16 @@ public class UserAgent {
     }
 
     public String getPlatform() {
-        return userAgent.get(FIELD_PLATFORM);
+        return userAgent.get(FIELD_COOKIE_PLATFORM);
     }
 
-    public void setPlatform(String platformNo) {
-        userAgent.put(FIELD_PLATFORM, platformNo);
+    public void setUserPlatformNo(String platformNo) {
+        userAgent.put(FIELD_USER_PLATFORM, platformNo);
+    }
+
+    public String getUserPlatformNo() {
+        String platformNo = userAgent.get(FIELD_USER_PLATFORM);
+        return (platformNo!=null) ? platformNo : userAgent.get(FIELD_COOKIE_PLATFORM);
     }
 
     public String getAppVersion() {

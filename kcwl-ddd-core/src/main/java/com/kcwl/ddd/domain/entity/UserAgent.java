@@ -56,6 +56,10 @@ public class UserAgent {
         return userAgent.get(FIELD_COOKIE_PLATFORM);
     }
 
+    public void setPlatform(String platform) {
+        userAgent.put(FIELD_COOKIE_PLATFORM, platform);
+    }
+
     public void setUserPlatformNo(String platformNo) {
         userAgent.put(FIELD_USER_PLATFORM, platformNo);
     }

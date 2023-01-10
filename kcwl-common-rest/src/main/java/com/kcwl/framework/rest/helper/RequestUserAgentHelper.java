@@ -28,7 +28,7 @@ public class RequestUserAgentHelper {
 
     private static UserAgent getRequestUserAgentFromCookie(HttpServletRequest request) {
         UserAgent  requestUserAgent =null;
-        String platform = RequestUtil.getCookieValue(request, UserAgent.FIELD_PLATFORM);
+        String platform = RequestUtil.getCookieValue(request, UserAgent.FIELD_COOKIE_PLATFORM);
         String product = RequestUtil.getCookieValue(request, UserAgent.FILED_PRODUCT);
         if ( platform != null && product != null ) {
             requestUserAgent = new UserAgent();

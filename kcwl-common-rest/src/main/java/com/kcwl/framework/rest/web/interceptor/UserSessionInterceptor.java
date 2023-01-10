@@ -44,7 +44,7 @@ public class UserSessionInterceptor extends HandlerInterceptorAdapter {
                     SessionContext.setSessionData(sessionData);
                 }
                 setUserAgentPlatform(requestUserAgent, request, sessionData);
-                TenantDataHolder.set(requestUserAgent.getPlatform());
+                TenantDataHolder.set(requestUserAgent.getUserPlatformNo());
             }
         }
         String apiVersion = request.getHeader("x-api-version");
@@ -80,11 +80,11 @@ public class UserSessionInterceptor extends HandlerInterceptorAdapter {
         //优先从请求中指定的平台码;其次从用户会话中选择
         String reqTenantId = request.getHeader(GlobalConstant.AGENT_TENANT_FIELD_NAME);
         if ( !StringUtil.isEmpty(reqTenantId) ) {
-            requestUserAgent.setPlatform(reqTenantId);
+            requestUserAgent.setUserPlatformNo(reqTenantId);
         } else if (sessionData != null) {
             String userTenantId = sessionData.getPlatformNo();
             if ( !StringUtil.isEmpty(userTenantId) ) {
-                requestUserAgent.setPlatform(userTenantId);
+                requestUserAgent.setUserPlatformNo(userTenantId);
             }
         }
     }

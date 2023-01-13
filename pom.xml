@@ -47,6 +47,7 @@
         <module>kcwl-common-rest</module>
         <module>kcwl-ddd-repository</module>
         <module>kcwl-actuator</module>
+        <module>kcwl-securtiy</module>
     </modules>
 
     <!--定义jar版本信息 -->

@@ -66,5 +66,10 @@
             <artifactId>kcwl-ddd-core</artifactId>
             <version>${kcwl-framework.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.kcwl.framework</groupId>
+            <artifactId>kcwl-securtiy</artifactId>
+            <version>${kcwl-framework.version}</version>
+        </dependency>
     </dependencies>
 </project>

@@ -15,8 +15,8 @@ public class PassDict {
     private static final int MAX_KEY_LENGTH = 62;
     private static final int MAX_GROUP_COUNT = 128;
     private static final int DEFAULT_GROUP_ID = 0;
-    private static final String SEED_KEY="7140862935aFYNQptcfxlRKTwOBnSqbjdEUrPzyVgDHLZIvoesGWMJhXAmCuik";
-
+    private static final String BASE_KEY ="7140862935aFYNQptcfxlRKTwOBnSqbjdEUrPzyVgDHLZIvoesGWMJhXAmCuik";
+    private static final String ALPHABET="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private Map<Integer, PassTable> passTableMap;
 
     public PassDict(String key){
@@ -84,8 +84,8 @@ public class PassDict {
             }
         }
         int leftKeySize = MAX_KEY_LENGTH - usedKey.size();
-        for ( int i=0; i<SEED_KEY.length() && leftKeySize >0; i++) {
-            Character ch = SEED_KEY.charAt(i);
+        for (int i = 0; i< BASE_KEY.length() && leftKeySize >0; i++) {
+            Character ch = BASE_KEY.charAt(i);
             if ( !usedKey.contains(ch) ) {
                 sb.append(ch);
                 usedKey.add(ch);
@@ -112,7 +112,7 @@ public class PassDict {
         }
         private void initPassMapping(String key) {
             for ( int i=0; i<key.length(); i++) {
-                Character ch = (char)(i + '0');
+                Character ch = ALPHABET.charAt(i);
                 Character da = key.charAt(i);
                 dictPass.put(ch, da);
                 dictPlain.put(da, ch);

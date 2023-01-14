@@ -63,4 +63,5 @@ public class KcSimpleCrypt implements IKcCrypt {
         }
         return sb.toString();
     }
+
 }

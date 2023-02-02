@@ -63,6 +63,7 @@ public class CommonWebProperties {
     public static class Json {
         private boolean serializeNulls = true;
         private String dateFormat = "yyyy-MM-dd HH:mm:ss";
+        private boolean customHttpMessageConverter=true;
     }
 
     @Data

@@ -56,25 +56,9 @@ public class CommonWebConfig implements WebMvcConfigurer {
         //user接口接口
         addApiAuthInterceptor(webProperties.getApi(), registry, new UserApiRequestInterceptor(webProperties.getSso().getSupportProducts()));
 
-        //拒绝超级管理员调用的接口
-        //CommonWebProperties.ApiAuthConfig denyApiConfig = webProperties.getDeny();
-        //addApiAuthInterceptor(denyApiConfig, registry, new DenyAdminOperationInterceptor());
-
         //inner接口
         CommonWebProperties.ApiAuthConfig innerApiConfig = webProperties.getInner();
         addApiAuthInterceptor(innerApiConfig, registry, new InnerApiRequestInterceptor(innerApiConfig.getAppSecret()));
-
-        //CRM接口
-        //CommonWebProperties.ApiAuthConfig crmApiConfig = webProperties.getCrm();
-        //(crmApiConfig, registry, new CrmApiRequestInterceptor(new SignAuthServiceImpl(), createReplayProtectService(crmApiConfig)));
-
-        //租户过滤器
-        /*
-        CommonWebProperties.Tenant tenant = webProperties.getTenant();
-        if ( tenant.isEnabled() ) {
-            registry.addInterceptor(new TenantHttpInterceptor(tenant.getDefaultPlatform())).addPathPatterns(ALL_API_PATH_PATTERN);
-        }
-        */
 
         // MDC 拦截器
         registry.addInterceptor(new MDCInterceptor()).addPathPatterns(ALL_API_PATH_PATTERN);
@@ -105,11 +89,15 @@ public class CommonWebConfig implements WebMvcConfigurer {
         }
     }
 
-        @Override
+    @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         // swagger比较特殊，需要使用用专用的序列化类
         // 将MappingJackson2HttpMessageConverter和默认的GsonHttpMessageConverter都删除
         // 创建自定义的GsonHttpMessageConverter
+        if ( !webProperties.getJson().isCustomHttpMessageConverter() ) {
+            return;
+        }
+
         converters.removeIf(converter -> converter instanceof MappingJackson2HttpMessageConverter
                 || converter instanceof GsonHttpMessageConverter);
         GsonHttpMessageConverter gsonConverter = new GsonHttpMessageConverter();

@@ -13,10 +13,8 @@ import org.springframework.stereotype.Component;
 public interface IProcessor<T> {
 
     /**
-     * @description: 执行处理 
+     * @description: 执行处理
      * @param:  t 处理器入参类型
-     * @author wangwl
-     * @date: 2023/2/2 18:22
      */
     void process(T t) ;
 

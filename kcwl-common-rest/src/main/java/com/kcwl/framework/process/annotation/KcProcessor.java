@@ -1,12 +1,12 @@
 package com.kcwl.framework.process.annotation;
 
-import com.kcwl.framework.process.KcProcessInterface;
+import com.kcwl.framework.process.IProcessor;
 
 import java.lang.annotation.*;
 
 /**
- * @description: 处理器注解
  * @author wangwl
+ * @description: 处理器注解
  * @date: 2023/2/2 18:21
  */
 @Target(ElementType.METHOD)
@@ -14,7 +14,18 @@ import java.lang.annotation.*;
 @Documented
 public @interface KcProcessor {
 
-    Class<? extends KcProcessInterface>[] before() default {};
-    Class<? extends KcProcessInterface>[] after() default {};
+    /**
+     * @description: 前置处理
+     * @author wangwl
+     * @date: 2023/2/2 18:45
+     */
+    Class<? extends IProcessor>[] before() default {};
+
+    /**
+     * @description: 后置处理
+     * @author wangwl
+     * @date: 2023/2/2 18:45
+     */
+    Class<? extends IProcessor>[] after() default {};
 
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @FunctionalInterface
-public interface KcProcessInterface<T> {
+public interface IProcessor<T> {
 
     /**
      * @description: 执行处理 

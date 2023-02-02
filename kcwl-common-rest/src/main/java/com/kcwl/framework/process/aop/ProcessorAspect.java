@@ -44,15 +44,15 @@ public class ProcessorAspect {
             return joinPoint.proceed();
         }
         //获取当前方法注解中的参数
-        KcProcessor handlers = AnnotationUtils.findAnnotation(targetMethod, KcProcessor.class);
+        KcProcessor annotation = AnnotationUtils.findAnnotation(targetMethod, KcProcessor.class);
         //构建校验参数
-        Class<? extends IProcessor>[] pres = handlers.before();
-        doPreHandler(args[0], pres);
+        Class<? extends IProcessor>[] beforeProcessors = annotation.before();
+        doBeforeProcessor(args[0], beforeProcessors);
 
         Object returnArgs = joinPoint.proceed();
-        Class<? extends IProcessor>[] posts = handlers.after();
+        Class<? extends IProcessor>[] afterProcessors = annotation.after();
 
-        doPostHandler(args[0], posts, returnArgs, targetMethod.getReturnType());
+        doAfterProcessor(args[0], afterProcessors, returnArgs, targetMethod.getReturnType());
         return returnArgs;
     }
 
@@ -61,10 +61,10 @@ public class ProcessorAspect {
      * @author wangwl
      * @date: 2023/2/1 18:10
      */
-    private void doPreHandler(Object args, Class<? extends IProcessor>[] pres) {
-        for (Class<? extends IProcessor> clazz : pres) {
-            //获取handler泛型中的类型，将入参转换为该类型
-            doHandler(args, clazz);
+    private void doBeforeProcessor(Object args, Class<? extends IProcessor>[] beforeProcessors) {
+        for (Class<? extends IProcessor> processor : beforeProcessors) {
+            //获取processor泛型中的类型，将入参转换为该类型
+            doProcessor(args, processor);
         }
     }
 
@@ -73,29 +73,29 @@ public class ProcessorAspect {
      * @author wangwl
      * @date: 2023/2/1 18:10
      */
-    private void doPostHandler(Object args, Class<? extends IProcessor>[] posts, Object returnArgs, Class<?> returnType) {
-        for (Class<? extends IProcessor> clazz : posts) {
-            Class paramType = ResolvableType.forType(clazz.getGenericInterfaces()[0]).as(IProcessor.class).getGeneric(0).resolve();
-            //返回值、返回类型不为空并且handler泛型中的类型和方法返回值类型一致
+    private void doAfterProcessor(Object args, Class<? extends IProcessor>[] afterProcessors, Object returnArgs, Class<?> returnType) {
+        for (Class<? extends IProcessor> processor : afterProcessors) {
+            Class paramType = ResolvableType.forType(processor.getGenericInterfaces()[0]).as(IProcessor.class).getGeneric(0).resolve();
+            //返回值、返回类型不为空并且processor泛型中的类型和方法返回值类型一致
             if (returnArgs != null && returnType != null && returnType.getTypeName().equals(paramType.getTypeName())) {
                 //使用方法的返回值进行后置处理
-                doHandler(returnArgs, clazz);
+                doProcessor(returnArgs, processor);
             } else {
                 //使用入参进行后置处理
-                doHandler(args, clazz);
+                doProcessor(args, processor);
             }
         }
     }
 
     /**
-     * @description: 执行Handler
+     * @description: 执行processor
      * @author wangwl
      * @date: 2023/2/1 18:10
      */
-    private void doHandler(Object args, Class<? extends IProcessor> clazz) {
-        Class resolve = ResolvableType.forType(clazz.getGenericInterfaces()[0]).as(IProcessor.class).getGeneric(0).resolve();
+    private void doProcessor(Object args, Class<? extends IProcessor> processor) {
+        Class resolve = ResolvableType.forType(processor.getGenericInterfaces()[0]).as(IProcessor.class).getGeneric(0).resolve();
         Object params = getParams(args, resolve);
-        IProcessor IProcessor = SpringUtil.getBean(clazz);
+        IProcessor IProcessor = SpringUtil.getBean(processor);
         IProcessor.process(params);
     }
 

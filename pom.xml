@@ -53,9 +53,21 @@
     <!--定义jar版本信息 -->
     <profiles>
         <profile>
+            <id>dev</id>
+            <properties>
+                <kcwl-service-api.version>6.0.0-ALPHA</kcwl-service-api.version>
+            </properties>
+        </profile>
+        <profile>
             <id>test</id>
             <properties>
-                <kcwl-service-api.version>6.0.0-RELEASE</kcwl-service-api.version>
+                <kcwl-service-api.version>6.0.0-BETA</kcwl-service-api.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>demo</id>
+            <properties>
+                <kcwl-service-api.version>6.0.0-RC</kcwl-service-api.version>
             </properties>
         </profile>
         <profile>

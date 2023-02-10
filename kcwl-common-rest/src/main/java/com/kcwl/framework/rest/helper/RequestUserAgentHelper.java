@@ -37,6 +37,9 @@ public class RequestUserAgentHelper {
             requestUserAgent.setToken(RequestUtil.getCookieValue(request, UserAgent.FILED_TOKEN));
             requestUserAgent.setSessionId(RequestUtil.getCookieValue(request, UserAgent.FILED_SESSION_ID));
             requestUserAgent.setAppVersion(RequestUtil.getCookieValue(request, UserAgent.FILED_APPVERSION));
+            requestUserAgent.setOsType(RequestUtil.getCookieValue(request, UserAgent.FILED_OS_TYPE));
+            requestUserAgent.setAppType(RequestUtil.getCookieValue(request, UserAgent.FILED_APP_TYPE));
+            requestUserAgent.setOperatingSystem(RequestUtil.getCookieValue(request, UserAgent.FILED_OPERATING_SYSTEM));
         }
         return requestUserAgent;
     }

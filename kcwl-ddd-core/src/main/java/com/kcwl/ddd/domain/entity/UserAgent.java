@@ -125,8 +125,16 @@ public class UserAgent {
         return userAgent.get(FILED_APP_TYPE);
     }
 
+    public void setAppType(String appType){
+        userAgent.put(FILED_OS_TYPE, appType);
+    }
+
     public String getOsType() {
         return userAgent.get(FILED_OS_TYPE);
+    }
+
+    public void setOsType(String osType){
+        userAgent.put(FILED_OS_TYPE, osType);
     }
 
     public int getRequestDepth() {
@@ -136,6 +144,10 @@ public class UserAgent {
 
     public String getOperatingSystem() {
         return userAgent.get(FILED_OPERATING_SYSTEM);
+    }
+
+    public void setOperatingSystem(String operatingSystem) {
+        userAgent.put(FILED_OPERATING_SYSTEM, operatingSystem);
     }
 
     public boolean isServerRequest() {

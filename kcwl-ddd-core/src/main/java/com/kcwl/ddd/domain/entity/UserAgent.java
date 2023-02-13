@@ -126,7 +126,7 @@ public class UserAgent {
     }
 
     public void setAppType(String appType){
-        userAgent.put(FILED_OS_TYPE, appType);
+        userAgent.put(FILED_APP_TYPE, appType);
     }
 
     public String getOsType() {

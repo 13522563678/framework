@@ -48,4 +48,11 @@ public class Result<T> extends BaseResult {
         return new Result<>(code, message, data);
     }
 
+    public T getData() {
+        return data;
+    }
+
+    public boolean isSuccess() {
+        return this.getCode().equals(CODE_SUCCESS);
+    }
 }

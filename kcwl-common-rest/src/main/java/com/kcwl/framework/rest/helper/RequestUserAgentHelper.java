@@ -52,8 +52,15 @@ public class RequestUserAgentHelper {
 
     private static void setKcTokenAndTrace(UserAgent  requestUserAgent, HttpServletRequest request) {
         if ( requestUserAgent != null ) {
-            requestUserAgent.setKcToken(request.getHeader(GlobalConstant.KC_TOKEN));
-            requestUserAgent.setKcTrace(request.getHeader(GlobalConstant.KC_TRACE));
+            requestUserAgent.setKcToken(getHeaderOrParam(request, GlobalConstant.KC_TOKEN));
+            requestUserAgent.setKcTrace(getHeaderOrParam(request, GlobalConstant.KC_TRACE));
         }
+    }
+    private static String getHeaderOrParam(HttpServletRequest request, String name) {
+        String value = request.getHeader(name);
+        if ( value == null ) {
+            value = request.getParameter(name);
+        }
+        return value;
     }
 }

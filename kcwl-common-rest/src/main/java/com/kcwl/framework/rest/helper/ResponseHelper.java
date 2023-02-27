@@ -9,6 +9,7 @@ import com.kcwl.ddd.interfaces.dto.ApiMetaDTO;
 import com.kcwl.ddd.interfaces.dto.ListResultDTO;
 import com.kcwl.ddd.interfaces.dto.PageInfoDTO;
 import com.kcwl.ddd.interfaces.dto.PageResultDTO;
+import com.kcwl.framework.utils.StringUtil;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -44,10 +45,11 @@ public class ResponseHelper {
         ResponseDecorator decorator = ResponseDecorator.getDecorator();
         if (  decorator != null ) {
             responseMessage.setCode(decorator.paddingResponseCode(code));
+            responseMessage.setMessage(decorator.getErrorPromptMessage(code, message));
         } else {
             responseMessage.setCode(code);
+            responseMessage.setMessage(message);
         }
-        responseMessage.setMessage(message);
         responseMessage.setCode(code);
         response(response,responseMessage);
     }

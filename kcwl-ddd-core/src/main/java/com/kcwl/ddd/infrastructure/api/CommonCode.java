@@ -5,6 +5,9 @@ package com.kcwl.ddd.infrastructure.api;
  */
 
 public enum CommonCode {
+    /**
+     * 定义接口错误码
+     */
     SUCCESS("000000200", "请求成功"),
     FAIL("00099", "系统开小差请稍后再试"),
     DATA_MESSAGE_NULL("00001","数据报文为空"),

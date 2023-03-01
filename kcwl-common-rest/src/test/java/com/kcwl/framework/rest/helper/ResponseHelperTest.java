@@ -39,15 +39,18 @@ class ResponseHelperTest {
         Mockito.reset(errorPromptDecorator);
         Mockito.when(errorPromptDecorator.getErrorPrompt("404", "1")).thenReturn(expectedMessage);
         Mockito.when(errorPromptDecorator.getErrorPrompt("403", "1")).thenReturn(defaultMessage);
+        Mockito.when(errorPromptDecorator.getErrorPrompt("405", "1")).thenReturn("");
 
         UserAgent userAgent = new UserAgent();
         userAgent.setProduct("1");
         SessionContext.setRequestUserAgent(userAgent);
     }
 
-
+    /**
+     * 合法输入 单测
+     */
     @Test
-    void createFailMessage() {
+    void createFailMessageCase1() {
 
         ResponseMessage<?> failMessage = ResponseHelper.createFailMessage("404", defaultMessage);
         Assert.assertEquals(expectedMessage, failMessage.getMessage());
@@ -55,8 +58,16 @@ class ResponseHelperTest {
         ResponseMessage<?> failMessage1 = ResponseHelper.createFailMessage("403", defaultMessage);
         Assert.assertEquals(defaultMessage, failMessage1.getMessage());
 
-        ResponseMessage<?> failMessage2 = ResponseHelper.createFailMessage("403", defaultMessage);
-        Assert.assertEquals(defaultMessage, failMessage2.getMessage());
+    }
+
+    /**
+     * 部分状态码提示语未定义 单测
+     */
+    @Test
+    void createFailMessageCase2() {
+
+        ResponseMessage<?> failMessage = ResponseHelper.createFailMessage("405", defaultMessage);
+        Assert.assertEquals(defaultMessage, failMessage.getMessage());
 
     }
 }

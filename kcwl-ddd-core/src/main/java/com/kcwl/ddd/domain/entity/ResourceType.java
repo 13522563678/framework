@@ -1,10 +1,21 @@
 package com.kcwl.ddd.domain.entity;
 
+/**
+ * <p>
+ * 谨慎使用，将在权限服务 下个迭代版本 废弃
+ *
+ * @since 2023.03.02
+ * </p>
+ */
+
+@Deprecated
 public enum ResourceType implements ValueObject<ResourceType> {
     MENU("MENU"),
     BUTTON("BUTTON"),
     API("API"),
-    DATA("DATA");
+    DATA("DATA"),
+    COL_GROUP("COL_GROUP"),
+    COL_FIELD("COL_FIELD");
 
     private String value;
 

@@ -193,29 +193,11 @@ public class ResponseHelper {
         ResponseDecorator decorator = ResponseDecorator.getDecorator();
         if (decorator != null) {
             responseMessage.setCode(decorator.paddingResponseCode(code));
+            responseMessage.setMessage(decorator.getErrorPromptMessage(code, message));
         } else {
             responseMessage.setCode(code);
-        }
-        String productType = Optional.ofNullable(SessionContext.getRequestUserAgent())
-                .map(UserAgent::getProduct)
-                .orElse(StrUtil.EMPTY);
-
-        try {
-            if (!StrUtil.EMPTY.equals(productType)) {
-                String processedMessage = Optional.ofNullable(SpringUtil.getBean(IErrorPromptDecorator.class))
-                        .map(errorPromptDecorator -> errorPromptDecorator.getErrorPrompt(code, productType))
-                        .filter(StrUtil::isNotBlank)
-                        .orElse(message);
-                responseMessage.setMessage(processedMessage);
-            } else {
-                log.warn("处理错误码提示语，未获取到product，UserAgent: {}", SessionContext.getRequestUserAgent());
-                responseMessage.setMessage(message);
-            }
-        } catch (Exception exception) {
-            log.error("获取错误码提示语异常，入参, code:{}, message：{}, product: {}", code, message, productType, exception);
             responseMessage.setMessage(message);
         }
-
         responseMessage.setResult(EMPTY_OBJECT);
         return responseMessage;
     }

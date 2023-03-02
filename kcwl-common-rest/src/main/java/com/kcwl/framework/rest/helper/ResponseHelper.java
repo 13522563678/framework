@@ -16,6 +16,8 @@ import com.kcwl.ddd.interfaces.dto.PageResultDTO;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -206,6 +208,7 @@ public class ResponseHelper {
                         .orElse(message);
                 responseMessage.setMessage(processedMessage);
             } else {
+                log.warn("处理错误码提示语，未获取到product，UserAgent: {}", SessionContext.getRequestUserAgent());
                 responseMessage.setMessage(message);
             }
         } catch (Exception exception) {

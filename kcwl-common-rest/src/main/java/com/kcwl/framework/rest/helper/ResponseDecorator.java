@@ -1,7 +1,6 @@
 package com.kcwl.framework.rest.helper;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.spring.SpringUtil;
 import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.api.IErrorPromptDecorator;
 import com.kcwl.ddd.infrastructure.constants.GlobalConstant;
@@ -10,8 +9,8 @@ import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.framework.utils.StringPaddingBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -34,11 +33,15 @@ public class ResponseDecorator {
 
     @Resource
     CommonWebProperties commonWebProperties;
+
+    @Value("${kcwl.common.web.error.prompt.enable:false}")
+    private Boolean hotUpdateEnable;
+
     public String paddingResponseCode(String code) {
-        if ( code.length() <= GlobalConstant.BIZ_ERROR_CODE_LENGHT ) {
+        if (code.length() <= GlobalConstant.BIZ_ERROR_CODE_LENGHT) {
             StringPaddingBuilder spb = new StringPaddingBuilder();
-            spb.appendByLeftZero(commonWebProperties.getService().getType(),2);
-            spb.appendByLeftZero(getProductCode(),2);
+            spb.appendByLeftZero(commonWebProperties.getService().getType(), 2);
+            spb.appendByLeftZero(getProductCode(), 2);
             spb.appendByLeftZero(code, GlobalConstant.BIZ_ERROR_CODE_LENGHT);
             return spb.toString();
         }
@@ -46,6 +49,9 @@ public class ResponseDecorator {
     }
 
     public String getErrorPromptMessage(String code, String defaultMessage) {
+        if (!hotUpdateEnable) {
+            return defaultMessage;
+        }
         String productType = getProductCode();
         try {
             if (!StrUtil.EMPTY.equals(productType)) {
@@ -67,7 +73,7 @@ public class ResponseDecorator {
     private String getProductCode() {
         String product = null;
         UserAgent userAgent = SessionContext.getRequestUserAgent();
-        if ( userAgent != null ) {
+        if (userAgent != null) {
             product = userAgent.getProduct();
         }
         return (product != null) ? product : StrUtil.EMPTY;

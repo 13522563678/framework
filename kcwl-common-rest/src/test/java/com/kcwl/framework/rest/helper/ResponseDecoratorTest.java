@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @EnableSpringUtil
-@SpringBootTest(classes = {ResponseDecorator.class, CommonWebProperties.class})
+@SpringBootTest(classes = {ResponseDecorator.class, CommonWebProperties.class}, properties = {"kcwl.common.web.error.prompt.enable=true"})
 class ResponseDecoratorTest {
 
     private final String expectedMessage = "这是 被替换的提示信息！";

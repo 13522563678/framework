@@ -43,11 +43,6 @@ class ResponseDecoratorTest {
     public void setUp() {
         Mockito.reset(errorPromptDecorator);
 
-        Mockito.when(errorPromptDecorator.getErrorPrompt("404", "1")).thenReturn(expectedMessage);
-        Mockito.when(errorPromptDecorator.getErrorPrompt("403", "1")).thenReturn(defaultMessage);
-        Mockito.when(errorPromptDecorator.getErrorPrompt("405", "1")).thenReturn(StrUtil.EMPTY);
-        Mockito.when(errorPromptDecorator.getErrorPrompt("406", "1")).thenThrow(new RuntimeException("错误码提示语 异常"));
-
         UserAgent userAgent = new UserAgent();
         userAgent.setProduct("1");
         SessionContext.setRequestUserAgent(userAgent);
@@ -58,6 +53,8 @@ class ResponseDecoratorTest {
      */
     @Test
     void testGetErrorPromptMessageCase1() {
+        Mockito.when(errorPromptDecorator.getErrorPrompt("404", "1")).thenReturn(expectedMessage);
+        Mockito.when(errorPromptDecorator.getErrorPrompt("403", "1")).thenReturn(defaultMessage);
 
         String failMessage = responseDecorator.getErrorPromptMessage("404", defaultMessage);
         Assert.assertEquals(expectedMessage, failMessage);
@@ -72,6 +69,8 @@ class ResponseDecoratorTest {
     @Test
     void testGetErrorPromptMessageCase2() {
 
+        Mockito.when(errorPromptDecorator.getErrorPrompt("405", "1")).thenReturn(StrUtil.EMPTY);
+
         String failMessage = responseDecorator.getErrorPromptMessage("405", defaultMessage);
         Assert.assertEquals(defaultMessage, failMessage);
 
@@ -82,9 +81,26 @@ class ResponseDecoratorTest {
      */
     @Test
     void testGetErrorPromptMessageCase3() {
+        Mockito.when(errorPromptDecorator.getErrorPrompt("406", "1")).thenThrow(new RuntimeException("错误码提示语 异常"));
 
         String failMessage = responseDecorator.getErrorPromptMessage("406", defaultMessage);
         Assert.assertEquals(defaultMessage, failMessage);
+
+    }
+
+    /**
+     * 货主app 货主web 不区分，统一使用货主app的product获取错误提示语
+     */
+    @Test
+    void testGetErrorPromptMessageCase4() {
+        Mockito.when(errorPromptDecorator.getErrorPrompt("407", "9")).thenReturn(expectedMessage);
+
+        UserAgent userAgent = new UserAgent();
+        userAgent.setProduct("7");
+        SessionContext.setRequestUserAgent(userAgent);
+
+        String failMessage = responseDecorator.getErrorPromptMessage("407", defaultMessage);
+        Assert.assertEquals(expectedMessage, failMessage);
 
     }
 }

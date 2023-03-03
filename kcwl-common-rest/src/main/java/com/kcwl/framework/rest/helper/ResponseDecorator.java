@@ -1,6 +1,7 @@
 package com.kcwl.framework.rest.helper;
 
 import cn.hutool.core.util.StrUtil;
+import com.kcwl.ddd.application.constants.ProductEnum;
 import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.api.IErrorPromptDecorator;
 import com.kcwl.ddd.infrastructure.constants.GlobalConstant;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -53,10 +55,15 @@ public class ResponseDecorator {
             return defaultMessage;
         }
         String productType = getProductCode();
+        // 货主Web和货主app 不区分，统一使用货主app的编码
+        if (Objects.toString(ProductEnum.SHIPPER_WEB.getId()).equals(productType)) {
+            productType = ProductEnum.SHIPPER_APP.getId().toString();
+        }
         try {
             if (!StrUtil.EMPTY.equals(productType)) {
+                String finalProductType = productType;
                 return Optional.ofNullable(promptDecorator)
-                        .map(errorPromptDecorator -> errorPromptDecorator.getErrorPrompt(code, productType))
+                        .map(errorPromptDecorator -> errorPromptDecorator.getErrorPrompt(code, finalProductType))
                         .filter(StrUtil::isNotBlank)
                         .orElse(defaultMessage);
             } else {

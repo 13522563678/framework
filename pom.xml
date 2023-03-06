@@ -125,6 +125,8 @@
 
         <kcwl-actuator.version>6.0.0-SNAPSHOT</kcwl-actuator.version>
         <kcwl-event.version>2.3.0-SNAPSHOT</kcwl-event.version>
+
+        <kcwl-auth.version>3.3.0-SNAPSHOT</kcwl-auth.version>
     </properties>
 
     <!--依赖jar包管理 -->
@@ -237,6 +239,12 @@
                 <groupId>com.kcwl.app</groupId>
                 <artifactId>kcwl-rabbit-event-starter</artifactId>
                 <version>${kcwl-event.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.kcwl.app</groupId>
+                <artifactId>kc-generic-auth-starter</artifactId>
+                <version>${kcwl-auth.version}</version>
             </dependency>
 
         </dependencies>

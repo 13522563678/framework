@@ -40,6 +40,8 @@ public class RequestUserAgentHelper {
             requestUserAgent.setOsType(RequestUtil.getCookieValue(request, UserAgent.FILED_OS_TYPE));
             requestUserAgent.setAppType(RequestUtil.getCookieValue(request, UserAgent.FILED_APP_TYPE));
             requestUserAgent.setOperatingSystem(RequestUtil.getCookieValue(request, UserAgent.FILED_OPERATING_SYSTEM));
+            requestUserAgent.setVersionCode(RequestUtil.getCookieValue(request, UserAgent.FILED_VERSION_CODE));
+
         }
         return requestUserAgent;
     }

@@ -179,8 +179,8 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     }
 
     private String queryArgumentDetailMessage(MethodArgumentNotValidException methodArgumentException) {
-        if (null == methodArgumentException || null == methodArgumentException.getBindingResult()) {
-            return methodArgumentException.getMessage();
+        if ( null == methodArgumentException ) {
+            return "MethodArgumentNotValidException NullPointerException";
         }
         String argumentNotValidMessage = methodArgumentException.getBindingResult().getAllErrors().stream().map(ObjectError::getDefaultMessage).collect(Collectors.joining(";"));
         if (StringUtil.isEmpty(argumentNotValidMessage)) {

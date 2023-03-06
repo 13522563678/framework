@@ -25,6 +25,7 @@ public class UserAgent {
     public static final String FILED_OPERATING_SYSTEM ="operatingSystem";
     public static final String FILED_APP_TYPE="appType";
     public static final String FILED_OS_TYPE="osType";
+    public static final String FILED_VERSION_CODE ="vCode";
 
 
     public static final String FILED_REQUEST="request";
@@ -135,6 +136,14 @@ public class UserAgent {
 
     public void setOsType(String osType){
         userAgent.put(FILED_OS_TYPE, osType);
+    }
+
+    public String getVersionCode() {
+        return userAgent.get(FILED_VERSION_CODE);
+    }
+
+    public void setVersionCode(String versionCode){
+        userAgent.put(FILED_VERSION_CODE, versionCode);
     }
 
     public int getRequestDepth() {

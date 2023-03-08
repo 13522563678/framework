@@ -3,13 +3,14 @@ package com.kcwl.framework.rest.web;
 import cn.hutool.cache.CacheUtil;
 import com.google.gson.*;
 import com.google.gson.internal.LinkedTreeMap;
-import com.kcwl.framework.cache.ICacheService;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import com.kcwl.ddd.infrastructure.constants.EmptyObject;
 import com.kcwl.framework.rest.helper.KcServiceProxy;
 import com.kcwl.framework.rest.helper.SessionCacheProxy;
 import com.kcwl.framework.rest.web.interceptor.*;
 import com.kcwl.framework.rest.web.interceptor.impl.ApiMockRepository;
 import com.kcwl.framework.rest.web.interceptor.impl.ReplayProtectService;
-import com.kcwl.framework.rest.web.interceptor.impl.SignAuthServiceImpl;
 import com.kcwl.framework.utils.ClassUtil;
 import com.kcwl.framework.utils.CollectionUtil;
 import com.kcwl.framework.utils.JsonUtil;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import springfox.documentation.spring.web.json.Json;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -103,6 +105,11 @@ public class CommonWebConfig implements WebMvcConfigurer {
         GsonHttpMessageConverter gsonConverter = new GsonHttpMessageConverter();
 
         GsonBuilder builder = new GsonBuilder();
+
+        if ( webProperties.getJson().isEscapeHtmlChars() ) {
+            builder.disableHtmlEscaping();
+        }
+
         if (webProperties.getJson().isSerializeNulls()) {
             builder.serializeNulls();
         }
@@ -127,6 +134,9 @@ public class CommonWebConfig implements WebMvcConfigurer {
         builder.registerTypeAdapter(HashMap.class, new HashMapDefault0Adapter());
         builder.registerTypeAdapter(LinkedHashMap.class, new LinkedHashMapDefault0Adapter());
         builder.registerTypeAdapter(LinkedTreeMap.class, new LinkedTreeMapDefault0Adapter());
+        if (webProperties.getJson().isStringNulls() ){
+            builder.registerTypeAdapter(String.class, new NullStringDefault0Adapter());
+        }
 
         gsonConverter.setGson(builder.create());
         converters.add(gsonConverter);
@@ -198,5 +208,21 @@ public class CommonWebConfig implements WebMvcConfigurer {
             return resultMap;
         }
     }
+
+    public static class NullStringDefault0Adapter extends TypeAdapter<String> {
+        @Override
+        public void write(JsonWriter jsonWriter, String s) throws IOException {
+            if ( s == null ) {
+                jsonWriter.value(EmptyObject.STRING);
+            } else {
+                jsonWriter.value(s);
+            }
+        }
+        @Override
+        public String read(JsonReader jsonReader) throws IOException {
+            return jsonReader.nextString();
+        }
+    }
+
 }
 

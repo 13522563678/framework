@@ -64,6 +64,8 @@ public class CommonWebProperties {
         private boolean serializeNulls = true;
         private String dateFormat = "yyyy-MM-dd HH:mm:ss";
         private boolean customHttpMessageConverter=true;
+        private boolean escapeHtmlChars=true;
+        private boolean stringNulls=true;
     }
 
     @Data

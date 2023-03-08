@@ -4,6 +4,7 @@ import cn.hutool.cache.CacheUtil;
 import com.google.gson.*;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import com.kcwl.ddd.infrastructure.constants.EmptyObject;
 import com.kcwl.framework.rest.helper.KcServiceProxy;
@@ -220,7 +221,13 @@ public class CommonWebConfig implements WebMvcConfigurer {
         }
         @Override
         public String read(JsonReader jsonReader) throws IOException {
-            return jsonReader.nextString();
+            String val = null;
+            if ( jsonReader.peek() == JsonToken.NULL ) {
+                jsonReader.nextNull();
+            } else {
+                val = jsonReader.nextString();
+            }
+            return val;
         }
     }
 

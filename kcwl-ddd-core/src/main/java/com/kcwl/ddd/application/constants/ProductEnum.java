@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum ProductEnum {
+    API_OPEN(0, "OPEN","开放接口"),
     CARRIER_APP(1, "CARRIER","司机APP"),
     SPMS_WEB(4, "SPMS","综合运营"),
     TMS_WEB(5, "TMS","TMS"),
@@ -12,7 +13,9 @@ public enum ProductEnum {
     OPMS_WEB(8, "OPMS","数智平台"),
     SHIPPER_APP(9, "SHIPPER_APP","物流APP"),
     FMGT_WEB(10, "FMGT","资金管理"),
-    DA_WEB(11, "DA","大数据");
+    DA_WEB(11, "DA","大数据"),
+    API_CALL_BACK(12, "CALLBACK","接口回调"),
+    API_PARTNER(13, "PARTNER","三方接口");
 
     private Integer id;
     private String  code;

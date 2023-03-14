@@ -22,7 +22,7 @@ public class KcMetaObjectHandler implements MetaObjectHandler {
             if (sessionData != null) {
                 this.setFieldValByName("createUserId", sessionData.getUserId(), metaObject);
             } else {
-                this.setFieldValByName("createUserId", EmptyObject.INTEGER_ZERO, metaObject);
+                this.setFieldValByName("createUserId", EmptyObject.LONG_ZERO, metaObject);
             }
         }
         updateFill(metaObject);

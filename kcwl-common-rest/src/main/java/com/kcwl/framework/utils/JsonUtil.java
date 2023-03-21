@@ -1,5 +1,7 @@
 package com.kcwl.framework.utils;
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.google.gson.*;
 
 import java.util.*;
@@ -46,7 +48,8 @@ public class JsonUtil {
      * @return
      */
     public static Map<String, Object> toMap(String json) {
-        return JsonUtil.toMap(JsonUtil.parseJson(json));
+//        return JsonUtil.toMap(JsonUtil.parseJson(json));
+        return JsonUtil.toMapV2(JSONUtil.parseObj(json));
     }
 
     /**
@@ -60,6 +63,30 @@ public class JsonUtil {
         Set<Entry<String, JsonElement>> entrySet = json.entrySet();
         for (Iterator<Entry<String, JsonElement>> iter = entrySet.iterator(); iter.hasNext(); ) {
             Entry<String, JsonElement> entry = iter.next();
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if (value instanceof JsonArray) {
+                map.put((String) key, toList((JsonArray) value));
+            } else if (value instanceof JsonObject) {
+                map.put((String) key, toMap((JsonObject) value));
+            } else if (value instanceof JsonPrimitive ) {
+                if ( !isNullString((JsonPrimitive)value) ) {
+                    map.put((String) key, value);
+                }
+            } else if ( value instanceof JsonNull ) {
+                //空对象时不放到map中
+            } else {
+                map.put((String) key, value);
+            }
+        }
+        return map;
+    }
+
+    public static Map<String, Object> toMapV2(JSONObject json) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Set<Entry<String, Object>> entrySet = json.entrySet();
+        for (Iterator<Entry<String, Object>> iter = entrySet.iterator(); iter.hasNext(); ) {
+            Entry<String, Object> entry = iter.next();
             String key = entry.getKey();
             Object value = entry.getValue();
             if (value instanceof JsonArray) {

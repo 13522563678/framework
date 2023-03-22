@@ -1,5 +1,7 @@
 package com.kcwl.framework.utils;
 
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONNull;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.google.gson.*;
@@ -89,15 +91,11 @@ public class JsonUtil {
             Entry<String, Object> entry = iter.next();
             String key = entry.getKey();
             Object value = entry.getValue();
-            if (value instanceof JsonArray) {
-                map.put((String) key, toList((JsonArray) value));
-            } else if (value instanceof JsonObject) {
-                map.put((String) key, toMap((JsonObject) value));
-            } else if (value instanceof JsonPrimitive ) {
-                if ( !isNullString((JsonPrimitive)value) ) {
-                    map.put((String) key, value);
-                }
-            } else if ( value instanceof JsonNull ) {
+            if (value instanceof JSONArray) {
+                map.put((String) key, toListV2((JSONArray) value));
+            } else if (value instanceof JSONObject) {
+                map.put((String) key, toMapV2((JSONObject) value));
+            } else if ( value instanceof JSONNull) {
                 //空对象时不放到map中
             } else {
                 map.put((String) key, value);
@@ -127,6 +125,21 @@ public class JsonUtil {
                 list.add(toList((JsonArray) value));
             } else if (value instanceof JsonObject) {
                 list.add(toMap((JsonObject) value));
+            } else {
+                list.add(value);
+            }
+        }
+        return list;
+    }
+
+    public static List<Object> toListV2(JSONArray json) {
+        List<Object> list = new ArrayList<Object>();
+        for (int i = 0; i < json.size(); i++) {
+            Object value = json.get(i);
+            if (value instanceof JSONArray) {
+                list.add(toListV2((JSONArray) value));
+            } else if (value instanceof JSONObject) {
+                list.add(toMapV2((JSONObject) value));
             } else {
                 list.add(value);
             }

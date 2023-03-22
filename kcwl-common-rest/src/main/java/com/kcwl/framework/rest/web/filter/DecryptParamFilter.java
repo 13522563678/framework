@@ -88,7 +88,7 @@ public class DecryptParamFilter extends OncePerRequestFilter {
         if ( httpContent.isEnableFormToJson() && isJsonContent ) {
             return new FormToJsonRequestWrapper(httpServletRequest, param);
         }
-        return new DecryptRequestWrapper(httpServletRequest, MapParamUtil.convertToMultiValueMap(param)) ;
+        return new DecryptRequestWrapper(httpServletRequest, MapParamUtil.convertToMultiValueMapV2(param)) ;
     }
 
     private boolean isFormToJsonContext(HttpServletRequest httpServletRequest) {

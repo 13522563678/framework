@@ -107,19 +107,6 @@ public class MapParamUtil {
         return multiValueMap;
     }
 
-    public static Map<String, String[]> convertToMultiValueMapV2(Map<String, Object> param) {
-        Map<String, String[]> multiValueMap = new HashMap<String, String[]>();
-        for (String key : param.keySet()) {
-            Object o = param.get(key);
-            if (o instanceof List) {
-                multiValueMap.put(key, listToStringArray((List) o));
-            } else {
-                multiValueMap.put(key, new String[]{castToStringV2(o)});
-            }
-        }
-        return multiValueMap;
-    }
-
     public static String[] listToStringArray(List list) {
         String[] arrays = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
@@ -130,10 +117,6 @@ public class MapParamUtil {
 
     public static String castToString(Object o) {
         return o == null ? null : o.toString().replaceAll("\"", "");
-    }
-
-    public static String castToStringV2(Object o) {
-        return o == null ? null : o.toString();
     }
 
     public static List<Object> jsonArrayToList(JsonArray json) {

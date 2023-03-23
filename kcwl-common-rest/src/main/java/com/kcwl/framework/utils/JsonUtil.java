@@ -1,9 +1,5 @@
 package com.kcwl.framework.utils;
 
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONNull;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import com.google.gson.*;
 
 import java.util.*;
@@ -50,8 +46,7 @@ public class JsonUtil {
      * @return
      */
     public static Map<String, Object> toMap(String json) {
-//        return JsonUtil.toMap(JsonUtil.parseJson(json));
-        return JsonUtil.toMapV2(JSONUtil.parseObj(json));
+        return JsonUtil.toMap(JsonUtil.parseJson(json));
     }
 
     /**
@@ -76,26 +71,6 @@ public class JsonUtil {
                     map.put((String) key, value);
                 }
             } else if ( value instanceof JsonNull ) {
-                //空对象时不放到map中
-            } else {
-                map.put((String) key, value);
-            }
-        }
-        return map;
-    }
-
-    public static Map<String, Object> toMapV2(JSONObject json) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        Set<Entry<String, Object>> entrySet = json.entrySet();
-        for (Iterator<Entry<String, Object>> iter = entrySet.iterator(); iter.hasNext(); ) {
-            Entry<String, Object> entry = iter.next();
-            String key = entry.getKey();
-            Object value = entry.getValue();
-            if (value instanceof JSONArray) {
-                map.put((String) key, toListV2((JSONArray) value));
-            } else if (value instanceof JSONObject) {
-                map.put((String) key, toMapV2((JSONObject) value));
-            } else if ( value instanceof JSONNull) {
                 //空对象时不放到map中
             } else {
                 map.put((String) key, value);
@@ -132,20 +107,6 @@ public class JsonUtil {
         return list;
     }
 
-    public static List<Object> toListV2(JSONArray json) {
-        List<Object> list = new ArrayList<Object>();
-        for (int i = 0; i < json.size(); i++) {
-            Object value = json.get(i);
-            if (value instanceof JSONArray) {
-                list.add(toListV2((JSONArray) value));
-            } else if (value instanceof JSONObject) {
-                list.add(toMapV2((JSONObject) value));
-            } else {
-                list.add(value);
-            }
-        }
-        return list;
-    }
 
     public static boolean isNullObject(Object obj) {
         if ( (obj == null) || (obj instanceof JsonNull) ) {

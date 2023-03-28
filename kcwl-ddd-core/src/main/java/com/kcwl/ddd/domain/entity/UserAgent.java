@@ -195,7 +195,7 @@ public class UserAgent {
                 for (int i = 0; i < agentItems.length; i++) {
                     String[] agentItem = agentItems[i].split(EQUALSIGN);
                     if (agentItem.length == 2) {
-                        userAgent.put(agentItem[0], agentItem[1]);
+                        userAgent.put(agentItem[0].trim(), agentItem[1].trim());
                     }
                 }
             }

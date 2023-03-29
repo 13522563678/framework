@@ -1,5 +1,8 @@
 package com.kcwl.framework.utils;
 
+import cn.hutool.core.lang.TypeReference;
+import cn.hutool.json.JSONUtil;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -27,7 +30,8 @@ public class DecryptUtil {
 		Map<String,Object> result = null;
 		try {
 			String newData = decryptStr(param, pwd);
-			result = JsonUtil.toMap(newData);
+			result = JSONUtil.toBean(newData, new TypeReference<Map<String, Object> >(){}, true);
+//			result = JsonUtil.toMap(newData);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

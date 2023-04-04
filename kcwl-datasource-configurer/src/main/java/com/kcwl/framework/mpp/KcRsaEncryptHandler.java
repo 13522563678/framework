@@ -5,9 +5,9 @@ import com.kcwl.framework.securtiy.encrypt.EncryptType;
 /**
  * @author ckwl
  */
-public class KcMobileEncryptHandler extends KcEncryptTypeHandler {
+public class KcRsaEncryptHandler extends KcEncryptTypeHandler {
     @Override
     String getEncryptName() {
-        return EncryptType.ENCRYPT_MOBILE.getName();
+        return EncryptType.ENCRYPT_RSA.getName();
     }
 }

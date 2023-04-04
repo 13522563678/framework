@@ -1,9 +1,6 @@
 package com.kcwl.framework.securtiy.encrypt;
 
-import com.kcwl.framework.securtiy.encrypt.impl.KcAesCrypt;
-import com.kcwl.framework.securtiy.encrypt.impl.KcEmptyCrypt;
-import com.kcwl.framework.securtiy.encrypt.impl.KcMobileCrypt;
-import com.kcwl.framework.securtiy.encrypt.impl.KcSimpleCrypt;
+import com.kcwl.framework.securtiy.encrypt.impl.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,12 +25,17 @@ public class KcEncryptFactory {
 
     public IKcCrypt createKcCrypt(String name, String password) {
         IKcCrypt kcCrypt = null;
-        if ( EncryptType.ENCRYPT_AES.equals(name) ) {
+        if ( EncryptType.ENCRYPT_AES.sameAsName(name) ) {
             kcCrypt = new KcAesCrypt(password);
-        } else if ( EncryptType.ENCRYPT_MOBILE.equals(name)) {
+        } else if ( EncryptType.ENCRYPT_MOBILE.sameAsName(name)) {
             kcCrypt = new KcMobileCrypt(password);
-        } else if ( EncryptType.ENCRYPT_SIMPLE.equals(name) ) {
+        } else if ( EncryptType.ENCRYPT_SIMPLE.sameAsName(name) ) {
             kcCrypt = new KcSimpleCrypt(password);
+        } else if (EncryptType.ENCRYPT_RSA.sameAsName(name) ) {
+            KcKeyPair keyPair = KcKeyManager.getInstance().getKeyPair(password);
+            if ( keyPair != null ) {
+                kcCrypt = new KcRsaCrypt(keyPair.getPrivateKey(), keyPair.getPublicKey());
+            }
         }
         if ( kcCrypt != null ) {
             cryptMap.put(name, kcCrypt);

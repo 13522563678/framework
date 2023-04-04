@@ -14,6 +14,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * @author ckwl
+ */
 @Slf4j
 public class KcEncryptTypeHandler extends BaseTypeHandler<String> {
     @SneakyThrows

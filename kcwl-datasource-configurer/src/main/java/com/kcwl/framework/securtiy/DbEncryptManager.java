@@ -2,6 +2,9 @@ package com.kcwl.framework.securtiy;
 
 import com.kcwl.framework.securtiy.properties.DbEncryptProperties;
 
+/**
+ * @author ckwl
+ */
 public class DbEncryptManager {
 
     private static DbEncryptManager instance;

@@ -1,5 +1,8 @@
 package com.kcwl.framework.securtiy.encrypt;
 
+/**
+ * @author ckwl
+ */
 public class KcKeyPair {
 
     private String privateKey;

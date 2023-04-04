@@ -5,7 +5,8 @@ public enum EncryptType {
     ENCRYPT_MOBILE("MOBILE"),
     ENCRYPT_SIMPLE("SIMPLE"),
     ENCRYPT_EMPTY("EMPTY"),
-    ENCRYPT_AES("AES");
+    ENCRYPT_AES("AES"),
+    ENCRYPT_RSA("AES");
 
     private String name;
     EncryptType(String name) {
@@ -17,6 +18,5 @@ public enum EncryptType {
     }
 
     public String getName() {return this.name;}
-
 
 }

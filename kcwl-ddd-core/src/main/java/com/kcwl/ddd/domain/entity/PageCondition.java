@@ -11,7 +11,7 @@ public class PageCondition extends Criteria {
         return curPagerNo;
     }
 
-    public void setCurPagerNo(int curPagerNo) {
+    public void setCurPagerNo(long curPagerNo) {
         this.curPagerNo = curPagerNo;
     }
 
@@ -19,7 +19,7 @@ public class PageCondition extends Criteria {
         return pageSize;
     }
 
-    public void setPageSize(int pageSize) {
+    public void setPageSize(long pageSize) {
         this.pageSize = pageSize;
     }
 

@@ -53,11 +53,21 @@ public enum IdentityTypeEnum {
 
 
     public static IdentityTypeEnum of(Integer value) {
-        if (value == null) {
-            return null;
-        }
+        return getByType(value);
+    }
+
+    public static IdentityTypeEnum getByType(Integer type) {
         for (IdentityTypeEnum identityTypeEnum : values()) {
-            if (identityTypeEnum.type.equals(value)) {
+            if (identityTypeEnum.type.equals(type)) {
+                return identityTypeEnum;
+            }
+        }
+        return null;
+    }
+
+    public static IdentityTypeEnum getBySubtype(Integer subType) {
+        for (IdentityTypeEnum identityTypeEnum : values()) {
+            if (identityTypeEnum.subType.equals(subType)) {
                 return identityTypeEnum;
             }
         }

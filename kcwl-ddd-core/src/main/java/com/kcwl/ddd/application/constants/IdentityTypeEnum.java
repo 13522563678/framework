@@ -3,7 +3,14 @@ package com.kcwl.ddd.application.constants;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author ckwl
+ */
+
 public enum IdentityTypeEnum {
+    /**
+     * 定义身份类型
+     */
     SHIPPER_INTERNAL_USER(1, 10,"货主-内部部门用户"),
     SHIPPER_EXTERNAL_USER(3, 30,"货主-外部部门用户"),
     PLATFORM_FUNDING_AGENCY(4, 40,"平台方-垫资人"),

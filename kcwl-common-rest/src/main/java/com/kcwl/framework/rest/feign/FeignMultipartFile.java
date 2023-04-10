@@ -1,4 +1,4 @@
-package com.kcwl.framework.rest;
+package com.kcwl.framework.rest.feign;
 
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;

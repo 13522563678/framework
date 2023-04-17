@@ -77,7 +77,7 @@ public class ProcessorAspect {
         for (Class<? extends IProcessor> processor : afterProcessors) {
             Class paramType = ResolvableType.forType(processor.getGenericInterfaces()[0]).as(IProcessor.class).getGeneric(0).resolve();
             //返回值、返回类型不为空并且processor泛型中的类型和方法返回值类型一致
-            if (returnArgs != null && returnType != null && returnType.getTypeName().equals(paramType.getTypeName())) {
+            if (returnArgs != null && returnType != null && paramType!=null && returnType.getTypeName().equals(paramType.getTypeName())) {
                 //使用方法的返回值进行后置处理
                 doProcessor(returnArgs, processor);
             } else {
@@ -93,20 +93,8 @@ public class ProcessorAspect {
      * @date: 2023/2/1 18:10
      */
     private void doProcessor(Object args, Class<? extends IProcessor> processor) {
-        Class resolve = ResolvableType.forType(processor.getGenericInterfaces()[0]).as(IProcessor.class).getGeneric(0).resolve();
-        Object params = getParams(args, resolve);
         IProcessor IProcessor = SpringUtil.getBean(processor);
-        IProcessor.process(params);
-    }
-
-
-    /**
-     * @description: 参数转换
-     * @author wangwl
-     * @date: 2023/2/1 18:11
-     */
-    private Object getParams(Object args, Class paramType) {
-        return KcBeanConverter.toBean(args, paramType);
+        IProcessor.process(args);
     }
 
 }

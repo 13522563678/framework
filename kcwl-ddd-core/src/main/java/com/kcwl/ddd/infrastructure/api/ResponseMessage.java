@@ -1,5 +1,7 @@
 package com.kcwl.ddd.infrastructure.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class ResponseMessage<T> {
     /**
      * 响应编号
@@ -46,7 +48,7 @@ public class ResponseMessage<T> {
     public void setResult(T result) {
         this.result = result == null ? null : result;
     }
-
+    @JsonIgnore
     public boolean isSuccess() {
         return (this.code != null && this.code.endsWith("200") ) ? true : false;
     }

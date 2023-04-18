@@ -1,6 +1,7 @@
 package com.kcwl.framework.rest.web;
 
 import cn.hutool.cache.CacheUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.*;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.stream.JsonReader;
@@ -9,6 +10,7 @@ import com.google.gson.stream.JsonWriter;
 import com.kcwl.ddd.infrastructure.constants.EmptyObject;
 import com.kcwl.framework.rest.helper.KcServiceProxy;
 import com.kcwl.framework.rest.helper.SessionCacheProxy;
+import com.kcwl.framework.rest.jackson.NullFieldBeanSerializerModifier;
 import com.kcwl.framework.rest.web.interceptor.*;
 import com.kcwl.framework.rest.web.interceptor.impl.ApiMockRepository;
 import com.kcwl.framework.rest.web.interceptor.impl.ReplayProtectService;
@@ -75,7 +77,7 @@ public class CommonWebConfig implements WebMvcConfigurer {
 
         List<String> pathPatterns = apiAuthConfig.getPathPatterns();
 
-        if ( apiAuthConfig.isEnabled() &&  pathPatterns.size() > 0 ) {
+        if ( apiAuthConfig.isEnabled() &&  !pathPatterns.isEmpty() ) {
             InterceptorRegistration registration = registry.addInterceptor(interceptor);
             registration.addPathPatterns(pathPatterns.toArray(new String[0]));
             List<String> excludePathPatterns = apiAuthConfig.getExcludePathPatterns();
@@ -98,6 +100,7 @@ public class CommonWebConfig implements WebMvcConfigurer {
         // 将MappingJackson2HttpMessageConverter和默认的GsonHttpMessageConverter都删除
         // 创建自定义的GsonHttpMessageConverter
         if ( !webProperties.getJson().isCustomHttpMessageConverter() ) {
+            initJacksonConverters(converters);
             return;
         }
 
@@ -141,6 +144,22 @@ public class CommonWebConfig implements WebMvcConfigurer {
 
         gsonConverter.setGson(builder.create());
         converters.add(gsonConverter);
+    }
+
+    /**
+     * 序列化类型为String时，序列化成空字符串；为array，list、set时，当值为空时，序列化成[];
+     * @param converters HttpMessageConverter
+     */
+    private void initJacksonConverters(List<HttpMessageConverter<?>> converters) {
+        NullFieldBeanSerializerModifier nullFieldBeanSerializerModifier = new NullFieldBeanSerializerModifier();
+        converters.forEach(converter->{
+            if ( converter instanceof MappingJackson2HttpMessageConverter ) {
+                MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = (MappingJackson2HttpMessageConverter)converter;
+                ObjectMapper mapper = jackson2HttpMessageConverter.getObjectMapper();
+                mapper.setSerializerFactory(mapper.getSerializerFactory().withSerializerModifier(nullFieldBeanSerializerModifier));
+                jackson2HttpMessageConverter.setObjectMapper(mapper);
+            }
+        });
     }
 
     private ReplayProtectService createReplayProtectService( CommonWebProperties.ApiAuthConfig apiAuthConfig) {

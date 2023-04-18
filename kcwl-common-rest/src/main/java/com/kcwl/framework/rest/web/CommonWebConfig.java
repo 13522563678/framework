@@ -100,7 +100,7 @@ public class CommonWebConfig implements WebMvcConfigurer {
         // 将MappingJackson2HttpMessageConverter和默认的GsonHttpMessageConverter都删除
         // 创建自定义的GsonHttpMessageConverter
         if ( !webProperties.getJson().isCustomHttpMessageConverter() ) {
-            initJacksonConverters(converters);
+            //initJacksonConverters(converters);
             return;
         }
 

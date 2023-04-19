@@ -9,6 +9,7 @@ import com.kcwl.framework.file.FileProperties;
 import com.kcwl.framework.file.biz.service.IFileService;
 import com.kcwl.framework.file.biz.service.IMGConstant;
 import com.kcwl.framework.utils.BeanMapUtil;
+import com.kcwl.framework.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
@@ -151,7 +152,13 @@ public class AliyunOSSServiceImpl implements IFileService {
     }
 
     private OSSClient createOSSClient() {
-        return new OSSClient(aliyun.getEndpoint(), aliyun.getAccessKey(), aliyun.getSecretKey());
+        String endPointUrl;
+        if ( !StringUtil.isEmpty(aliyun.getImgEndpoint()) ) {
+            endPointUrl = aliyun.getImgEndpoint();
+        } else {
+            endPointUrl = aliyun.getEndpoint();
+        }
+        return new OSSClient(endPointUrl, aliyun.getAccessKey(), aliyun.getSecretKey());
     }
 
     private void closeOSSClient(OSSClient ossClient) {

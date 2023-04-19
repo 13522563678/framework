@@ -1,9 +1,8 @@
 package com.kcwl.framework.cache;
 
 import com.kcwl.framework.cache.config.UserTokenRedisProperties;
-import com.kcwl.framework.cache.impl.RedisCacheServiceImpl;
+import com.kcwl.framework.cache.impl.RedisCacheService;
 import com.kcwl.framework.cache.impl.StringRedisCacheServiceImpl;
-import com.kcwl.framework.cache.impl.TokenCacheServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -23,7 +22,7 @@ public class CacheConfiguration {
 
     @Bean(name="cacheService")
     public ICacheService cacheService(RedisConnectionFactory redisConnectionFactory){
-        return new RedisCacheServiceImpl(redisConnectionFactory);
+        return new RedisCacheService(redisConnectionFactory);
     }
     @Bean(name="stringCache")
     public ICacheService stringCache(RedisConnectionFactory redisConnectionFactory){
@@ -35,7 +34,7 @@ public class CacheConfiguration {
         if ( userTokenRedisConnectionFactory == null ) {
             userTokenRedisConnectionFactory = redisConnectionFactory;
         }
-        return new RedisCacheServiceImpl(userTokenRedisConnectionFactory);
+        return new RedisCacheService(userTokenRedisConnectionFactory);
     }
 
     public RedisConnectionFactory userTokenRedisConnectionFactory(){

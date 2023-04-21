@@ -55,7 +55,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     @ExceptionHandler(value = BaseException.class)
     public ResponseEntity baseExceptionHandler(HttpServletRequest request, BaseException e) {
         printRequest(request, e);
-        return fail(e.getCode(), e.getMessage(), null);
+        return fail(e.getCode(), e.getMessage(), e.getResult(), null);
     }
 
 
@@ -107,7 +107,6 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     public ResponseEntity missingSParameterExceptionHandler(HttpServletRequest request, Exception e) {
         printRequest(request, e);
         MissingServletRequestParameterException exp = (MissingServletRequestParameterException) e;
-        //String errorMesssage = String.format("：%s不能为空！", exp.getParameterName());
         return fail(CommonCode.FIELD_NULL.getCode(), CommonCode.FIELD_NULL.getDescription(), e);
     }
 
@@ -149,6 +148,10 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
         return fail(CommonCode.FAIL.getCode(), CommonCode.FAIL.getDescription(), e);
     }
 
+    public ResponseEntity fail(String code, String message, Exception exception) {
+        return fail(code, message, exception);
+    }
+
     /**
      * 根据指定错误码返回结果
      *
@@ -156,15 +159,16 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
      * @param message
      * @return
      */
-    public ResponseEntity fail(String code, String message, Exception exception) {
+    public ResponseEntity fail(String code, String message, Object result, Exception exception) {
         ResponseMessage responseMessage = createResponseMessage(code, message);
         String clientType = SessionContext.getRequestClient();
         //RequestUserAgent requestUserAgent = SessionHelper.getRequestUserAgent();
+        responseMessage.setResult(result);
+
         if ((clientType != null) && (UserAgent.AGENT_CLIENT_FEIGN.equals(clientType))) {
             if (exception instanceof MethodArgumentNotValidException) {
                 responseMessage.setMessage(queryArgumentDetailMessage((MethodArgumentNotValidException) exception));
             }
-
             //不再向调用方返回异常信息；
             //else if (exception != null) {
             //    responseMessage.setMessage(exception.getMessage());
@@ -230,5 +234,4 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     private ResponseMessage createResponseMessage(String code, String message) {
         return ResponseHelper.createFailMessage(code, message);
     }
-
 }

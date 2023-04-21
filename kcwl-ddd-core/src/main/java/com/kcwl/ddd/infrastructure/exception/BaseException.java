@@ -6,8 +6,9 @@ package com.kcwl.ddd.infrastructure.exception;
 public class BaseException extends RuntimeException {
     private static final long serialVersionUID = 1L;
     private String code;
+    private Object result;
 
-   public BaseException(String code, String message) {
+    public BaseException(String code, String message) {
         super(message);
         this.code = code;
     }
@@ -26,5 +27,13 @@ public class BaseException extends RuntimeException {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Object getResult() {
+        return result;
+    }
+
+    public void setResult(Object result) {
+        this.result = result;
     }
 }

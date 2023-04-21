@@ -149,7 +149,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     }
 
     public ResponseEntity fail(String code, String message, Exception exception) {
-        return fail(code, message, exception);
+        return fail(code, message, null, exception);
     }
 
     /**

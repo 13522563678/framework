@@ -194,17 +194,14 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     }
 
     private String getValidationMessage(BindingResult bindingResult) {
-        String errorMesssage = "";
+        StringBuilder errorMessage = new StringBuilder();
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
-
-            if (errorMesssage.length() == 0) {
-                errorMesssage = ":";
-            } else {
-                errorMesssage += ",";
+            if (errorMessage.length() > 0) {
+                errorMessage.append(";");
             }
-            errorMesssage += fieldError.getDefaultMessage();
+            errorMessage.append(fieldError.getDefaultMessage());
         }
-        return errorMesssage;
+        return errorMessage.toString();
     }
 
     private String getMethodValidateMessage(BindingResult bindingResult, String defaultMsg) {
@@ -219,16 +216,14 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     }
 
     private String getValidationMessage(Set<ConstraintViolation<?>> bindingResult) {
-        String errorMesssage = "";
+        StringBuilder errorMessage = new StringBuilder();
         for (ConstraintViolation<?> fieldError : bindingResult) {
-            if (errorMesssage.length() == 0) {
-                errorMesssage = ":";
-            } else {
-                errorMesssage += ",";
+            if (errorMessage.length() > 0) {
+                errorMessage.append(";");
             }
-            errorMesssage += fieldError.getMessage();
+            errorMessage.append(fieldError.getMessage());
         }
-        return errorMesssage;
+        return errorMessage.toString();
     }
 
     private ResponseMessage createResponseMessage(String code, String message) {

@@ -68,6 +68,9 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
 
     private SessionData ssoLogin() {
         IKcSsoAuth kcSsoAuthImpl = getKcSsoAuth();
+        if ( log.isDebugEnabled() ) {
+            log.debug("begin ssoLogin");
+        }
         if ( kcSsoAuthImpl == null ) {
             log.warn("Can not find IKcSsoAuth implementation");
             return null;

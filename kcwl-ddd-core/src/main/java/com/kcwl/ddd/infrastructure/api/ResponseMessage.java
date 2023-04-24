@@ -46,10 +46,10 @@ public class ResponseMessage<T> {
     }
 
     public void setResult(T result) {
-        this.result = result == null ? null : result;
+        this.result = result;
     }
     @JsonIgnore
     public boolean isSuccess() {
-        return (this.code != null && this.code.endsWith("200") ) ? true : false;
+        return this.code != null && this.code.endsWith("200");
     }
 }

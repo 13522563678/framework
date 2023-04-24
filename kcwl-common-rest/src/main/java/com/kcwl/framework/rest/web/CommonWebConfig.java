@@ -18,6 +18,7 @@ import com.kcwl.framework.utils.ClassUtil;
 import com.kcwl.framework.utils.CollectionUtil;
 import com.kcwl.framework.utils.JsonUtil;
 import com.kcwl.framework.utils.StringUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -36,6 +37,7 @@ import java.util.*;
  * @author 姚华成
  * @date 2017-12-12
  */
+@Slf4j
 public class CommonWebConfig implements WebMvcConfigurer {
     private static final String ALL_API_PATH_PATTERN = "/**";
 
@@ -76,6 +78,10 @@ public class CommonWebConfig implements WebMvcConfigurer {
     private void addApiAuthInterceptor(CommonWebProperties.ApiAuthConfig apiAuthConfig, InterceptorRegistry registry, HandlerInterceptorAdapter interceptor) {
 
         List<String> pathPatterns = apiAuthConfig.getPathPatterns();
+
+        if ( log.isDebugEnabled() ) {
+            log.debug("apiAuthConfig= {}", apiAuthConfig);
+        }
 
         if ( apiAuthConfig.isEnabled() &&  !pathPatterns.isEmpty() ) {
             InterceptorRegistration registration = registry.addInterceptor(interceptor);

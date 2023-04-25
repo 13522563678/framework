@@ -1,5 +1,7 @@
 package com.kcwl.framework.utils;
 
+import cn.hutool.core.codec.Base62;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -34,6 +36,23 @@ public class KcEncryptAesUtil {
     }
 
     /**
+     * 加密
+     *
+     * @param context
+     * @return
+     */
+    public static String encryptWithBase62(String context, String key, String iv) {
+        try {
+            byte[] decode = context.getBytes(CHARSET);
+            byte[] bytes = createKeyAndIv(decode, Cipher.ENCRYPT_MODE,key,iv);
+            return Base62.encode(bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 解密
      *
      * @param context
@@ -43,6 +62,23 @@ public class KcEncryptAesUtil {
         try {
             Base64.Decoder decoder = Base64.getDecoder();
             byte[] decode = decoder.decode(context);
+            byte[] bytes = createKeyAndIv(decode, Cipher.DECRYPT_MODE,key,iv);
+            return new String(bytes, CHARSET);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 解密
+     *
+     * @param context
+     * @return
+     */
+    public static String decryptWithBase62(String context, String key, String iv) {
+        try {
+            byte[] decode = Base62.decode(context);
             byte[] bytes = createKeyAndIv(decode, Cipher.DECRYPT_MODE,key,iv);
             return new String(bytes, CHARSET);
         } catch (Exception e) {

@@ -4,6 +4,7 @@ import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.constants.GlobalConstant;
 import com.kcwl.ddd.infrastructure.session.SessionContext;
 import com.kcwl.framework.grayscale.utils.GrayMarkContextHolder;
+import com.kcwl.framework.rest.helper.SessionJwtHelper;
 import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.tenant.TenantDataHolder;
 import feign.RequestInterceptor;
@@ -33,6 +34,10 @@ public class FeignRequestInterceptor implements RequestInterceptor {
         UserAgent requestUserAgent = SessionContext.getRequestUserAgent();
         if (requestUserAgent != null) {
             template.header(UserAgent.REQUEST_AGENT_HEADER_NAME, requestUserAgent.nextRequestUserAgent().toString());
+            String jwtSession =  SessionJwtHelper.createJwtSession(requestUserAgent, SessionContext.getSessionData());
+            if ( jwtSession != null ) {
+                template.header(GlobalConstant.KC_SESSION_JWT, jwtSession);
+            }
         }
         template.header(UserAgent.REQUEST_AGENT_CLIENT_FIELD_NAME, UserAgent.AGENT_CLIENT_FEIGN);
 

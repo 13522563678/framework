@@ -15,7 +15,7 @@ public enum CommonCode {
     DATA_MESSAGE_DECODE_FAIL("00003","报文无法解密"),
     JSON_DECODE_FAIL("00004","JSON decode失败"),
     SYS_ERROR("00005","系统繁忙"),
-    FIELD_NULL("0006","字段为空"),
+    FIELD_NULL("00006","字段为空"),
     FIELD_ERROR("00007","字段格式不正确"),
     UN_LOGIN("00008","未登录"),
     OTHER_EQUIPMENT_LOGIN("00009","该账户在别的设备登录"),

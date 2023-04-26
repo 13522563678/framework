@@ -36,20 +36,7 @@ public class FeignRequestInterceptor implements RequestInterceptor {
         UserAgent requestUserAgent = SessionContext.getRequestUserAgent();
         if (requestUserAgent != null) {
             template.header(UserAgent.REQUEST_AGENT_HEADER_NAME, requestUserAgent.nextRequestUserAgent().toString());
-            String jwtSession =  requestUserAgent.getJwtSession();
-            if ( jwtSession == null ) {
-                jwtSession = SessionJwtHelper.createJwtSession(requestUserAgent, SessionContext.getSessionData());
-            }
-            if ( jwtSession != null ) {
-                template.header(GlobalConstant.KC_SESSION_JWT, jwtSession);
-            }
-            if ( log.isDebugEnabled() ) {
-                if ( jwtSession != null ) {
-                    log.debug("jwtSession size: {}", jwtSession.length());
-                } else {
-                    log.debug("jwtSession is empty");
-                }
-            }
+            applyJwt(template, requestUserAgent);
         }
         template.header(UserAgent.REQUEST_AGENT_CLIENT_FIELD_NAME, UserAgent.AGENT_CLIENT_FEIGN);
 
@@ -67,6 +54,22 @@ public class FeignRequestInterceptor implements RequestInterceptor {
         }
         if (!template.headers().containsKey(GlobalConstant.GRAY_REQUEST_HEADER_KEY)) {
             template.header(GlobalConstant.GRAY_REQUEST_HEADER_KEY, "default");
+        }
+    }
+    private void applyJwt(RequestTemplate template, UserAgent requestUserAgent) {
+        String jwtSession = requestUserAgent.getJwtSession();
+        if (jwtSession == null) {
+            jwtSession = SessionJwtHelper.createJwtSession(requestUserAgent, SessionContext.getSessionData());
+        }
+        if (jwtSession != null) {
+            template.header(GlobalConstant.KC_SESSION_JWT, jwtSession);
+        }
+        if (log.isDebugEnabled()) {
+            if (jwtSession != null) {
+                log.debug("jwtSession size: {}", jwtSession.length());
+            } else {
+                log.debug("jwtSession is empty");
+            }
         }
     }
 }

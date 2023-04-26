@@ -44,8 +44,8 @@ public class UserSessionInterceptor extends HandlerInterceptorAdapter {
             if (!requestUserAgent.isServerRequest()) {
                 if (!ignoreSession && !ignoreRequestUri(request)) {
                     String jwtSession = request.getHeader(GlobalConstant.KC_SESSION_JWT);
-                    if ( jwtSession != null ) {
-                        sessionData = SessionJwtHelper.getJwtSessionData(jwtSession, requestUserAgent);
+                    if ( (jwtSession != null) && SessionJwtHelper.isEnableJwtAuth() ) {
+                        sessionData = SessionJwtHelper.getJwtSessionData(jwtSession, requestUserAgent);;
                         if ( log.isDebugEnabled() ) {
                             log.debug("read sessionData from from  jwt");
                         }

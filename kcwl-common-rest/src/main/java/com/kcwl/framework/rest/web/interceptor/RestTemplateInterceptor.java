@@ -41,20 +41,7 @@ public class RestTemplateInterceptor implements ClientHttpRequestInterceptor {
         UserAgent requestUserAgent = SessionContext.getRequestUserAgent();
         if (requestUserAgent != null) {
             headers.add(UserAgent.REQUEST_AGENT_HEADER_NAME, requestUserAgent.nextRequestUserAgent().toString());
-            String jwtSession =  requestUserAgent.getJwtSession();
-            if ( jwtSession == null ) {
-                jwtSession = SessionJwtHelper.createJwtSession(requestUserAgent, SessionContext.getSessionData());
-            }
-            if ( jwtSession != null ) {
-                headers.add(GlobalConstant.KC_SESSION_JWT, jwtSession);
-            }
-            if ( log.isDebugEnabled() ) {
-                if ( jwtSession != null ) {
-                    log.debug("jwtSession size: {}", jwtSession.length());
-                } else {
-                    log.debug("jwtSession is empty");
-                }
-            }
+            applyJwt(headers, requestUserAgent);
         }
         headers.add(UserAgent.REQUEST_AGENT_CLIENT_FIELD_NAME, UserAgent.AGENT_CLIENT_FEIGN);
 
@@ -74,5 +61,22 @@ public class RestTemplateInterceptor implements ClientHttpRequestInterceptor {
             headers.add(GlobalConstant.GRAY_REQUEST_HEADER_KEY, "default");
         }
         return clientHttpRequestExecution.execute(httpRequest, body);
+    }
+
+    private void applyJwt(HttpHeaders headers, UserAgent requestUserAgent) {
+        String jwtSession =  requestUserAgent.getJwtSession();
+        if ( jwtSession == null ) {
+            jwtSession = SessionJwtHelper.createJwtSession(requestUserAgent, SessionContext.getSessionData());
+        }
+        if ( jwtSession != null ) {
+            headers.add(GlobalConstant.KC_SESSION_JWT, jwtSession);
+        }
+        if ( log.isDebugEnabled() ) {
+            if ( jwtSession != null ) {
+                log.debug("jwtSession size: {}", jwtSession.length());
+            } else {
+                log.debug("jwtSession is empty");
+            }
+        }
     }
 }

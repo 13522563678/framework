@@ -9,6 +9,7 @@ import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.tenant.TenantDataHolder;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -17,6 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 /**
  * @author ckwl
  */
+@Slf4j
 public class FeignRequestInterceptor implements RequestInterceptor {
 
     private CommonWebProperties.AppAuthInfo appAuthInfo;
@@ -40,6 +42,9 @@ public class FeignRequestInterceptor implements RequestInterceptor {
             }
             if ( jwtSession != null ) {
                 template.header(GlobalConstant.KC_SESSION_JWT, jwtSession);
+            }
+            if ( log.isDebugEnabled() ) {
+                log.debug("jwt={}", jwtSession);
             }
         }
         template.header(UserAgent.REQUEST_AGENT_CLIENT_FIELD_NAME, UserAgent.AGENT_CLIENT_FEIGN);

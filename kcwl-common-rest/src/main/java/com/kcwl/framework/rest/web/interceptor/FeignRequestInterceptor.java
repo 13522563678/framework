@@ -43,8 +43,8 @@ public class FeignRequestInterceptor implements RequestInterceptor {
             if ( jwtSession != null ) {
                 template.header(GlobalConstant.KC_SESSION_JWT, jwtSession);
             }
-            if ( log.isDebugEnabled() ) {
-                log.debug("jwt={}", jwtSession);
+            if ( jwtSession == null && log.isInfoEnabled() ) {
+                log.info("jwtSession is empty");
             }
         }
         template.header(UserAgent.REQUEST_AGENT_CLIENT_FIELD_NAME, UserAgent.AGENT_CLIENT_FEIGN);

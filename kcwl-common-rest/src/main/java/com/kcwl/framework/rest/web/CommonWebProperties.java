@@ -37,6 +37,7 @@ public class CommonWebProperties {
     private AppAuthInfo auth = new AppAuthInfo();
     private AppPodInfo appPod = new AppPodInfo();
     private SsoAuthInfo sso = new SsoAuthInfo();
+    private JwtConfig jwt = new JwtConfig();
 
     /**
      * http客户端类型支持：
@@ -198,5 +199,10 @@ public class CommonWebProperties {
     @Data
     public static class SsoAuthInfo{
         private List<String> supportProducts;
+    }
+
+    @Data
+    public static class  JwtConfig{
+        private boolean enableJwtAuth = true;
     }
 }

@@ -2,6 +2,7 @@ package com.kcwl.framework.rest;
 
 import com.kcwl.framework.cache.config.UserTokenRedisProperties;
 import com.kcwl.framework.rest.aop.PlatformFieldCheckAspect;
+import com.kcwl.framework.rest.helper.SessionJwtHelper;
 import com.kcwl.framework.rest.web.CommonWebConfig;
 import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.framework.rest.web.filter.ContentCacheFilter;
@@ -9,6 +10,8 @@ import com.kcwl.framework.rest.web.filter.DecryptParamFilter;
 import com.kcwl.framework.rest.web.filter.XSSFilter;
 import com.kcwl.framework.rest.web.interceptor.FeignRequestInterceptor;
 import com.kcwl.framework.rest.web.interceptor.RestTemplateInterceptor;
+import com.kcwl.framework.utils.KcBeanRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -33,6 +36,7 @@ import java.util.Collections;
  * @author 姚华成
  * @date 2017-12-14
  */
+@Slf4j
 @Configuration
 @EnableConfigurationProperties({CommonWebProperties.class, UserTokenRedisProperties.class})
 @Import({CommonWebConfig.class})
@@ -125,6 +129,14 @@ public class CommonWebAutoConfiguration {
     //@ConditionalOnProperty(value = "kcwl.tenant.platform.check", matchIfMissing = false)
     public PlatformFieldCheckAspect platformFieldCheckAspect() {
         return new PlatformFieldCheckAspect();
+    }
+
+    @Bean
+    public KcBeanRepository jwtConfigRepository() {
+        KcBeanRepository kcBeanRepository = KcBeanRepository.getInstance();
+        kcBeanRepository.saveBean(SessionJwtHelper.JWT_CONFIG_NAME, webProperties.getJwt());
+        log.info("jwtConfig: {}", kcBeanRepository.getBean(SessionJwtHelper.JWT_CONFIG_NAME));
+        return kcBeanRepository;
     }
 
     private ClientHttpRequestFactory clientHttpRequestFactory() {

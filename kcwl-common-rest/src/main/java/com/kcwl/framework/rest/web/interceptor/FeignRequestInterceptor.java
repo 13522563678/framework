@@ -9,6 +9,7 @@ import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.tenant.TenantDataHolder;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -17,6 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 /**
  * @author ckwl
  */
+@Slf4j
 public class FeignRequestInterceptor implements RequestInterceptor {
 
     private CommonWebProperties.AppAuthInfo appAuthInfo;
@@ -35,11 +37,14 @@ public class FeignRequestInterceptor implements RequestInterceptor {
         if (requestUserAgent != null) {
             template.header(UserAgent.REQUEST_AGENT_HEADER_NAME, requestUserAgent.nextRequestUserAgent().toString());
             String jwtSession =  requestUserAgent.getJwtSession();
-            if ( jwtSession != null ) {
+            if ( jwtSession == null ) {
                 jwtSession = SessionJwtHelper.createJwtSession(requestUserAgent, SessionContext.getSessionData());
             }
             if ( jwtSession != null ) {
                 template.header(GlobalConstant.KC_SESSION_JWT, jwtSession);
+            }
+            if ( jwtSession == null && log.isInfoEnabled() ) {
+                log.info("jwtSession is empty");
             }
         }
         template.header(UserAgent.REQUEST_AGENT_CLIENT_FIELD_NAME, UserAgent.AGENT_CLIENT_FEIGN);

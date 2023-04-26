@@ -47,7 +47,7 @@ public class UserSessionInterceptor extends HandlerInterceptorAdapter {
                     if ( jwtSession != null ) {
                         sessionData = SessionJwtHelper.getJwtSessionData(jwtSession, requestUserAgent);
                         if ( log.isDebugEnabled() ) {
-                            log.debug("read sessionData from from  jwt: {}", sessionData);
+                            log.debug("read sessionData from from  jwt");
                         }
                         requestUserAgent.setJwtSession(jwtSession);
                     } else {

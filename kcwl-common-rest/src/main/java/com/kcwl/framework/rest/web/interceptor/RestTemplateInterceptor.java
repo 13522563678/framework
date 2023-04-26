@@ -7,6 +7,7 @@ import com.kcwl.framework.grayscale.utils.GrayMarkContextHolder;
 import com.kcwl.framework.rest.helper.SessionJwtHelper;
 import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.tenant.TenantDataHolder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -21,6 +22,7 @@ import java.io.IOException;
 /**
  * @author ckwl
  */
+@Slf4j
 public class RestTemplateInterceptor implements ClientHttpRequestInterceptor {
 
     private CommonWebProperties.AppAuthInfo appAuthInfo;
@@ -40,11 +42,18 @@ public class RestTemplateInterceptor implements ClientHttpRequestInterceptor {
         if (requestUserAgent != null) {
             headers.add(UserAgent.REQUEST_AGENT_HEADER_NAME, requestUserAgent.nextRequestUserAgent().toString());
             String jwtSession =  requestUserAgent.getJwtSession();
-            if ( jwtSession != null ) {
+            if ( jwtSession == null ) {
                 jwtSession = SessionJwtHelper.createJwtSession(requestUserAgent, SessionContext.getSessionData());
             }
             if ( jwtSession != null ) {
                 headers.add(GlobalConstant.KC_SESSION_JWT, jwtSession);
+            }
+            if ( log.isDebugEnabled() ) {
+                if ( jwtSession != null ) {
+                    log.debug("jwtSession size: {}", jwtSession.length());
+                } else {
+                    log.debug("jwtSession is empty");
+                }
             }
         }
         headers.add(UserAgent.REQUEST_AGENT_CLIENT_FIELD_NAME, UserAgent.AGENT_CLIENT_FEIGN);

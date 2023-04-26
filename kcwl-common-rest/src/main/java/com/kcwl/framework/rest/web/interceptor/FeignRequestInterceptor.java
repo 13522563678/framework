@@ -37,7 +37,7 @@ public class FeignRequestInterceptor implements RequestInterceptor {
         if (requestUserAgent != null) {
             template.header(UserAgent.REQUEST_AGENT_HEADER_NAME, requestUserAgent.nextRequestUserAgent().toString());
             String jwtSession =  requestUserAgent.getJwtSession();
-            if ( jwtSession != null ) {
+            if ( jwtSession == null ) {
                 jwtSession = SessionJwtHelper.createJwtSession(requestUserAgent, SessionContext.getSessionData());
             }
             if ( jwtSession != null ) {

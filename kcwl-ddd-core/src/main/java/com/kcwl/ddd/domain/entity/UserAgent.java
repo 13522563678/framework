@@ -37,6 +37,7 @@ public class UserAgent {
     private static final String EQUALSIGN="=";
 
     private Map<String, String> userAgent = new HashMap<String, String>();
+    private String jwtSession;
 
     public UserAgent() {
     }
@@ -200,5 +201,13 @@ public class UserAgent {
                 }
             }
         }
+    }
+
+    public String getJwtSession() {
+        return jwtSession;
+    }
+
+    public void setJwtSession(String jwtSession) {
+        this.jwtSession = jwtSession;
     }
 }

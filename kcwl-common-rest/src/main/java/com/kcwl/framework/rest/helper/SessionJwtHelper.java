@@ -12,6 +12,10 @@ public class SessionJwtHelper {
 
     private static final String JWT_ENC_IV = "1234567kc9876543";
 
+    private SessionJwtHelper(){
+    }
+
+
     public static SessionData getJwtSessionData(String jwtSession, UserAgent requestUserAgent) {
         String jwtEncKey = KcKeyManager.getInstance().getParamPrivateKey(requestUserAgent.getProduct());
         String jsonSession = KcEncryptAesUtil.decryptWithBase62(jwtSession, jwtEncKey, JWT_ENC_IV);
@@ -22,7 +26,7 @@ public class SessionJwtHelper {
         if ( sessionData != null ) {
             String jwtEncKey = KcKeyManager.getInstance().getParamPrivateKey(requestUserAgent.getProduct());
             String jsonSession = JsonUtil.toJson(sessionData);
-            return KcEncryptAesUtil.encrypt(jsonSession, jwtEncKey, JWT_ENC_IV);
+            return KcEncryptAesUtil.encryptWithBase62(jsonSession, jwtEncKey, JWT_ENC_IV);
         }
         return null;
     }

@@ -4,6 +4,7 @@ import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.constants.GlobalConstant;
 import com.kcwl.ddd.infrastructure.session.SessionContext;
 import com.kcwl.framework.grayscale.utils.GrayMarkContextHolder;
+import com.kcwl.framework.rest.helper.SessionJwtHelper;
 import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.tenant.TenantDataHolder;
 import org.springframework.http.HttpHeaders;
@@ -38,6 +39,13 @@ public class RestTemplateInterceptor implements ClientHttpRequestInterceptor {
         UserAgent requestUserAgent = SessionContext.getRequestUserAgent();
         if (requestUserAgent != null) {
             headers.add(UserAgent.REQUEST_AGENT_HEADER_NAME, requestUserAgent.nextRequestUserAgent().toString());
+            String jwtSession =  requestUserAgent.getJwtSession();
+            if ( jwtSession != null ) {
+                jwtSession = SessionJwtHelper.createJwtSession(requestUserAgent, SessionContext.getSessionData());
+            }
+            if ( jwtSession != null ) {
+                headers.add(GlobalConstant.KC_SESSION_JWT, jwtSession);
+            }
         }
         headers.add(UserAgent.REQUEST_AGENT_CLIENT_FIELD_NAME, UserAgent.AGENT_CLIENT_FEIGN);
 

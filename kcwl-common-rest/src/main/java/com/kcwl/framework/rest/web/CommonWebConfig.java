@@ -8,16 +8,15 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import com.kcwl.ddd.infrastructure.constants.EmptyObject;
+import com.kcwl.framework.rest.helper.ConfigBeanName;
 import com.kcwl.framework.rest.helper.KcServiceProxy;
 import com.kcwl.framework.rest.helper.SessionCacheProxy;
+import com.kcwl.framework.rest.helper.SessionJwtHelper;
 import com.kcwl.framework.rest.jackson.NullFieldBeanSerializerModifier;
 import com.kcwl.framework.rest.web.interceptor.*;
 import com.kcwl.framework.rest.web.interceptor.impl.ApiMockRepository;
 import com.kcwl.framework.rest.web.interceptor.impl.ReplayProtectService;
-import com.kcwl.framework.utils.ClassUtil;
-import com.kcwl.framework.utils.CollectionUtil;
-import com.kcwl.framework.utils.JsonUtil;
-import com.kcwl.framework.utils.StringUtil;
+import com.kcwl.framework.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
@@ -57,7 +56,10 @@ public class CommonWebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //session拦截器
-        CommonWebProperties.ApiAuthConfig sessionConfig = webProperties.getSession();
+        KcBeanRepository kcBeanRepository = KcBeanRepository.getInstance();
+        kcBeanRepository.saveBean(ConfigBeanName.SESSION_CONFIG_NAME, webProperties.getSession());
+
+        CommonWebProperties.ApiAuthConfig sessionConfig = webProperties.getSession().getApiAuthConfig();
         addApiAuthInterceptor(sessionConfig, registry, new UserSessionInterceptor(sessionCacheProxy, sessionConfig.getIgnorePathPatterns(), sessionConfig.isIgnoreSession()));
 
         //user接口接口

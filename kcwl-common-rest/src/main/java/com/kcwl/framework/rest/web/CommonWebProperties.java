@@ -25,7 +25,7 @@ public class CommonWebProperties {
     private ApiAuthConfig api = new ApiAuthConfig(DEFAULT_USER_API_PATH_PATTERN);
     private ApiAuthConfig crm = new ApiAuthConfig(false);
     private ApiAuthConfig deny = new ApiAuthConfig();
-    private ApiAuthConfig session = new ApiAuthConfig(DEFAULT_ALL_PATH_PATTERN);
+    private SessionConfig session = new SessionConfig(DEFAULT_ALL_PATH_PATTERN);
     private ApiAuthConfig mock = new ApiAuthConfig(false);
 
     private Tenant tenant = new Tenant();
@@ -100,6 +100,45 @@ public class CommonWebProperties {
 
         public ApiAuthConfig(boolean enabled) {
             this.enabled = enabled;
+        }
+    }
+
+    @Data
+    public static class SessionConfig {
+        private boolean enabled = true;
+        private boolean ignoreSession = false;
+        private boolean renew = false;
+        private int timeout = 30*60;
+
+        /*
+         * 需要拦截的请求路径
+         */
+        private List<String> pathPatterns = new ArrayList<>();
+
+        /*
+         * 需要排除的的请求路径
+         */
+        private List<String> excludePathPatterns = new ArrayList<>();
+
+        /*
+         * 过滤中忽略的的请求路径
+         */
+        private List<String> ignorePathPatterns = new ArrayList<>();
+
+        public SessionConfig() {
+
+        }
+        public SessionConfig(String defaultPathPatterns) {
+            pathPatterns.add(defaultPathPatterns);
+        }
+
+        public ApiAuthConfig getApiAuthConfig() {
+            ApiAuthConfig apiAuthConfig = new ApiAuthConfig();
+            apiAuthConfig.setEnabled(this.enabled);
+            apiAuthConfig.setPathPatterns(this.pathPatterns);
+            apiAuthConfig.setExcludePathPatterns(this.excludePathPatterns);
+            apiAuthConfig.setIgnorePathPatterns(this.ignorePathPatterns);
+            return apiAuthConfig;
         }
     }
 

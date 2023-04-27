@@ -35,6 +35,15 @@ public class KcBeanRepository {
     public Object getBean(String key) {
         return repository.get(key);
     }
+    public <T> T getBean(String key,  Class clazz) {
+        try{
+            return (T)clazz.cast(instance.getBean(key));
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public String getString(String key) {
         Object bean = getBean(key);
         if ( bean instanceof  String ) {

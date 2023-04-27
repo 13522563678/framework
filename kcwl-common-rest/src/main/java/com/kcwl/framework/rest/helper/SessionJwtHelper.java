@@ -12,7 +12,6 @@ import com.kcwl.framework.utils.KcEncryptAesUtil;
  */
 public class SessionJwtHelper {
 
-    public static final String JWT_CONFIG_NAME = "jwtConfig";
     private static final String JWT_ENC_IV = "1234567kc9876543";
 
     private SessionJwtHelper(){
@@ -37,12 +36,8 @@ public class SessionJwtHelper {
     }
 
     public static boolean isEnableJwtAuth() {
-        Object bean = KcBeanRepository.getInstance().getBean(JWT_CONFIG_NAME);
-        if ( bean instanceof CommonWebProperties.JwtConfig ) {
-            CommonWebProperties.JwtConfig jwtConfig = (CommonWebProperties.JwtConfig)bean;
-            return jwtConfig.isEnableJwtAuth();
-        }
-        return false;
+        CommonWebProperties.JwtConfig jwtConfig = KcBeanRepository.getInstance().getBean(ConfigBeanName.JWT_CONFIG_NAME, CommonWebProperties.JwtConfig.class);
+        return (jwtConfig != null) && jwtConfig.isEnableJwtAuth();
     }
 
     private static SessionData getJwtSessionData(SessionData sessionData) {

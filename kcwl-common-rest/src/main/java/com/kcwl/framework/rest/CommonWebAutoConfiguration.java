@@ -2,7 +2,7 @@ package com.kcwl.framework.rest;
 
 import com.kcwl.framework.cache.config.UserTokenRedisProperties;
 import com.kcwl.framework.rest.aop.PlatformFieldCheckAspect;
-import com.kcwl.framework.rest.helper.SessionJwtHelper;
+import com.kcwl.framework.rest.helper.ConfigBeanName;
 import com.kcwl.framework.rest.web.CommonWebConfig;
 import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.framework.rest.web.filter.ContentCacheFilter;
@@ -134,8 +134,8 @@ public class CommonWebAutoConfiguration {
     @Bean
     public KcBeanRepository jwtConfigRepository() {
         KcBeanRepository kcBeanRepository = KcBeanRepository.getInstance();
-        kcBeanRepository.saveBean(SessionJwtHelper.JWT_CONFIG_NAME, webProperties.getJwt());
-        log.info("jwtConfig: {}", kcBeanRepository.getBean(SessionJwtHelper.JWT_CONFIG_NAME));
+        kcBeanRepository.saveBean(ConfigBeanName.JWT_CONFIG_NAME, webProperties.getJwt());
+        log.info("jwtConfig: {}", kcBeanRepository.getBean(ConfigBeanName.JWT_CONFIG_NAME));
         return kcBeanRepository;
     }
 

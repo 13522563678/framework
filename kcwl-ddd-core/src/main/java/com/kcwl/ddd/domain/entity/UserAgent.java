@@ -26,6 +26,7 @@ public class UserAgent {
     public static final String FILED_APP_TYPE="appType";
     public static final String FILED_OS_TYPE="osType";
     public static final String FILED_VERSION_CODE ="vCode";
+    public static final String FILED_CLIENT_IP ="ip";
 
 
     public static final String FILED_REQUEST="request";
@@ -145,6 +146,14 @@ public class UserAgent {
 
     public void setVersionCode(String versionCode){
         userAgent.put(FILED_VERSION_CODE, versionCode);
+    }
+
+    public String getClientIp() {
+        return userAgent.get(FILED_CLIENT_IP);
+    }
+
+    public void setClientIp(String ip) {
+        userAgent.put(FILED_CLIENT_IP, ip);
     }
 
     public int getRequestDepth() {

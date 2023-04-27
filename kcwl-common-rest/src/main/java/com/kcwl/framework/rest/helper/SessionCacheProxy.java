@@ -1,12 +1,14 @@
 package com.kcwl.framework.rest.helper;
 
 
+import com.kcwl.ddd.application.constants.YesNoEnum;
 import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.constants.PrefixConstant;
 import com.kcwl.ddd.infrastructure.session.SessionData;
 import com.kcwl.framework.cache.ICacheService;
 import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.framework.utils.ClassUtil;
+import com.kcwl.framework.utils.KcBeanRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -40,8 +42,9 @@ public class SessionCacheProxy {
         Object sessionData = null;
         String sessionKey = determineSessionKey(requestUserAgent);
         try {
-            if (sessionKey != null) {
-                sessionData = userTokenCache.get(sessionKey);
+            sessionData = userTokenCache.get(sessionKey);
+            if ( sessionData != null ) {
+                renewSession(requestUserAgent.getSessionId(), sessionKey);
             }
         } catch (Exception e) {
             log.error("无法获取session信息：{}", e.getMessage());
@@ -121,5 +124,18 @@ public class SessionCacheProxy {
 
         }
         return sessionKey;
+    }
+
+    private void renewSession(String sessionId, String sessionKey) {
+        CommonWebProperties.SessionConfig sessionConfig = KcBeanRepository.getInstance().getBean(ConfigBeanName.SESSION_CONFIG_NAME, CommonWebProperties.SessionConfig.class);
+        if ( sessionConfig != null && sessionConfig.isRenew() ) {
+            String renewSessionKey = sessionKey + ":renew";
+            Object renewSessionFlag = userTokenCache.get(renewSessionKey);
+            if ( renewSessionFlag == null ) {
+                userTokenCache.expire(sessionKey, sessionConfig.getTimeout());
+                userTokenCache.save(renewSessionKey, YesNoEnum.YEA.getValue(), sessionConfig.getTimeout()/2);
+                log.info("renew session timeout {} by {}", sessionId, sessionConfig.getTimeout());
+            }
+        }
     }
 }

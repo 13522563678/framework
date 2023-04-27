@@ -41,7 +41,7 @@ public class RequestUserAgentHelper {
             requestUserAgent.setAppType(RequestUtil.getCookieValue(request, UserAgent.FILED_APP_TYPE));
             requestUserAgent.setOperatingSystem(RequestUtil.getCookieValue(request, UserAgent.FILED_OPERATING_SYSTEM));
             requestUserAgent.setVersionCode(RequestUtil.getCookieValue(request, UserAgent.FILED_VERSION_CODE));
-
+            requestUserAgent.setClientIp(RequestUtil.getClientIpAddr(request));
         }
         return requestUserAgent;
     }

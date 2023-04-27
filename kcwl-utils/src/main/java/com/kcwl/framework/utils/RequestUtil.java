@@ -13,7 +13,7 @@ import java.util.function.Function;
  */
 public class RequestUtil {
     private static final String[] IP_HEADER_NAMES = new String[]
-            {"X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP", "X-Real-IP"};
+            {"X-Forwarded-For", "X-Real-IP", "Proxy-Client-IP", "WL-Proxy-Client-IP"};
     private static final String IP_UNKNOWN = "unknown";
 
     private RequestUtil() {

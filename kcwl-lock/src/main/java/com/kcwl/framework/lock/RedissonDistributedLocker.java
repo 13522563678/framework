@@ -52,12 +52,20 @@ public class RedissonDistributedLocker implements DistributedLocker {
     @Override
     public void unlock(String lockKey) {
         RLock lock = redissonClient.getLock(lockKey);
-        lock.unlock();
+        try {
+            lock.unlock();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void unlock(RLock lock) {
-        lock.unlock();
+        try {
+            lock.unlock();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setRedissonClient(RedissonClient redissonClient) {

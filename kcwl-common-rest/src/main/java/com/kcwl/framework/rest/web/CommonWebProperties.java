@@ -72,6 +72,7 @@ public class CommonWebProperties {
     @Data
     public static class ApiAuthConfig {
         private boolean enabled = true;
+        private boolean signVerify = false;
         private boolean ignoreSession = false;
         private String appSecret ="kcwl@123456";
         private  long requestTimeout = 180*1000;
@@ -151,6 +152,14 @@ public class CommonWebProperties {
     @Data
     public static class Crypt {
         private boolean enabled = true;
+        /*
+         * 需要排除的的请求路径
+         */
+        private List<String> excludePathPatterns = new ArrayList<>();
+
+        public boolean excludePath(String apiPath) {
+            return excludePathPatterns.contains(apiPath);
+        }
     }
 
     @Data

@@ -32,20 +32,23 @@ public class SignAuthServiceImpl implements IAuthService {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(authInfo.getSsid()).append(authInfo.getNonce()).append(authInfo.getTimeStamp()).append(authInfo.getUrl());
+        sb.append(authInfo.getKcToken()).append(authInfo.getSsid()).append(authInfo.getNonce()).append(authInfo.getTimeStamp()).append(authInfo.getUrl());
 
         try {
             //偏移量，必须16位
             String key  = authInfo.getKey().substring(0, AUTH_KEY_SIZE);
             String iv = key;
-            String signInfo = KcEncryptAesUtil.encrypt( sb.toString(), key, iv);
+            String signSrc = sb.toString();
+
+            String signInfo = KcEncryptAesUtil.encrypt(signSrc, key, iv);
             String md5Hex = DigestUtils.md5Hex(signInfo);
-            log.debug("key={}; md5Hex={}; src={}", key, md5Hex, sb.toString());
             if ( md5Hex.equals(authInfo.getSign()) ) {
                 return true;
             }
+            log.warn("si0={}; si1={}; si2={}; k={}; sr={}", signInfo, authInfo.getSign(), md5Hex, key, signSrc);
+
         } catch (Exception e) {
-            log.info("{}", e.getMessage());
+            log.info("签名异常：{}", e.getMessage());
         }
         return false;
     }

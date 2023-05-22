@@ -13,9 +13,11 @@ import com.kcwl.framework.rest.helper.KcServiceProxy;
 import com.kcwl.framework.rest.helper.SessionCacheProxy;
 import com.kcwl.framework.rest.helper.SessionJwtHelper;
 import com.kcwl.framework.rest.jackson.NullFieldBeanSerializerModifier;
+import com.kcwl.framework.rest.service.IAuthService;
 import com.kcwl.framework.rest.web.interceptor.*;
 import com.kcwl.framework.rest.web.interceptor.impl.ApiMockRepository;
 import com.kcwl.framework.rest.web.interceptor.impl.ReplayProtectService;
+import com.kcwl.framework.rest.web.interceptor.impl.SignAuthServiceImpl;
 import com.kcwl.framework.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -63,7 +65,11 @@ public class CommonWebConfig implements WebMvcConfigurer {
         addApiAuthInterceptor(sessionConfig, registry, new UserSessionInterceptor(sessionCacheProxy, sessionConfig.getIgnorePathPatterns(), sessionConfig.isIgnoreSession()));
 
         //user接口接口
-        addApiAuthInterceptor(webProperties.getApi(), registry, new UserApiRequestInterceptor(webProperties.getSso().getSupportProducts()));
+        IAuthService signAuthService = null;
+        if ( webProperties.getApi().isSignVerify() ) {
+            signAuthService = new SignAuthServiceImpl();
+        }
+        addApiAuthInterceptor(webProperties.getApi(), registry, new UserApiRequestInterceptor(webProperties.getSso().getSupportProducts(), signAuthService));
 
         //inner接口
         CommonWebProperties.ApiAuthConfig innerApiConfig = webProperties.getInner();

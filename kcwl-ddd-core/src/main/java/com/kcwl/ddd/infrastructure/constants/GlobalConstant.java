@@ -11,8 +11,8 @@ public class GlobalConstant {
     public static final String APP_SECRET_FIELD_NAME = "appSecret";
     public static final String KC_APP_ID = "x-kc-appId";
     public static final String KC_APP_ONCE = "x-kc-once";
-    public static final String KC_APP_SIGN = "x-kc-sign";
-    public static final String KC_APP_TIMESTAMP = "x-kc-timestamp";
+    public static final String KC_APP_SIGN = "sign";
+    public static final String KC_APP_TIMESTAMP = "timestamp";
     public static final String KC_SESSION_JWT = "x-kc-jwt";
 
     public static final String UNIOIN_TENANT_ID_SUFFIX= "00";

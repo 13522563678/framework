@@ -1,12 +1,13 @@
 package com.kcwl.framework.rest.web.interceptor;
 
-import cn.hutool.extra.spring.SpringUtil;
+import com.kcwl.common.web.ApiAuthInfo;
 import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.api.CommonCode;
 import com.kcwl.ddd.infrastructure.session.SessionContext;
 import com.kcwl.ddd.infrastructure.session.SessionData;
 import com.kcwl.framework.auth.IKcSsoAuth;
 import com.kcwl.framework.rest.helper.ResponseHelper;
+import com.kcwl.framework.rest.service.IAuthService;
 import com.kcwl.framework.utils.ContextBeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -24,9 +25,11 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
 
     List<String> supportProducts;
     IKcSsoAuth kcSsoAuth;
+    IAuthService authService;
 
-    public UserApiRequestInterceptor(List<String> supportProducts) {
+    public UserApiRequestInterceptor(List<String> supportProducts, IAuthService authService) {
         this.supportProducts = supportProducts;
+        this.authService = authService;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
         }
 
         if ( StringUtils.isEmpty(userAgent.getSessionId() ) ) {
-            ResponseHelper.buildResponseBody(CommonCode.FIELD_NULL.getCode(), "sessionID不能为空", response);
+            ResponseHelper.buildResponseBody(CommonCode.FIELD_NULL.getCode(), "未登录00006", response);
             return false;
         }
 
@@ -54,9 +57,12 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
             ResponseHelper.buildResponseBody(CommonCode.UN_LOGIN, response);
             return false;
         }
-
         if ( !userAgent.getSessionId().equals(sessionData.getSessionId()) ) {
             ResponseHelper.buildResponseBody(CommonCode.OTHER_EQUIPMENT_LOGIN, response);
+            return false;
+        }
+        if ( (authService != null)  && authService.verify(getApiAuthInfo(request, userAgent, sessionData))) {
+            ResponseHelper.buildResponseBody(CommonCode.AUTH_ERROR_CODE, response);
             return false;
         }
         return true;
@@ -85,5 +91,17 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
             kcSsoAuth = ContextBeanUtil.getBean(IKcSsoAuth.class);
         }
         return kcSsoAuth;
+    }
+
+    private ApiAuthInfo getApiAuthInfo(HttpServletRequest request, UserAgent userAgent, SessionData sessionData) {
+        ApiAuthInfo apiAuthInfo = new ApiAuthInfo();
+        apiAuthInfo.setKcToken(userAgent.getKcToken());
+        apiAuthInfo.setSsid(userAgent.getSessionId());
+        apiAuthInfo.setNonce(userAgent.getKcTrace());
+        apiAuthInfo.setTimeStamp(userAgent.getTimestamp());
+        apiAuthInfo.setSign(userAgent.getAppSign());
+        apiAuthInfo.setUrl(request.getRequestURI());
+        apiAuthInfo.setKey(sessionData.getKey());
+        return apiAuthInfo;
     }
 }

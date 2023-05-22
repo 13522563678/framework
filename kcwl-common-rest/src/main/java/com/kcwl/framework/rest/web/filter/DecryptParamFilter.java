@@ -4,11 +4,13 @@ import com.kcwl.ddd.application.constants.YesNoEnum;
 import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.api.CommonCode;
 import com.kcwl.ddd.infrastructure.encrypt.KcKeyManager;
+import com.kcwl.framework.rest.helper.ConfigBeanName;
 import com.kcwl.framework.rest.helper.ResponseHelper;
 import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.framework.rest.web.filter.reqeust.FormToJsonRequestWrapper;
 import com.kcwl.framework.utils.DecryptUtil;
 import com.kcwl.framework.rest.web.filter.reqeust.DecryptRequestWrapper;
+import com.kcwl.framework.utils.KcBeanRepository;
 import com.kcwl.framework.utils.MapParamUtil;
 import com.kcwl.framework.utils.RequestUtil;
 import lombok.SneakyThrows;
@@ -37,8 +39,9 @@ public class DecryptParamFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String encryptionData  = httpServletRequest.getParameter("encryptionData");
-
-        if ( !enableCrypt || StringUtils.isBlank(encryptionData) ){
+        String apiPath = httpServletRequest.getRequestURI();
+        CommonWebProperties.Crypt cryptConfig = KcBeanRepository.getInstance().getBean(ConfigBeanName.CRYPT_CONFIG_NAME, CommonWebProperties.Crypt.class);
+        if ( !cryptConfig.isEnabled() || StringUtils.isBlank(encryptionData) || cryptConfig.excludePath(apiPath)   ){
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }

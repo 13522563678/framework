@@ -7,7 +7,7 @@ package com.kcwl.framework.rest.helper;
 public class ConfigBeanName {
     public static final String JWT_CONFIG_NAME = "jwtConfig";
     public static final String SESSION_CONFIG_NAME = "sessionConfig";
-    public static final String CRYPT_CONFIG_NAME = "cryptConfig";
+    public static final String COMMON_WEB_CONFIG_NAME = "commonWebConfig";
 
     private ConfigBeanName() {
     }

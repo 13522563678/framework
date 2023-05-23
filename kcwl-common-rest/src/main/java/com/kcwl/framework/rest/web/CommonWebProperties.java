@@ -1,11 +1,13 @@
 package com.kcwl.framework.rest.web;
 
+import com.kcwl.ddd.infrastructure.constants.EmptyObject;
 import com.kcwl.ddd.infrastructure.constants.GlobalConstant;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author 姚华成
@@ -110,6 +112,7 @@ public class CommonWebProperties {
         private boolean ignoreSession = false;
         private boolean renew = false;
         private int timeout = 30*60;
+        private ConcurrentHashMap<String, String> shareProduct = new ConcurrentHashMap<>();
 
         /*
          * 需要拦截的请求路径
@@ -140,6 +143,17 @@ public class CommonWebProperties {
             apiAuthConfig.setExcludePathPatterns(this.excludePathPatterns);
             apiAuthConfig.setIgnorePathPatterns(this.ignorePathPatterns);
             return apiAuthConfig;
+        }
+
+        public String  getRealProduct(Object product) {
+            String agentProduct;
+            if ( product != null ) {
+                agentProduct = product.toString();
+            } else {
+                agentProduct = EmptyObject.STRING;
+            }
+            String realProduct = shareProduct.get(agentProduct);
+            return ( realProduct != null ) ? realProduct : agentProduct;
         }
     }
 

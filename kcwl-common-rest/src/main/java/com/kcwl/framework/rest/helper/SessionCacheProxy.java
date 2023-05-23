@@ -105,13 +105,15 @@ public class SessionCacheProxy {
 
     private String getSessionKey(Object product, String sessionId) {
         StringBuilder sb = new StringBuilder();
-        sb.append(PrefixConstant.REDIS_USER_SESSION).append(product).append(PREFIX_DELIMITER).append(sessionId);
+        String realProduct = commonWebProperties.getSession().getRealProduct(product);
+        sb.append(PrefixConstant.REDIS_USER_SESSION).append(realProduct).append(PREFIX_DELIMITER).append(sessionId);
         return sb.toString();
     }
 
     private String getSessionKey(String platformNo, Object product, String sessionId) {
         StringBuilder sb = new StringBuilder();
-        sb.append(PrefixConstant.REDIS_USER_SESSION).append(platformNo).append(PREFIX_DELIMITER).append(product).append(PREFIX_DELIMITER).append(sessionId);
+        String realProduct = commonWebProperties.getSession().getRealProduct(product);
+        sb.append(PrefixConstant.REDIS_USER_SESSION).append(platformNo).append(PREFIX_DELIMITER).append(realProduct).append(PREFIX_DELIMITER).append(sessionId);
         return sb.toString();
     }
 

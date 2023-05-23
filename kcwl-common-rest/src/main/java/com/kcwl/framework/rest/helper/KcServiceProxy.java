@@ -1,7 +1,6 @@
 package com.kcwl.framework.rest.helper;
 
 import com.kcwl.framework.utils.RequestUtil;
-import com.kcwl.framework.utils.StreamUtil;
 import com.kcwl.framework.utils.StringUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +8,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -19,10 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.charset.Charset;
-import java.util.HashMap;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.StringJoiner;
 
 /**
  * @author ckwl
@@ -61,9 +59,12 @@ public class KcServiceProxy {
         int restMode = choiceRestMode(serviceName);
         String apiUrl = getServiceApiUrl(serviceName, apiPath, queryString, restMode);
         Map<String, String> headers = RequestUtil.getHeaderMap(request);
-        String contentType = headers.computeIfAbsent(HttpHeaders.CONTENT_TYPE, k -> MediaType.APPLICATION_FORM_URLENCODED_VALUE);
+        String contentType = request.getContentType();
+        if ( contentType == null ) {
+            contentType = MediaType.APPLICATION_FORM_URLENCODED_VALUE;
+            headers.put(HttpHeaders.CONTENT_TYPE, contentType);
+        }
         Object params = getRequestBody(contentType, request);
-
         if ( log.isDebugEnabled() ) {
             log.debug("apiUrl={}; queryString={}", apiUrl, queryString);
             log.debug("httpMethod={}; contentType={}; requestBody={}", HttpMethod.resolve(request.getMethod()), contentType, params);
@@ -98,7 +99,7 @@ public class KcServiceProxy {
 
     private String getServiceApiUrl(String serviceName, String apiPath, String queryString, int restMode) throws UnsupportedEncodingException {
         String originalQueryString = decodeQueryString(queryString);
-        StringBuffer sbApiUrl = new StringBuffer();
+        StringBuilder sbApiUrl = new StringBuilder();
         if ( MODE_LOAD_BALANCED == restMode ) {
             sbApiUrl.append("http://");
         }
@@ -129,8 +130,8 @@ public class KcServiceProxy {
 
     private Object getRequestBody(String contentType, HttpServletRequest request) throws IOException {
         Object body = null;
-        if ( contentType != null && contentType.startsWith("application/json") ) {
-            body = StreamUtil.copyToString(request.getInputStream(),  Charset.forName("UTF-8"));
+        if ( contentType != null && contentType.startsWith(MediaType.APPLICATION_JSON_VALUE) ) {
+            body = StreamUtils.copyToString(request.getInputStream(),  StandardCharsets.UTF_8);
         } else {
             body = request.getParameterMap();
         }

@@ -10,6 +10,7 @@ import com.kcwl.tenant.TenantDataHolder;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -36,6 +37,8 @@ public class FeignRequestInterceptor implements RequestInterceptor {
         UserAgent requestUserAgent = SessionContext.getRequestUserAgent();
         if (requestUserAgent != null) {
             template.header(UserAgent.REQUEST_AGENT_HEADER_NAME, requestUserAgent.nextRequestUserAgent().toString());
+            //用以支持调用2.0接口,2.0接口需要传Cookie参数
+            template.header(HttpHeaders.COOKIE, requestUserAgent.getCookieValue());
             applyJwt(template, requestUserAgent);
         }
         template.header(UserAgent.REQUEST_AGENT_CLIENT_FIELD_NAME, UserAgent.AGENT_CLIENT_FEIGN);

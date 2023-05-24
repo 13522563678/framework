@@ -227,4 +227,11 @@ public class UserAgent {
     public void setJwtSession(String jwtSession) {
         this.jwtSession = jwtSession;
     }
+
+    public String getCookieValue() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(FILED_TOKEN).append(EQUALSIGN).append(this.getToken());
+        sb.append(SEMICOLON).append(FILED_SESSION_ID).append(EQUALSIGN).append(this.getSessionId());
+        return  sb.toString();
+    }
 }

@@ -4,11 +4,13 @@ import com.kcwl.ddd.application.constants.YesNoEnum;
 import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.api.CommonCode;
 import com.kcwl.ddd.infrastructure.encrypt.KcKeyManager;
+import com.kcwl.framework.rest.helper.ConfigBeanName;
 import com.kcwl.framework.rest.helper.ResponseHelper;
 import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.framework.rest.web.filter.reqeust.FormToJsonRequestWrapper;
 import com.kcwl.framework.utils.DecryptUtil;
 import com.kcwl.framework.rest.web.filter.reqeust.DecryptRequestWrapper;
+import com.kcwl.framework.utils.KcBeanRepository;
 import com.kcwl.framework.utils.MapParamUtil;
 import com.kcwl.framework.utils.RequestUtil;
 import lombok.SneakyThrows;
@@ -30,15 +32,15 @@ import java.util.Map;
 @Slf4j
 public class DecryptParamFilter extends OncePerRequestFilter {
 
-    private boolean enableCrypt=true;
-    private CommonWebProperties.HttpContent httpContent;
+     private CommonWebProperties.HttpContent httpContent;
 
     @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String encryptionData  = httpServletRequest.getParameter("encryptionData");
-
-        if ( !enableCrypt || StringUtils.isBlank(encryptionData) ){
+        String apiPath = httpServletRequest.getRequestURI();
+        CommonWebProperties.Crypt cryptConfig = getCryptConfig();
+        if ( !cryptConfig.isEnabled() || StringUtils.isBlank(encryptionData) || cryptConfig.excludePath(apiPath)   ){
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
@@ -71,10 +73,6 @@ public class DecryptParamFilter extends OncePerRequestFilter {
             log.error("出错了："+e.getMessage(),e);
             ResponseHelper.buildResponseBody(CommonCode.SYS_ERROR, httpServletResponse);
         }
-    }
-
-    public void setEnableCrypt(boolean enabled) {
-        this.enableCrypt = enabled;
     }
 
     public void setHttpContent(CommonWebProperties.HttpContent httpContent) {
@@ -112,5 +110,10 @@ public class DecryptParamFilter extends OncePerRequestFilter {
 
     private String getProductType(HttpServletRequest httpServletRequest) {
        return RequestUtil.getCookieValue(httpServletRequest, UserAgent.FILED_PRODUCT);
+    }
+
+    private CommonWebProperties.Crypt getCryptConfig() {
+        CommonWebProperties commonWebProperties = KcBeanRepository.getInstance().getBean(ConfigBeanName.COMMON_WEB_CONFIG_NAME, CommonWebProperties.class);
+        return commonWebProperties.getCrypt();
     }
 }

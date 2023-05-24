@@ -76,8 +76,10 @@ public class CommonWebAutoConfiguration {
 
     @Bean
     public FilterRegistrationBean<DecryptParamFilter> decryptParamFilter() {
+        KcBeanRepository kcBeanRepository = KcBeanRepository.getInstance();
+        kcBeanRepository.saveBean(ConfigBeanName.COMMON_WEB_CONFIG_NAME, webProperties);
+
         DecryptParamFilter decryptParamFilter = new DecryptParamFilter();
-        decryptParamFilter.setEnableCrypt(webProperties.getCrypt().isEnabled());
         decryptParamFilter.setHttpContent(webProperties.getHttpContent());
         FilterRegistrationBean<DecryptParamFilter> bean = new FilterRegistrationBean<>(decryptParamFilter);
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE + 2);

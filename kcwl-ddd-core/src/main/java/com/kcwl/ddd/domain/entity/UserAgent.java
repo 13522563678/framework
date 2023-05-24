@@ -169,6 +169,14 @@ public class UserAgent {
         userAgent.put(FILED_OPERATING_SYSTEM, operatingSystem);
     }
 
+    public String  getAppSign() {
+        return userAgent.get(GlobalConstant.KC_APP_SIGN);
+    }
+
+    public String  getTimestamp() {
+        return userAgent.get(GlobalConstant.KC_APP_TIMESTAMP);
+    }
+
     public boolean isServerRequest() {
         String request = userAgent.get(FILED_REQUEST);
         return (request != null) && request.equals(REQUEST_SERVER_TYPE);
@@ -218,5 +226,12 @@ public class UserAgent {
 
     public void setJwtSession(String jwtSession) {
         this.jwtSession = jwtSession;
+    }
+
+    public String getCookieValue() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(FILED_TOKEN).append(EQUALSIGN).append(this.getToken());
+        sb.append(SEMICOLON).append(FILED_SESSION_ID).append(EQUALSIGN).append(this.getSessionId());
+        return  sb.toString();
     }
 }

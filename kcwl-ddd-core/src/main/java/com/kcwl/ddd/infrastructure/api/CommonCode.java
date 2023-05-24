@@ -21,7 +21,7 @@ public enum CommonCode {
     OTHER_EQUIPMENT_LOGIN("00009","该账户在别的设备登录"),
     UN_AUTH("00010","未认证"),
     STRING_LENGTH_ERROR("00011","字符串长度不符合格式"),
-    AUTH_ERROR_CODE("00012","秘钥无效"),
+    AUTH_ERROR_CODE("00012","认证信息无效"),
     PARAM_VALID_ERROR_CODE("00013","字段为空"),
     DATA_LOGIC_ERROR_CODE("00014","字段格式不正确"),
     REQUEST_NOT_FOUND("00015", "请求不存在"),

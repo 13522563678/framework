@@ -4,6 +4,7 @@ package com.kcwl.common.web;
  * @author ckwl
  */
 public class ApiAuthInfo {
+    private String kcToken;
     private String url;
     private String ssid;
     private String nonce;
@@ -57,5 +58,13 @@ public class ApiAuthInfo {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getKcToken() {
+        return kcToken;
+    }
+
+    public void setKcToken(String kcToken) {
+        this.kcToken = kcToken;
     }
 }

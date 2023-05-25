@@ -65,11 +65,7 @@ public class CommonWebConfig implements WebMvcConfigurer {
         addApiAuthInterceptor(sessionConfig, registry, new UserSessionInterceptor(sessionCacheProxy, sessionConfig.getIgnorePathPatterns(), sessionConfig.isIgnoreSession()));
 
         //user接口接口
-        IAuthService signAuthService = null;
-        if ( webProperties.getApi().isSignVerify() ) {
-            signAuthService = new SignAuthServiceImpl();
-        }
-        addApiAuthInterceptor(webProperties.getApi(), registry, new UserApiRequestInterceptor(webProperties.getSso().getSupportProducts(), signAuthService));
+        addApiAuthInterceptor(webProperties.getApi(), registry, new UserApiRequestInterceptor(webProperties.getSso().getSupportProducts(),  new SignAuthServiceImpl()));
 
         //inner接口
         CommonWebProperties.ApiAuthConfig innerApiConfig = webProperties.getInner();

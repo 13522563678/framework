@@ -3,12 +3,17 @@ package com.kcwl.framework.rest.web.interceptor;
 import com.kcwl.common.web.ApiAuthInfo;
 import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.api.CommonCode;
+import com.kcwl.ddd.infrastructure.constants.GlobalConstant;
 import com.kcwl.ddd.infrastructure.session.SessionContext;
 import com.kcwl.ddd.infrastructure.session.SessionData;
 import com.kcwl.framework.auth.IKcSsoAuth;
+import com.kcwl.framework.rest.helper.ConfigBeanName;
 import com.kcwl.framework.rest.helper.ResponseHelper;
 import com.kcwl.framework.rest.service.IAuthService;
+import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.framework.utils.ContextBeanUtil;
+import com.kcwl.framework.utils.KcBeanRepository;
+import com.kcwl.framework.utils.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -61,7 +66,7 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
             ResponseHelper.buildResponseBody(CommonCode.OTHER_EQUIPMENT_LOGIN, response);
             return false;
         }
-        if ( (authService != null)  && authService.verify(getApiAuthInfo(request, userAgent, sessionData))) {
+        if ( enableSignVerify() && !authService.verify(getApiAuthInfo(request, userAgent, sessionData))) {
             ResponseHelper.buildResponseBody(CommonCode.AUTH_ERROR_CODE, response);
             return false;
         }
@@ -98,10 +103,16 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
         apiAuthInfo.setKcToken(userAgent.getKcToken());
         apiAuthInfo.setSsid(userAgent.getSessionId());
         apiAuthInfo.setNonce(userAgent.getKcTrace());
-        apiAuthInfo.setTimeStamp(userAgent.getTimestamp());
-        apiAuthInfo.setSign(userAgent.getAppSign());
+        apiAuthInfo.setTimeStamp(RequestUtil.getCookieValue(request, GlobalConstant.KC_APP_TIMESTAMP));
+        apiAuthInfo.setSign(RequestUtil.getCookieValue(request, GlobalConstant.KC_APP_SIGN));
         apiAuthInfo.setUrl(request.getRequestURI());
         apiAuthInfo.setKey(sessionData.getKey());
         return apiAuthInfo;
+    }
+
+    private boolean enableSignVerify() {
+        CommonWebProperties commonWebProperties = KcBeanRepository
+            .getInstance().getBean(ConfigBeanName.COMMON_WEB_CONFIG_NAME, CommonWebProperties.class);
+        return commonWebProperties.getApi().isSignVerify();
     }
 }

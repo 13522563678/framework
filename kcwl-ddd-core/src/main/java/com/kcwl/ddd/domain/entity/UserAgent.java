@@ -169,14 +169,6 @@ public class UserAgent {
         userAgent.put(FILED_OPERATING_SYSTEM, operatingSystem);
     }
 
-    public String  getAppSign() {
-        return userAgent.get(GlobalConstant.KC_APP_SIGN);
-    }
-
-    public String  getTimestamp() {
-        return userAgent.get(GlobalConstant.KC_APP_TIMESTAMP);
-    }
-
     public boolean isServerRequest() {
         String request = userAgent.get(FILED_REQUEST);
         return (request != null) && request.equals(REQUEST_SERVER_TYPE);

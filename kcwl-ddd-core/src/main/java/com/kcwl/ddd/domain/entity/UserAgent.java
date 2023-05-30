@@ -222,7 +222,9 @@ public class UserAgent {
 
     public String getCookieValue() {
         StringBuilder sb = new StringBuilder();
-        sb.append(FILED_TOKEN).append(EQUALSIGN).append(this.getToken());
+        sb.append(FILED_PRODUCT).append(EQUALSIGN).append(this.getProduct());
+        sb.append(SEMICOLON).append(FIELD_COOKIE_PLATFORM).append(EQUALSIGN).append(this.getPlatform());
+        sb.append(SEMICOLON).append(FILED_TOKEN).append(EQUALSIGN).append(this.getToken());
         sb.append(SEMICOLON).append(FILED_SESSION_ID).append(EQUALSIGN).append(this.getSessionId());
         return  sb.toString();
     }

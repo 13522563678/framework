@@ -1,5 +1,7 @@
 package com.kcwl.framework.rest.web.filter;
 
+import cn.hutool.extra.spring.SpringUtil;
+import cn.hutool.json.JSONUtil;
 import com.kcwl.ddd.application.constants.YesNoEnum;
 import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.api.CommonCode;
@@ -7,15 +9,18 @@ import com.kcwl.ddd.infrastructure.encrypt.KcKeyManager;
 import com.kcwl.framework.rest.helper.ConfigBeanName;
 import com.kcwl.framework.rest.helper.ResponseHelper;
 import com.kcwl.framework.rest.web.CommonWebProperties;
+import com.kcwl.framework.rest.web.filter.reqeust.DecryptRequestWrapper;
 import com.kcwl.framework.rest.web.filter.reqeust.FormToJsonRequestWrapper;
 import com.kcwl.framework.utils.DecryptUtil;
-import com.kcwl.framework.rest.web.filter.reqeust.DecryptRequestWrapper;
 import com.kcwl.framework.utils.KcBeanRepository;
 import com.kcwl.framework.utils.MapParamUtil;
 import com.kcwl.framework.utils.RequestUtil;
+import com.kcwl.sensitiveword.exception.SensitiveWordScanException;
+import com.kcwl.sensitiveword.provider.SensitiveWordScanProvider;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -25,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author ckwl
@@ -32,15 +38,16 @@ import java.util.Map;
 @Slf4j
 public class DecryptParamFilter extends OncePerRequestFilter {
 
-     private CommonWebProperties.HttpContent httpContent;
+    private CommonWebProperties.HttpContent httpContent;
 
     @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String encryptionData  = httpServletRequest.getParameter("encryptionData");
+        String encryptionData = httpServletRequest.getParameter("encryptionData");
         String apiPath = httpServletRequest.getRequestURI();
         CommonWebProperties.Crypt cryptConfig = getCryptConfig();
-        if ( !cryptConfig.isEnabled() || StringUtils.isBlank(encryptionData) || cryptConfig.excludePath(apiPath)   ){
+        CommonWebProperties.SensitiveWordConfig sensitiveWordConfig = getSensitiveWordConfig();
+        if (!cryptConfig.isEnabled() || StringUtils.isBlank(encryptionData) || cryptConfig.excludePath(apiPath)) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
@@ -48,15 +55,15 @@ public class DecryptParamFilter extends OncePerRequestFilter {
             String product = getProductType(httpServletRequest);
             String cryptKey = KcKeyManager.getInstance().getParamPrivateKey(product);
 
-            Map<String ,Object> param =DecryptUtil.decryptParam(encryptionData, cryptKey);
-            if(param==null){
+            Map<String, Object> param = DecryptUtil.decryptParam(encryptionData, cryptKey);
+            if (param == null) {
                 ResponseHelper.buildResponseBody(CommonCode.JSON_DECODE_FAIL, httpServletResponse);
                 return;
             }
 
             boolean isJsonContent = isJsonContentRequest(param);
 
-            if ( !isJsonContent ) {
+            if (!isJsonContent) {
                 for (Map.Entry<String, String[]> entry : httpServletRequest.getParameterMap().entrySet()) {
                     if ("encryptionData".equalsIgnoreCase(entry.getKey())) {
                         continue;
@@ -67,10 +74,30 @@ public class DecryptParamFilter extends OncePerRequestFilter {
                     }
                 }
             }
+            // 2023/6/5 敏感词检测
+            if (sensitiveWordConfig.isEnable() && sensitiveWordConfig.isGlobalScannerEnable()) {
+                try {
+                    SensitiveWordScanProvider sensitiveWordScanProvider = SpringUtil.getBean(SensitiveWordScanProvider.class);
+                    param.values().stream().filter(Objects::nonNull).forEach(value -> {
+                        if (sensitiveWordScanProvider.existsSensitiveWord(JSONUtil.toJsonStr(value))) {
+                            throw new SensitiveWordScanException(String.format("用户输入 %s 包含敏感词 !", value));
+                        }
+                    });
+                } catch (BeansException beansException) {
+                    log.error("敏感词检测，获取检测服务实例Bean异常：", beansException);
+                } catch (SensitiveWordScanException sensitiveWordScanException) {
+                    throw sensitiveWordScanException;
+                } catch (Exception exception) {
+                    log.error("敏感词检测，异常： ", exception);
+                }
+            }
             DecryptRequestWrapper requestWrapper = createDecryptRequestWrapper(httpServletRequest, param, isJsonContent);
             filterChain.doFilter(requestWrapper, httpServletResponse);
+        } catch (SensitiveWordScanException sensitiveWordScanException) {
+            log.error(" {} ", sensitiveWordScanException.getMessage());
+            ResponseHelper.buildResponseBody(CommonCode.CONTAIN_SENSITIVE_WORDS, httpServletResponse);
         } catch (Exception e) {
-            log.error("出错了："+e.getMessage(),e);
+            log.error("出错了：" + e.getMessage(), e);
             ResponseHelper.buildResponseBody(CommonCode.SYS_ERROR, httpServletResponse);
         }
     }
@@ -79,41 +106,46 @@ public class DecryptParamFilter extends OncePerRequestFilter {
         this.httpContent = httpContent;
     }
 
-    private DecryptRequestWrapper createDecryptRequestWrapper(HttpServletRequest httpServletRequest, Map<String ,Object> param, boolean isJsonContent) {
-        if ( log.isDebugEnabled() ) {
+    private DecryptRequestWrapper createDecryptRequestWrapper(HttpServletRequest httpServletRequest, Map<String, Object> param, boolean isJsonContent) {
+        if (log.isDebugEnabled()) {
             log.debug("enableFormToJson={}, isJsonContent={}", httpContent.isEnableFormToJson(), isJsonContent);
         }
-        if ( httpContent.isEnableFormToJson() && isJsonContent ) {
+        if (httpContent.isEnableFormToJson() && isJsonContent) {
             return new FormToJsonRequestWrapper(httpServletRequest, param);
         }
-        return new DecryptRequestWrapper(httpServletRequest, MapParamUtil.convertToMultiValueMapV2(param)) ;
+        return new DecryptRequestWrapper(httpServletRequest, MapParamUtil.convertToMultiValueMapV2(param));
     }
 
     private boolean isFormToJsonContext(HttpServletRequest httpServletRequest) {
         String path = RequestUtil.getRequestPath(httpServletRequest);
-        if ( MediaType.APPLICATION_FORM_URLENCODED_VALUE.equalsIgnoreCase(httpServletRequest.getContentType()) && httpContent.isFormToJson(path) ) {
+        if (MediaType.APPLICATION_FORM_URLENCODED_VALUE.equalsIgnoreCase(httpServletRequest.getContentType()) && httpContent.isFormToJson(path)) {
             return true;
         }
         return false;
     }
 
-    private boolean isJsonContentRequest(Map<String ,Object> param) {
+    private boolean isJsonContentRequest(Map<String, Object> param) {
         Integer jsonContentValue = MapParamUtil.getInteger(param, "isJsonContent");
-        if ( log.isDebugEnabled() ) {
+        if (log.isDebugEnabled()) {
             log.debug("jsonContentValue={} ", jsonContentValue);
         }
-        if ( jsonContentValue  != null ) {
+        if (jsonContentValue != null) {
             return jsonContentValue.equals(YesNoEnum.YEA.getValue());
         }
         return false;
     }
 
     private String getProductType(HttpServletRequest httpServletRequest) {
-       return RequestUtil.getCookieValue(httpServletRequest, UserAgent.FILED_PRODUCT);
+        return RequestUtil.getCookieValue(httpServletRequest, UserAgent.FILED_PRODUCT);
     }
 
     private CommonWebProperties.Crypt getCryptConfig() {
         CommonWebProperties commonWebProperties = KcBeanRepository.getInstance().getBean(ConfigBeanName.COMMON_WEB_CONFIG_NAME, CommonWebProperties.class);
         return commonWebProperties.getCrypt();
+    }
+
+    private CommonWebProperties.SensitiveWordConfig getSensitiveWordConfig() {
+        CommonWebProperties commonWebProperties = KcBeanRepository.getInstance().getBean(ConfigBeanName.COMMON_WEB_CONFIG_NAME, CommonWebProperties.class);
+        return commonWebProperties.getSensitiveWord();
     }
 }

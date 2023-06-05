@@ -113,5 +113,9 @@
             <artifactId>kcwl-grayscale</artifactId>
             <version>${kcwl-framework.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.kcwl.app</groupId>
+            <artifactId>kcwl-common-sensitive-word</artifactId>
+        </dependency>
     </dependencies>
 </project>

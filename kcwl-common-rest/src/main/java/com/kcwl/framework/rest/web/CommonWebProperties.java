@@ -41,6 +41,8 @@ public class CommonWebProperties {
     private SsoAuthInfo sso = new SsoAuthInfo();
     private JwtConfig jwt = new JwtConfig();
 
+    private SensitiveWordConfig sensitiveWord = new SensitiveWordConfig();
+
     /**
      * http客户端类型支持：
      * HttpComponent,
@@ -266,5 +268,11 @@ public class CommonWebProperties {
     @Data
     public static class  JwtConfig{
         private boolean enableJwtAuth = true;
+    }
+
+    @Data
+    public static class SensitiveWordConfig {
+        private boolean enable;
+        private boolean globalScannerEnable;
     }
 }

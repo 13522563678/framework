@@ -32,7 +32,7 @@ public enum CommonCode {
     BODY_EMPTY_FAIL("00020","请求参数不能为空"),
     RESOURCE_LOCK_FAIL("00021","无法获取资源"),
     API_MOCK_FAIL("00022","执行mock接口失败"),
-    CONTAIN_SENSITIVE_WORDS("00023","输入内容不正确"),
+    CONTAIN_SENSITIVE_WORDS("00023","您输入的内容包含违禁词!"),
     REQUEST_UNDER_RISK("00024","请求存在风险"),
     INVALID_USER_AGENT("00900","该功能需要升级您的APP版本。"),
     APP_VERSION_UPDATE("00901","该功能需要升级您的APP版本。"),

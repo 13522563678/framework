@@ -32,6 +32,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -44,6 +45,11 @@ public class DecryptParamFilter extends OncePerRequestFilter {
 
     private CommonWebProperties.HttpContent httpContent;
 
+    /**
+     * 默认的 排除的不参与 敏感词检测的 请求参数key
+     */
+    private final List<String> defaultSensitiveWordScanExcludeApiParamKeys =
+            Collections.unmodifiableList(ListUtil.list(false, "kctrace", "kctoken", "sign"));
 
     @SneakyThrows
     @Override
@@ -84,6 +90,7 @@ public class DecryptParamFilter extends OncePerRequestFilter {
                 try {
                     SensitiveWordScanProvider sensitiveWordScanProvider = SpringUtil.getBean(SensitiveWordScanProvider.class);
                     param.entrySet().stream()
+                            .filter(entry -> !CollUtil.contains(this.defaultSensitiveWordScanExcludeApiParamKeys, entry.getKey()))
                             .filter(entry -> !CollUtil.contains(sensitiveWordConfig.getExcludeApiParamKeys(), entry.getKey()))
                             .map(Map.Entry::getValue)
                             .filter(Objects::nonNull)

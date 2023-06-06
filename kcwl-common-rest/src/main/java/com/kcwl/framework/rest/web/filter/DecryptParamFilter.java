@@ -8,6 +8,7 @@ import cn.hutool.json.JSONUtil;
 import com.kcwl.ddd.application.constants.YesNoEnum;
 import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.api.CommonCode;
+import com.kcwl.ddd.infrastructure.constants.GlobalConstant;
 import com.kcwl.ddd.infrastructure.encrypt.KcKeyManager;
 import com.kcwl.framework.rest.helper.ConfigBeanName;
 import com.kcwl.framework.rest.helper.ResponseHelper;
@@ -49,7 +50,7 @@ public class DecryptParamFilter extends OncePerRequestFilter {
      * 默认的 排除的不参与 敏感词检测的 请求参数key
      */
     private final List<String> defaultSensitiveWordScanExcludeApiParamKeys =
-            Collections.unmodifiableList(ListUtil.list(false, "kctrace", "kctoken", "sign", "appId", "secretId", "timestamp"));
+            Collections.unmodifiableList(ListUtil.list(false, GlobalConstant.KC_TRACE, GlobalConstant.KC_TOKEN, GlobalConstant.KC_APP_SIGN, "appId", "secretId", GlobalConstant.KC_APP_TIMESTAMP));
 
     @SneakyThrows
     @Override

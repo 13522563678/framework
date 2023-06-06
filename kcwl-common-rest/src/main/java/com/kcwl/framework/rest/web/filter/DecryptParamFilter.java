@@ -1,6 +1,8 @@
 package com.kcwl.framework.rest.web.filter;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.json.JSONUtil;
 import com.kcwl.ddd.application.constants.YesNoEnum;
@@ -30,6 +32,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -40,6 +43,7 @@ import java.util.Objects;
 public class DecryptParamFilter extends OncePerRequestFilter {
 
     private CommonWebProperties.HttpContent httpContent;
+
 
     @SneakyThrows
     @Override
@@ -79,11 +83,15 @@ public class DecryptParamFilter extends OncePerRequestFilter {
             if (sensitiveWordConfig.isEnable() && sensitiveWordConfig.isGlobalScannerEnable() && !CollUtil.contains(sensitiveWordConfig.getExcludeApiPaths(), apiPath)) {
                 try {
                     SensitiveWordScanProvider sensitiveWordScanProvider = SpringUtil.getBean(SensitiveWordScanProvider.class);
-                    param.values().stream().filter(Objects::nonNull).forEach(value -> {
-                        if (sensitiveWordScanProvider.existsSensitiveWord(JSONUtil.toJsonStr(value))) {
-                            throw new SensitiveWordScanException(String.format("用户输入 %s 包含敏感词 !", value));
-                        }
-                    });
+                    param.entrySet().stream()
+                            .filter(entry -> !CollUtil.contains(sensitiveWordConfig.getExcludeApiParamKeys(), entry.getKey()))
+                            .map(Map.Entry::getValue)
+                            .filter(Objects::nonNull)
+                            .forEach(value -> {
+                                if (sensitiveWordScanProvider.existsSensitiveWord(JSONUtil.toJsonStr(value))) {
+                                    throw new SensitiveWordScanException(String.format("用户输入 %s 包含敏感词 !", value));
+                                }
+                            });
                 } catch (BeansException beansException) {
                     log.error("敏感词检测，获取检测服务实例Bean异常：", beansException);
                 } catch (SensitiveWordScanException sensitiveWordScanException) {

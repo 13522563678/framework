@@ -284,5 +284,9 @@ public class CommonWebProperties {
          * 排除的请求url
          */
         private List<String> excludeApiPaths;
+        /**
+         * 排除的请求参数key
+         */
+        private List<String> excludeApiParamKeys;
     }
 }

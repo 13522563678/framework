@@ -49,7 +49,7 @@ public class DecryptParamFilter extends OncePerRequestFilter {
      * 默认的 排除的不参与 敏感词检测的 请求参数key
      */
     private final List<String> defaultSensitiveWordScanExcludeApiParamKeys =
-            Collections.unmodifiableList(ListUtil.list(false, "kctrace", "kctoken", "sign"));
+            Collections.unmodifiableList(ListUtil.list(false, "kctrace", "kctoken", "sign", "appId", "secretId", "timestamp"));
 
     @SneakyThrows
     @Override

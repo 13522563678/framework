@@ -1,5 +1,6 @@
 package com.kcwl.framework.rest.web.filter;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.json.JSONUtil;
 import com.kcwl.ddd.application.constants.YesNoEnum;
@@ -75,7 +76,7 @@ public class DecryptParamFilter extends OncePerRequestFilter {
                 }
             }
             // 2023/6/5 敏感词检测
-            if (sensitiveWordConfig.isEnable() && sensitiveWordConfig.isGlobalScannerEnable()) {
+            if (sensitiveWordConfig.isEnable() && sensitiveWordConfig.isGlobalScannerEnable() && !CollUtil.contains(sensitiveWordConfig.getExcludeApiPaths(), apiPath)) {
                 try {
                     SensitiveWordScanProvider sensitiveWordScanProvider = SpringUtil.getBean(SensitiveWordScanProvider.class);
                     param.values().stream().filter(Objects::nonNull).forEach(value -> {

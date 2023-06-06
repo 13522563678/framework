@@ -272,7 +272,17 @@ public class CommonWebProperties {
 
     @Data
     public static class SensitiveWordConfig {
+        /**
+         * 是否启用敏感词检测
+         */
         private boolean enable;
+        /**
+         * 是否启用敏感词全局检测
+         */
         private boolean globalScannerEnable;
+        /**
+         * 排除的请求url
+         */
+        private List<String> excludeApiPaths;
     }
 }

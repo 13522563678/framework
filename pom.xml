@@ -124,7 +124,7 @@
         <jvalidation.version>2.0.1.Final</jvalidation.version>
         <caffeine.version>2.6.2</caffeine.version>
         <kcwl-actuator.version>6.0.0-SNAPSHOT</kcwl-actuator.version>
-        <kcwl-event.version>2.3.0-SNAPSHOT</kcwl-event.version>
+        <kcwl-event.version>2.3.0</kcwl-event.version>
 
         <kcwl-auth.version>3.3.0-SNAPSHOT</kcwl-auth.version>
         <kcwl.sensitive.word.util.version>6.0.0-RELEASE</kcwl.sensitive.word.util.version>

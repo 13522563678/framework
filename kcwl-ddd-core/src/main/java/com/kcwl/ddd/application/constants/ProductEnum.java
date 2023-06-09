@@ -3,7 +3,14 @@ package com.kcwl.ddd.application.constants;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author ckwl
+ */
+
 public enum ProductEnum {
+    /**
+     * 定义产品端类型
+     */
     API_OPEN(0, "OPEN","开放接口"),
     CARRIER_APP(1, "CARRIER","司机APP"),
     SPMS_WEB(4, "SPMS","综合运营平台"),
@@ -42,18 +49,18 @@ public enum ProductEnum {
     }
 
     public static ProductEnum getProductEnum(String code) {
-        for (ProductEnum aase : values()) {
-            if (aase.getCode().equals(code)) {
-                return aase;
+        for (ProductEnum productEnum : values()) {
+            if (productEnum.getCode().equals(code)) {
+                return productEnum;
             }
         }
         return null;
     }
 
     public static ProductEnum getProductEnum(Integer id) {
-        for (ProductEnum aase : values()) {
-            if (aase.getId().equals(id)) {
-                return aase;
+        for (ProductEnum productEnum : values()) {
+            if (productEnum.getId().equals(id)) {
+                return productEnum;
             }
         }
         return null;

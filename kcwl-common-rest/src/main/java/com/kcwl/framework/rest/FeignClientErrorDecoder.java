@@ -27,6 +27,10 @@ public class FeignClientErrorDecoder implements ErrorDecoder {
             int httpStatus = response.status();
             responseBody = Util.toString(response.body().asReader());
 
+            if ( log.isDebugEnabled() ) {
+                log.debug("{}", responseBody);
+            }
+
             if ( (HttpStatus.OK.value() == httpStatus) || (ServiceHttpStatus.SERVICE_EXCEPTION_STATUS == httpStatus) ) {
                 ResponseMessage responseMessage = JsonUtil.fromJson(responseBody, ResponseMessage.class);
                 BaseException baseException = new BaseException(responseMessage.getCode(), responseMessage.getMessage());

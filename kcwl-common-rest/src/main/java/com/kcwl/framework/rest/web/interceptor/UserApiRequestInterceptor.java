@@ -14,6 +14,7 @@ import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.framework.utils.ContextBeanUtil;
 import com.kcwl.framework.utils.KcBeanRepository;
 import com.kcwl.framework.utils.RequestUtil;
+import com.kcwl.framework.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -103,8 +104,8 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
         apiAuthInfo.setKcToken(userAgent.getKcToken());
         apiAuthInfo.setSsid(userAgent.getSessionId());
         apiAuthInfo.setNonce(userAgent.getKcTrace());
-        apiAuthInfo.setTimeStamp(RequestUtil.getCookieValue(request, GlobalConstant.KC_APP_TIMESTAMP));
-        apiAuthInfo.setSign(RequestUtil.getCookieValue(request, GlobalConstant.KC_APP_SIGN));
+        apiAuthInfo.setTimeStamp(getAppSignValue(request, GlobalConstant.KC_APP_TIMESTAMP));
+        apiAuthInfo.setSign(getAppSignValue(request, GlobalConstant.KC_APP_SIGN));
         apiAuthInfo.setUrl(request.getRequestURI());
         apiAuthInfo.setKey(sessionData.getKey());
         return apiAuthInfo;
@@ -114,5 +115,13 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
         CommonWebProperties commonWebProperties = KcBeanRepository
             .getInstance().getBean(ConfigBeanName.COMMON_WEB_CONFIG_NAME, CommonWebProperties.class);
         return commonWebProperties.getApi().isSignVerify();
+    }
+
+    private String getAppSignValue(HttpServletRequest request, String name) {
+        String value = request.getParameter(name);
+        if ( StringUtils.isEmpty(value) ) {
+            value = RequestUtil.getCookieValue(request, name);
+        }
+        return value;
     }
 }

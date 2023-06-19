@@ -122,8 +122,7 @@ public class SessionCacheProxy {
         if ( !commonWebProperties.getAppPod().isIsolation() ) {
             sessionKey = getSessionKey(userAgent.getProduct(), userAgent.getSessionId());
         } else {
-            sessionKey = getSessionKey(userAgent.getPlatform(), userAgent.getProduct(), userAgent.getSessionId());
-
+            sessionKey = getSessionKey(userAgent.getUserPlatformNo(), userAgent.getProduct(), userAgent.getSessionId());
         }
         return sessionKey;
     }

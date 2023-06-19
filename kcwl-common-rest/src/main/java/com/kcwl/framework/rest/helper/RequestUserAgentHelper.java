@@ -42,6 +42,10 @@ public class RequestUserAgentHelper {
             requestUserAgent.setOperatingSystem(RequestUtil.getCookieValue(request, UserAgent.FILED_OPERATING_SYSTEM));
             requestUserAgent.setVersionCode(RequestUtil.getCookieValue(request, UserAgent.FILED_VERSION_CODE));
             requestUserAgent.setClientIp(RequestUtil.getClientIpAddr(request));
+            String reqTenantId = request.getHeader(GlobalConstant.AGENT_TENANT_FIELD_NAME);
+            if ( !StringUtil.isEmpty(reqTenantId) ) {
+                requestUserAgent.setUserPlatformNo(reqTenantId);
+            }
         }
         return requestUserAgent;
     }

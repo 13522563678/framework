@@ -258,6 +258,7 @@ public class CommonWebProperties {
     @Data
     public static class AppPodInfo{
         private boolean isolation=false;
+        private boolean supportUserPlatform=false;
     }
 
     @Data

@@ -40,6 +40,7 @@ public class UserSessionInterceptor extends HandlerInterceptorAdapter {
         SessionData sessionData = null;
         UserAgent requestUserAgent = RequestUserAgentHelper.getRequestUserAgent(request);
         if ( requestUserAgent != null ) {
+            RequestUserAgentHelper.setUserPlatformByReqTenant(requestUserAgent, request);
             SessionContext.setRequestUserAgent(requestUserAgent);
             //是否是直接从服务器端发起的请求，如job
             if (!requestUserAgent.isServerRequest()) {
@@ -91,10 +92,7 @@ public class UserSessionInterceptor extends HandlerInterceptorAdapter {
 
     private void setUserAgentPlatform(UserAgent requestUserAgent, HttpServletRequest request, SessionData sessionData) {
         //优先从请求中指定的平台码;其次从用户会话中选择
-        String reqTenantId = request.getHeader(GlobalConstant.AGENT_TENANT_FIELD_NAME);
-        if ( !StringUtils.isEmpty(reqTenantId) ) {
-            requestUserAgent.setUserPlatformNo(reqTenantId);
-        } else if (sessionData != null) {
+        if ( !requestUserAgent.containUserPlatformNo() && (sessionData != null) ) {
             String userTenantId = sessionData.getPlatformNo();
             if ( !StringUtils.isEmpty(userTenantId) ) {
                 requestUserAgent.setUserPlatformNo(userTenantId);

@@ -5,6 +5,8 @@ import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.constants.GlobalConstant;
 import com.kcwl.framework.utils.RequestUtil;
 import com.kcwl.framework.utils.StringUtil;
+import org.springframework.util.StringUtils;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -42,14 +44,16 @@ public class RequestUserAgentHelper {
             requestUserAgent.setOperatingSystem(RequestUtil.getCookieValue(request, UserAgent.FILED_OPERATING_SYSTEM));
             requestUserAgent.setVersionCode(RequestUtil.getCookieValue(request, UserAgent.FILED_VERSION_CODE));
             requestUserAgent.setClientIp(RequestUtil.getClientIpAddr(request));
-            String reqTenantId = request.getHeader(GlobalConstant.AGENT_TENANT_FIELD_NAME);
-            if ( !StringUtil.isEmpty(reqTenantId) ) {
-                requestUserAgent.setUserPlatformNo(reqTenantId);
-            }
         }
         return requestUserAgent;
     }
 
+    public static void setUserPlatformByReqTenant(UserAgent userAgent, HttpServletRequest request) {
+        String reqTenantId = request.getHeader(GlobalConstant.AGENT_TENANT_FIELD_NAME);
+        if ( !StringUtils.isEmpty(reqTenantId) ) {
+            userAgent.setUserPlatformNo(reqTenantId);
+        }
+    }
 
     private static String getPlatformNo(HttpServletRequest request) {
         String platformNo = request.getHeader(GlobalConstant.AGENT_TENANT_FIELD_NAME);
@@ -69,4 +73,5 @@ public class RequestUserAgentHelper {
         }
         return value;
     }
+
 }

@@ -67,6 +67,10 @@ public class UserAgent {
         userAgent.put(FIELD_USER_PLATFORM, platformNo);
     }
 
+    public boolean containUserPlatformNo() {
+        return userAgent.containsKey(FIELD_USER_PLATFORM);
+    }
+
     public String getUserPlatformNo() {
         String platformNo = userAgent.get(FIELD_USER_PLATFORM);
         return (platformNo!=null) ? platformNo : userAgent.get(FIELD_COOKIE_PLATFORM);

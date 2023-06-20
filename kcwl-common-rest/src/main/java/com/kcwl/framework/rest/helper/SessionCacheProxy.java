@@ -119,10 +119,17 @@ public class SessionCacheProxy {
 
     private String determineSessionKey(UserAgent userAgent) {
         String sessionKey = null;
-        if ( !commonWebProperties.getAppPod().isIsolation() ) {
+        CommonWebProperties.AppPodInfo appPodInfo = commonWebProperties.getAppPod();
+        if ( !appPodInfo.isIsolation() ) {
             sessionKey = getSessionKey(userAgent.getProduct(), userAgent.getSessionId());
         } else {
-            sessionKey = getSessionKey(userAgent.getUserPlatformNo(), userAgent.getProduct(), userAgent.getSessionId());
+            String platformNo;
+            if ( appPodInfo.isSupportUserPlatform() ) {
+                platformNo = userAgent.getUserPlatformNo();
+            } else {
+                platformNo = userAgent.getPlatform();
+            }
+            sessionKey = getSessionKey(platformNo, userAgent.getProduct(), userAgent.getSessionId());
         }
         return sessionKey;
     }

@@ -11,6 +11,7 @@ import com.kcwl.framework.utils.StringUtil;
 import com.kcwl.tenant.TenantDataHolder;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -90,9 +91,12 @@ public class UserSessionInterceptor extends HandlerInterceptorAdapter {
 
     private void setUserAgentPlatform(UserAgent requestUserAgent, HttpServletRequest request, SessionData sessionData) {
         //优先从请求中指定的平台码;其次从用户会话中选择
-        if (sessionData != null) {
+        String reqTenantId = request.getHeader(GlobalConstant.AGENT_TENANT_FIELD_NAME);
+        if ( !StringUtils.isEmpty(reqTenantId) ) {
+            requestUserAgent.setUserPlatformNo(reqTenantId);
+        } else if (sessionData != null) {
             String userTenantId = sessionData.getPlatformNo();
-            if ( !StringUtil.isEmpty(userTenantId) ) {
+            if ( !StringUtils.isEmpty(userTenantId) ) {
                 requestUserAgent.setUserPlatformNo(userTenantId);
             }
         }

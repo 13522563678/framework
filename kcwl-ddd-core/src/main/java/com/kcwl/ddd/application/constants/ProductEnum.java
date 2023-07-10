@@ -22,7 +22,8 @@ public enum ProductEnum {
     FMGT_WEB(10, "FMGT","资金管理系统"),
     DA_WEB(11, "DA","数据资产管理平台"),
     API_CALL_BACK(12, "CALLBACK","接口回调"),
-    API_PARTNER(13, "PARTNER","三方接口");
+    API_PARTNER(13, "PARTNER","三方接口"),
+    KFB_APP(21, "KFB-APP","快福宝APP");
 
     private Integer id;
     private String  code;

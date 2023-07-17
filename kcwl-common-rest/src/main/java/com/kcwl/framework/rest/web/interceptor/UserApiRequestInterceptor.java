@@ -48,7 +48,7 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
         }
 
         if ( StringUtils.isEmpty(userAgent.getSessionId() ) ) {
-            ResponseHelper.buildResponseBody(CommonCode.FIELD_NULL.getCode(), "未登录00006", response);
+            ResponseHelper.buildResponseBody(CommonCode.UN_LOGIN, response);
             return false;
         }
 

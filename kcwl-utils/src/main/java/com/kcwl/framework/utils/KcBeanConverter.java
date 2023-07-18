@@ -21,6 +21,10 @@ public class KcBeanConverter {
         return (source!=null)? BeanUtil.copyProperties(source, tClass):null;
     }
 
+    public static <T> T toBean(Object source, Class<T> tClass, String... ignoreProperties) {
+        return (source != null) ? BeanUtil.copyProperties(source, tClass, ignoreProperties) : null;
+    }
+
     public static <T> List<T> toList(List sourceList, Class<T> tClass) {
         List<T> list = null;
         if ( sourceList != null ) {

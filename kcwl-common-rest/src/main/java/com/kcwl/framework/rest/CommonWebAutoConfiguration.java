@@ -128,7 +128,7 @@ public class CommonWebAutoConfiguration {
     }
 
     @Bean
-    //@ConditionalOnProperty(value = "kcwl.tenant.platform.check", matchIfMissing = false)
+    @ConditionalOnProperty(value = "kcwl.tenant.platform.check",  havingValue = "true", matchIfMissing = true)
     public PlatformFieldCheckAspect platformFieldCheckAspect() {
         return new PlatformFieldCheckAspect();
     }

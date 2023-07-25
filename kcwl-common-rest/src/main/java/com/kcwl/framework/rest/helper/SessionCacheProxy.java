@@ -7,7 +7,9 @@ import com.kcwl.ddd.infrastructure.constants.PrefixConstant;
 import com.kcwl.ddd.infrastructure.session.SessionData;
 import com.kcwl.framework.cache.ICacheService;
 import com.kcwl.framework.rest.web.CommonWebProperties;
+import com.kcwl.framework.session.ISessionEventListener;
 import com.kcwl.framework.utils.ClassUtil;
+import com.kcwl.framework.utils.ContextBeanUtil;
 import com.kcwl.framework.utils.KcBeanRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -39,18 +41,22 @@ public class SessionCacheProxy {
      * @return
      */
     public SessionData getSessionData(UserAgent requestUserAgent) {
-        Object sessionData = null;
-        String sessionKey = determineSessionKey(requestUserAgent);
+        SessionData sessionData = null;
+        String sessionKey = determineSessionKey(requestUserAgent, requestUserAgent.getSessionId());
         try {
-            sessionData = userTokenCache.get(sessionKey);
+            sessionData = (SessionData)userTokenCache.get(sessionKey);
             if ( sessionData != null ) {
-                renewSession(requestUserAgent.getSessionId(), sessionKey);
+                if ( commonWebProperties.getSession().isSingleSession() ) {
+                    sessionData.setSessionId(getActiveSessionId(requestUserAgent, sessionData.getUserId()));
+                }
+                renewSession(sessionData, sessionKey);
             }
         } catch (Exception e) {
             log.error("无法获取session信息：{}", e.getMessage());
         }
-        return (sessionData != null) ? (SessionData) sessionData : null;
+        return sessionData;
     }
+
 
     /**
      * 把sessionData保存到缓存里面
@@ -60,6 +66,10 @@ public class SessionCacheProxy {
     public void saveSession(SessionData sessionData, int timeout) {
         String sessionKey = getSessionKey(sessionData.getProduct(), sessionData.getSessionId());
         userTokenCache.save(sessionKey, sessionData, timeout);
+
+        //把当前会话设置为有效的会话
+        String activeSessionKey =  getSessionKey(sessionData.getProduct(), sessionData.getUserId());
+        userTokenCache.save(activeSessionKey, sessionData.getSessionId());
     }
 
     /**
@@ -71,6 +81,10 @@ public class SessionCacheProxy {
     public void saveSession(SessionData sessionData, String platformNo, int timeout) {
         String sessionKey = getSessionKey(platformNo, sessionData.getProduct(), sessionData.getSessionId());
         userTokenCache.save(sessionKey, sessionData, timeout);
+
+        //把当前会话设置为有效的会话
+        String activeSessionKey =  getSessionKey(platformNo, sessionData.getProduct(), sessionData.getUserId());
+        userTokenCache.save(activeSessionKey, sessionData.getSessionId());
     }
 
     /**
@@ -103,25 +117,25 @@ public class SessionCacheProxy {
     }
 
 
-    private String getSessionKey(Object product, String sessionId) {
+    private String getSessionKey(Object product, Object sessionId) {
         StringBuilder sb = new StringBuilder();
         String realProduct = commonWebProperties.getSession().getRealProduct(product);
         sb.append(PrefixConstant.REDIS_USER_SESSION).append(realProduct).append(PREFIX_DELIMITER).append(sessionId);
         return sb.toString();
     }
 
-    private String getSessionKey(String platformNo, Object product, String sessionId) {
+    private String getSessionKey(String platformNo, Object product, Object sessionId) {
         StringBuilder sb = new StringBuilder();
         String realProduct = commonWebProperties.getSession().getRealProduct(product);
         sb.append(PrefixConstant.REDIS_USER_SESSION).append(platformNo).append(PREFIX_DELIMITER).append(realProduct).append(PREFIX_DELIMITER).append(sessionId);
         return sb.toString();
     }
 
-    private String determineSessionKey(UserAgent userAgent) {
+    private String determineSessionKey(UserAgent userAgent, Object key) {
         String sessionKey = null;
         CommonWebProperties.AppPodInfo appPodInfo = commonWebProperties.getAppPod();
         if ( !appPodInfo.isIsolation() ) {
-            sessionKey = getSessionKey(userAgent.getProduct(), userAgent.getSessionId());
+            sessionKey = getSessionKey(userAgent.getProduct(), key);
         } else {
             String platformNo;
             if ( appPodInfo.isSupportUserPlatform() ) {
@@ -129,12 +143,12 @@ public class SessionCacheProxy {
             } else {
                 platformNo = userAgent.getPlatform();
             }
-            sessionKey = getSessionKey(platformNo, userAgent.getProduct(), userAgent.getSessionId());
+            sessionKey = getSessionKey(platformNo, userAgent.getProduct(), key);
         }
         return sessionKey;
     }
 
-    private void renewSession(String sessionId, String sessionKey) {
+    private boolean renewSession(SessionData sessionData, String sessionKey) {
         CommonWebProperties.SessionConfig sessionConfig = KcBeanRepository.getInstance().getBean(ConfigBeanName.SESSION_CONFIG_NAME, CommonWebProperties.SessionConfig.class);
         if ( sessionConfig != null && sessionConfig.isRenew() ) {
             String renewSessionKey = sessionKey + ":renew";
@@ -142,8 +156,23 @@ public class SessionCacheProxy {
             if ( renewSessionFlag == null ) {
                 userTokenCache.expire(sessionKey, sessionConfig.getTimeout());
                 userTokenCache.save(renewSessionKey, YesNoEnum.YEA.getValue(), sessionConfig.getTimeout()/2);
-                log.info("renew session timeout {} by {}", sessionId, sessionConfig.getTimeout());
+                ISessionEventListener eventListener = getSessionEventListener();
+                if ( eventListener != null ) {
+                    eventListener.onSessionRenew(sessionData,sessionConfig.getTimeout());
+                }
+                log.info("renew session timeout {} by {}", sessionData.getSessionId(), sessionConfig.getTimeout());
+                return true;
             }
         }
+        return false;
+    }
+
+    private String getActiveSessionId(UserAgent userAgent, Long userId) {
+        String activeSessionKey = determineSessionKey(userAgent, userId);
+        return (String)userTokenCache.get(activeSessionKey);
+    }
+
+    private ISessionEventListener getSessionEventListener() {
+        return ContextBeanUtil.getBean(ISessionEventListener.class);
     }
 }

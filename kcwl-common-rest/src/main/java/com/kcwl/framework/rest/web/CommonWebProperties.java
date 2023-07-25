@@ -114,6 +114,8 @@ public class CommonWebProperties {
         private boolean ignoreSession = false;
         private boolean renew = false;
         private int timeout = 30*60;
+        private boolean singleSession = false;
+
         private ConcurrentHashMap<String, String> shareProduct = new ConcurrentHashMap<>();
 
         /*

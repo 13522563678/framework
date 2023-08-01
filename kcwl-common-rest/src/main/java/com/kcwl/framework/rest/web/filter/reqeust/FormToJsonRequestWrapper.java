@@ -30,6 +30,7 @@ public class FormToJsonRequestWrapper extends DecryptRequestWrapper {
     public FormToJsonRequestWrapper(HttpServletRequest request , Map<String ,Object> param) {
         super(request, MapParamUtil.convertToMultiValueMap(param));
         this.originalParam = param;
+        appendPlainParam(request.getParameterMap());
     }
 
     @Override

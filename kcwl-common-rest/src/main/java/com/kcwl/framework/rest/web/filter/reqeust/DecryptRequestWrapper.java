@@ -1,5 +1,7 @@
 package com.kcwl.framework.rest.web.filter.reqeust;
 
+import com.kcwl.framework.rest.web.filter.EncryptParam;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.Enumeration;
@@ -78,6 +80,15 @@ public class DecryptRequestWrapper extends HttpServletRequestWrapper {
             }else {
                 params.put(name , new String[] {value.toString().replaceAll("\"", "")});
             }
+        }
+    }
+
+    protected void appendPlainParam(Map<String, String[]> plainParam) {
+        for (Map.Entry<String, String[]> entry : plainParam.entrySet()) {
+            if (EncryptParam.ENCRYPT_PARAM_NAME.equalsIgnoreCase(entry.getKey())) {
+                continue;
+            }
+            params.put(entry.getKey(), entry.getValue());
         }
     }
 }

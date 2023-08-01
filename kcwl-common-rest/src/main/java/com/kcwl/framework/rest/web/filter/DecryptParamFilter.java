@@ -55,7 +55,7 @@ public class DecryptParamFilter extends OncePerRequestFilter {
     @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String encryptionData = httpServletRequest.getParameter("encryptionData");
+        String encryptionData = httpServletRequest.getParameter(EncryptParam.ENCRYPT_PARAM_NAME);
         String apiPath = httpServletRequest.getRequestURI();
         CommonWebProperties.Crypt cryptConfig = getCryptConfig();
         CommonWebProperties.SensitiveWordConfig sensitiveWordConfig = getSensitiveWordConfig();
@@ -77,7 +77,7 @@ public class DecryptParamFilter extends OncePerRequestFilter {
 
             if (!isJsonContent) {
                 for (Map.Entry<String, String[]> entry : httpServletRequest.getParameterMap().entrySet()) {
-                    if ("encryptionData".equalsIgnoreCase(entry.getKey())) {
+                    if (EncryptParam.ENCRYPT_PARAM_NAME.equalsIgnoreCase(entry.getKey())) {
                         continue;
                     }
                     String[] entryValues = entry.getValue();

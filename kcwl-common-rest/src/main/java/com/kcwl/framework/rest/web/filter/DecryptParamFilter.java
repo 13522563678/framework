@@ -74,9 +74,9 @@ public class DecryptParamFilter extends OncePerRequestFilter {
             }
 
             boolean isJsonContent = isJsonContentRequest(param);
-
+            Map<String, String[]> originalParam = httpServletRequest.getParameterMap();
             if (!isJsonContent) {
-                for (Map.Entry<String, String[]> entry : httpServletRequest.getParameterMap().entrySet()) {
+                for (Map.Entry<String, String[]> entry : originalParam.entrySet()) {
                     if (EncryptParam.ENCRYPT_PARAM_NAME.equalsIgnoreCase(entry.getKey())) {
                         continue;
                     }
@@ -108,7 +108,7 @@ public class DecryptParamFilter extends OncePerRequestFilter {
                     log.error("敏感词检测，异常： ", exception);
                 }
             }
-            DecryptRequestWrapper requestWrapper = createDecryptRequestWrapper(httpServletRequest, param, isJsonContent);
+            DecryptRequestWrapper requestWrapper = createDecryptRequestWrapper(httpServletRequest, param, originalParam, isJsonContent);
             filterChain.doFilter(requestWrapper, httpServletResponse);
         } catch (SensitiveWordScanException sensitiveWordScanException) {
             log.error(" {} ", sensitiveWordScanException.getMessage());
@@ -123,14 +123,14 @@ public class DecryptParamFilter extends OncePerRequestFilter {
         this.httpContent = httpContent;
     }
 
-    private DecryptRequestWrapper createDecryptRequestWrapper(HttpServletRequest httpServletRequest, Map<String, Object> param, boolean isJsonContent) {
+    private DecryptRequestWrapper createDecryptRequestWrapper(HttpServletRequest httpServletRequest, Map<String, Object> encryptParam, Map<String, String[]> originalParam, boolean isJsonContent) {
         if (log.isDebugEnabled()) {
             log.debug("enableFormToJson={}, isJsonContent={}", httpContent.isEnableFormToJson(), isJsonContent);
         }
         if (httpContent.isEnableFormToJson() && isJsonContent) {
-            return new FormToJsonRequestWrapper(httpServletRequest, param);
+            return new FormToJsonRequestWrapper(httpServletRequest, encryptParam,originalParam);
         }
-        return new DecryptRequestWrapper(httpServletRequest, MapParamUtil.convertToMultiValueMapV2(param));
+        return new DecryptRequestWrapper(httpServletRequest, MapParamUtil.convertToMultiValueMapV2(encryptParam));
     }
 
     private boolean isFormToJsonContext(HttpServletRequest httpServletRequest) {

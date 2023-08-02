@@ -68,7 +68,7 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
             ResponseHelper.buildResponseBody(CommonCode.OTHER_EQUIPMENT_LOGIN, response);
             return false;
         }
-        if ( enableSignVerify() && isInternalRequest() && !authService.verify(getApiAuthInfo(request, userAgent, sessionData))) {
+        if ( enableSignVerify() && !isInternalRequest() && !authService.verify(getApiAuthInfo(request, userAgent, sessionData))) {
             ResponseHelper.buildResponseBody(CommonCode.AUTH_ERROR_CODE, response);
             return false;
         }

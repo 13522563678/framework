@@ -3,6 +3,7 @@ package com.kcwl.framework.rest.web.interceptor;
 import com.kcwl.common.web.ApiAuthInfo;
 import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.api.CommonCode;
+import com.kcwl.ddd.infrastructure.api.ResponseMessage;
 import com.kcwl.ddd.infrastructure.constants.GlobalConstant;
 import com.kcwl.ddd.infrastructure.session.SessionContext;
 import com.kcwl.ddd.infrastructure.session.SessionData;
@@ -67,11 +68,23 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
             ResponseHelper.buildResponseBody(CommonCode.OTHER_EQUIPMENT_LOGIN, response);
             return false;
         }
-        if ( enableSignVerify() && !authService.verify(getApiAuthInfo(request, userAgent, sessionData))) {
+        if ( enableSignVerify() && !isInternalRequest() && !authService.verify(getApiAuthInfo(request, userAgent, sessionData))) {
             ResponseHelper.buildResponseBody(CommonCode.AUTH_ERROR_CODE, response);
             return false;
         }
         return true;
+    }
+
+    /**
+     * 是否为内部调用的请求
+     * @return
+     */
+    private boolean isInternalRequest() {
+        String clientType = SessionContext.getRequestClient();
+        if ((clientType != null) && (UserAgent.AGENT_CLIENT_FEIGN.equals(clientType))) {
+            return true;
+        }
+        return false;
     }
 
     private boolean isSsoProduct(String product) {

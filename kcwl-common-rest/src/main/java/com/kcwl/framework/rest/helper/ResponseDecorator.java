@@ -56,9 +56,10 @@ public class ResponseDecorator {
         }
         String productType = getProductCode();
         // 货主Web和货主app 不区分，统一使用货主app的编码
-        if (Objects.toString(ProductEnum.SHIPPER_WEB.getId()).equals(productType)) {
-            productType = ProductEnum.SHIPPER_APP.getId().toString();
-        }
+        // 2023/8/3 又区分了...
+//        if (Objects.toString(ProductEnum.SHIPPER_WEB.getId()).equals(productType)) {
+//            productType = ProductEnum.SHIPPER_APP.getId().toString();
+//        }
         try {
             if (!StrUtil.EMPTY.equals(productType)) {
                 String finalProductType = productType;

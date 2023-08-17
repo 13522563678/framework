@@ -89,7 +89,8 @@ class ResponseDecoratorTest {
     }
 
     /**
-     * 货主app 货主web 不区分，统一使用货主app的product获取错误提示语
+     * {@Deprecated 货主app 货主web 不区分，统一使用货主app的product获取错误提示语}
+     * 2023.08.03 产品设计调整：货主app 和 货主web 改为区分，错误码提示语单独配置 {@link ResponseDecorator#getErrorPromptMessage(String, String)}
      */
     @Test
     void testGetErrorPromptMessageCase4() {
@@ -100,7 +101,7 @@ class ResponseDecoratorTest {
         SessionContext.setRequestUserAgent(userAgent);
 
         String failMessage = responseDecorator.getErrorPromptMessage("407", defaultMessage);
-        Assert.assertEquals(expectedMessage, failMessage);
+        Assert.assertEquals(defaultMessage, failMessage);
 
     }
 }

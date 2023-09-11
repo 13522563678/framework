@@ -3,7 +3,6 @@ package com.kcwl.framework.rest.web.interceptor;
 import com.kcwl.common.web.ApiAuthInfo;
 import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.api.CommonCode;
-import com.kcwl.ddd.infrastructure.api.ResponseMessage;
 import com.kcwl.ddd.infrastructure.constants.GlobalConstant;
 import com.kcwl.ddd.infrastructure.session.SessionContext;
 import com.kcwl.ddd.infrastructure.session.SessionData;
@@ -12,10 +11,7 @@ import com.kcwl.framework.rest.helper.ConfigBeanName;
 import com.kcwl.framework.rest.helper.ResponseHelper;
 import com.kcwl.framework.rest.service.IAuthService;
 import com.kcwl.framework.rest.web.CommonWebProperties;
-import com.kcwl.framework.utils.ContextBeanUtil;
-import com.kcwl.framework.utils.KcBeanRepository;
-import com.kcwl.framework.utils.RequestUtil;
-import com.kcwl.framework.utils.StringUtil;
+import com.kcwl.framework.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -64,7 +60,7 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
             ResponseHelper.buildResponseBody(CommonCode.UN_LOGIN, response);
             return false;
         }
-        if ( !RequestUtil.isInternalRequest() ) {
+        if ( !KcRequestContextUtil.isInternalRequest() ) {
             if ( !userAgent.getSessionId().equals(sessionData.getSessionId()) ) {
                 ResponseHelper.buildResponseBody(CommonCode.OTHER_EQUIPMENT_LOGIN, response);
                 return false;
@@ -76,18 +72,6 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
         }
 
         return true;
-    }
-
-    /**
-     * 是否为内部调用的请求
-     * @return
-     */
-    private boolean isInternalRequest() {
-        String clientType = SessionContext.getRequestClient();
-        if ((clientType != null) && (UserAgent.AGENT_CLIENT_FEIGN.equals(clientType))) {
-            return true;
-        }
-        return false;
     }
 
     private boolean isSsoProduct(String product) {

@@ -44,7 +44,7 @@ public class SessionCacheProxy {
         try {
             sessionData = (SessionData)userTokenCache.get(sessionKey);
             if ( sessionData != null ) {
-                if ( !RequestUtil.isInternalRequest() && commonWebProperties.getSession().isSingleSession() ) {
+                if ( !KcRequestContextUtil.isInternalRequest() && commonWebProperties.getSession().isSingleSession() ) {
                     sessionData.setSessionId(getActiveSessionId(requestUserAgent, sessionData.getUserId()));
                 }
                 renewSession(sessionData, sessionKey);
@@ -65,7 +65,7 @@ public class SessionCacheProxy {
         String sessionKey = getSessionKey(sessionData.getProduct(), sessionData.getSessionId());
         userTokenCache.save(sessionKey, sessionData, timeout);
 
-        if ( !RequestUtil.isInternalRequest() ) {
+        if ( !KcRequestContextUtil.isInternalRequest() ) {
             //把当前会话设置为有效的会话
             String activeSessionKey = getSessionKey(sessionData.getProduct(), sessionData.getUserId());
             userTokenCache.save(activeSessionKey, sessionData.getSessionId());
@@ -81,7 +81,7 @@ public class SessionCacheProxy {
     public void saveSession(SessionData sessionData, String platformNo, int timeout) {
         String sessionKey = getSessionKey(platformNo, sessionData.getProduct(), sessionData.getSessionId());
         userTokenCache.save(sessionKey, sessionData, timeout);
-        if ( !RequestUtil.isInternalRequest() ) {
+        if ( !KcRequestContextUtil.isInternalRequest() ) {
             //把当前会话设置为有效的会话
             String activeSessionKey = getSessionKey(platformNo, sessionData.getProduct(), sessionData.getUserId());
             userTokenCache.save(activeSessionKey, sessionData.getSessionId());

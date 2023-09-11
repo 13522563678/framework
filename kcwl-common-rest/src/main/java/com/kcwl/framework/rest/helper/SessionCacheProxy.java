@@ -8,9 +8,7 @@ import com.kcwl.ddd.infrastructure.session.SessionData;
 import com.kcwl.framework.cache.ICacheService;
 import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.framework.session.ISessionEventListener;
-import com.kcwl.framework.utils.ClassUtil;
-import com.kcwl.framework.utils.ContextBeanUtil;
-import com.kcwl.framework.utils.KcBeanRepository;
+import com.kcwl.framework.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +44,7 @@ public class SessionCacheProxy {
         try {
             sessionData = (SessionData)userTokenCache.get(sessionKey);
             if ( sessionData != null ) {
-                if ( commonWebProperties.getSession().isSingleSession() ) {
+                if ( !RequestUtil.isInternalRequest() && commonWebProperties.getSession().isSingleSession() ) {
                     sessionData.setSessionId(getActiveSessionId(requestUserAgent, sessionData.getUserId()));
                 }
                 renewSession(sessionData, sessionKey);
@@ -67,9 +65,11 @@ public class SessionCacheProxy {
         String sessionKey = getSessionKey(sessionData.getProduct(), sessionData.getSessionId());
         userTokenCache.save(sessionKey, sessionData, timeout);
 
-        //把当前会话设置为有效的会话
-        String activeSessionKey =  getSessionKey(sessionData.getProduct(), sessionData.getUserId());
-        userTokenCache.save(activeSessionKey, sessionData.getSessionId());
+        if ( !RequestUtil.isInternalRequest() ) {
+            //把当前会话设置为有效的会话
+            String activeSessionKey = getSessionKey(sessionData.getProduct(), sessionData.getUserId());
+            userTokenCache.save(activeSessionKey, sessionData.getSessionId());
+        }
     }
 
     /**
@@ -81,10 +81,11 @@ public class SessionCacheProxy {
     public void saveSession(SessionData sessionData, String platformNo, int timeout) {
         String sessionKey = getSessionKey(platformNo, sessionData.getProduct(), sessionData.getSessionId());
         userTokenCache.save(sessionKey, sessionData, timeout);
-
-        //把当前会话设置为有效的会话
-        String activeSessionKey =  getSessionKey(platformNo, sessionData.getProduct(), sessionData.getUserId());
-        userTokenCache.save(activeSessionKey, sessionData.getSessionId());
+        if ( !RequestUtil.isInternalRequest() ) {
+            //把当前会话设置为有效的会话
+            String activeSessionKey = getSessionKey(platformNo, sessionData.getProduct(), sessionData.getUserId());
+            userTokenCache.save(activeSessionKey, sessionData.getSessionId());
+        }
     }
 
     /**

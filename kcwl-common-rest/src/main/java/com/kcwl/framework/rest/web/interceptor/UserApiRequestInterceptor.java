@@ -64,14 +64,17 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
             ResponseHelper.buildResponseBody(CommonCode.UN_LOGIN, response);
             return false;
         }
-        if ( !userAgent.getSessionId().equals(sessionData.getSessionId()) ) {
-            ResponseHelper.buildResponseBody(CommonCode.OTHER_EQUIPMENT_LOGIN, response);
-            return false;
+        if ( !RequestUtil.isInternalRequest() ) {
+            if ( !userAgent.getSessionId().equals(sessionData.getSessionId()) ) {
+                ResponseHelper.buildResponseBody(CommonCode.OTHER_EQUIPMENT_LOGIN, response);
+                return false;
+            }
+            if ( enableSignVerify() && !authService.verify(getApiAuthInfo(request, userAgent, sessionData))) {
+                ResponseHelper.buildResponseBody(CommonCode.AUTH_ERROR_CODE, response);
+                return false;
+            }
         }
-        if ( enableSignVerify() && !isInternalRequest() && !authService.verify(getApiAuthInfo(request, userAgent, sessionData))) {
-            ResponseHelper.buildResponseBody(CommonCode.AUTH_ERROR_CODE, response);
-            return false;
-        }
+
         return true;
     }
 

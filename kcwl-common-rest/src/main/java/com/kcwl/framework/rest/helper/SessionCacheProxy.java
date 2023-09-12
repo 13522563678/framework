@@ -44,9 +44,6 @@ public class SessionCacheProxy {
         try {
             sessionData = (SessionData)userTokenCache.get(sessionKey);
             if ( sessionData != null ) {
-                if ( !KcRequestContextUtil.isInternalRequest() && commonWebProperties.getSession().isSingleSession() ) {
-                    sessionData.setSessionId(getActiveSessionId(requestUserAgent, sessionData.getUserId()));
-                }
                 renewSession(sessionData, sessionKey);
             }
         } catch (Exception e) {
@@ -168,7 +165,7 @@ public class SessionCacheProxy {
         return false;
     }
 
-    private String getActiveSessionId(UserAgent userAgent, Long userId) {
+    public String getActiveSessionId(UserAgent userAgent, Long userId) {
         String activeSessionKey = determineSessionKey(userAgent, userId);
         return (String)userTokenCache.get(activeSessionKey);
     }

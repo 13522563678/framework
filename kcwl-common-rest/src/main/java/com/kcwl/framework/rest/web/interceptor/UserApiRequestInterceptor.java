@@ -9,6 +9,7 @@ import com.kcwl.ddd.infrastructure.session.SessionData;
 import com.kcwl.framework.auth.IKcSsoAuth;
 import com.kcwl.framework.rest.helper.ConfigBeanName;
 import com.kcwl.framework.rest.helper.ResponseHelper;
+import com.kcwl.framework.rest.helper.SessionCacheProxy;
 import com.kcwl.framework.rest.service.IAuthService;
 import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.framework.utils.*;
@@ -29,6 +30,7 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
     List<String> supportProducts;
     IKcSsoAuth kcSsoAuth;
     IAuthService authService;
+    SessionCacheProxy sessionCacheProxyInstance;
 
     public UserApiRequestInterceptor(List<String> supportProducts, IAuthService authService) {
         this.supportProducts = supportProducts;
@@ -61,7 +63,7 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
             return false;
         }
         if ( !KcRequestContextUtil.isInternalRequest() ) {
-            if ( !userAgent.getSessionId().equals(sessionData.getSessionId()) ) {
+            if ( !isSessionValid(userAgent, sessionData) ) {
                 ResponseHelper.buildResponseBody(CommonCode.OTHER_EQUIPMENT_LOGIN, response);
                 return false;
             }
@@ -123,5 +125,22 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
             value = RequestUtil.getCookieValue(request, name);
         }
         return value;
+    }
+
+    private boolean isSessionValid(UserAgent userAgent, SessionData sessionData) {
+        CommonWebProperties commonWebProperties = KcBeanRepository.getInstance().getBean(ConfigBeanName.COMMON_WEB_CONFIG_NAME, CommonWebProperties.class);
+        SessionCacheProxy sessionCacheProxy = getSessionCacheProxy();
+        if ( commonWebProperties.getSession().isSingleSession() && (sessionCacheProxy != null) ) {
+            String activeSessionId = sessionCacheProxy.getActiveSessionId(userAgent, sessionData.getUserId());
+            return userAgent.getSessionId().equals(activeSessionId);
+        }
+        return true;
+    }
+
+    private SessionCacheProxy getSessionCacheProxy() {
+        if (  sessionCacheProxyInstance == null ) {
+            sessionCacheProxyInstance =ContextBeanUtil.getBean(SessionCacheProxy.class);
+        }
+        return sessionCacheProxyInstance;
     }
 }

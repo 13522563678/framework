@@ -54,6 +54,8 @@ public class RedissonAutoConfiguration {
                 .setConnectionMinimumIdleSize(redssionProperties.getConnectionMinimumIdleSize())
                 .setDatabase(redssionProperties.getDatabase())
                 .setKeepAlive(true)
+                .setSubscriptionsPerConnection(redssionProperties.getSubscriptionsPerConnection())
+                .setSubscriptionConnectionPoolSize(redssionProperties.getSubscriptionConnectionPoolSize())
                 .setPingConnectionInterval(redssionProperties.getPingConnectionInterval());
 
         if(StringUtils.isNotBlank(redssionProperties.getPassword())) {

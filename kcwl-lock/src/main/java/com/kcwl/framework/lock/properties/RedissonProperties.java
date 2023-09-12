@@ -32,6 +32,10 @@ public class RedissonProperties {
 
     private String masterName;
 
+    private int subscriptionsPerConnection=5;
+
+    private int subscriptionConnectionPoolSize=50;
+
     public int getTimeout() {
         return timeout;
     }
@@ -130,5 +134,21 @@ public class RedissonProperties {
 
     public void setPingConnectionInterval(int pingConnectionInterval) {
         this.pingConnectionInterval = pingConnectionInterval;
+    }
+
+    public int getSubscriptionsPerConnection() {
+        return subscriptionsPerConnection;
+    }
+
+    public void setSubscriptionsPerConnection(int subscriptionsPerConnection) {
+        this.subscriptionsPerConnection = subscriptionsPerConnection;
+    }
+
+    public int getSubscriptionConnectionPoolSize() {
+        return subscriptionConnectionPoolSize;
+    }
+
+    public void setSubscriptionConnectionPoolSize(int subscriptionConnectionPoolSize) {
+        this.subscriptionConnectionPoolSize = subscriptionConnectionPoolSize;
     }
 }

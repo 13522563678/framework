@@ -69,6 +69,7 @@ public class DecryptParamFilter extends OncePerRequestFilter {
 
             Map<String, Object> param = DecryptUtil.decryptParam(encryptionData, cryptKey);
             if (param == null) {
+                log.error("参数解密错误：{}", encryptionData);
                 ResponseHelper.buildResponseBody(CommonCode.JSON_DECODE_FAIL, httpServletResponse);
                 return;
             }

@@ -42,11 +42,13 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
 
         UserAgent userAgent = SessionContext.getRequestUserAgent();
         if (userAgent == null) {
+            logErrorMsg(request.getRequestURI(), "userAgent为空", CommonCode.INVALID_USER_AGENT.getDescription());
             ResponseHelper.buildResponseBody(CommonCode.INVALID_USER_AGENT, response);
             return false;
         }
 
         if ( StringUtils.isEmpty(userAgent.getSessionId() ) ) {
+            logErrorMsg(request.getRequestURI(), userAgent, "sessionId为空");
             ResponseHelper.buildResponseBody(CommonCode.UN_LOGIN, response);
             return false;
         }
@@ -59,15 +61,18 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
         }
 
         if ( sessionData == null ) {
+            logErrorMsg(request.getRequestURI(), userAgent, CommonCode.UN_LOGIN.getDescription());
             ResponseHelper.buildResponseBody(CommonCode.UN_LOGIN, response);
             return false;
         }
         if ( !KcRequestContextUtil.isInternalRequest() ) {
-            if ( !isSessionValid(userAgent, sessionData) ) {
+            if ( !isSessionValid(request, userAgent, sessionData) ) {
+                logErrorMsg(request.getRequestURI(), userAgent, CommonCode.OTHER_EQUIPMENT_LOGIN.getDescription());
                 ResponseHelper.buildResponseBody(CommonCode.OTHER_EQUIPMENT_LOGIN, response);
                 return false;
             }
             if ( enableSignVerify() && !authService.verify(getApiAuthInfo(request, userAgent, sessionData))) {
+                logErrorMsg(request.getRequestURI(), userAgent, CommonCode.AUTH_ERROR_CODE.getDescription());
                 ResponseHelper.buildResponseBody(CommonCode.AUTH_ERROR_CODE, response);
                 return false;
             }
@@ -127,12 +132,16 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
         return value;
     }
 
-    private boolean isSessionValid(UserAgent userAgent, SessionData sessionData) {
+    private boolean isSessionValid(HttpServletRequest request, UserAgent userAgent, SessionData sessionData) {
         CommonWebProperties commonWebProperties = KcBeanRepository.getInstance().getBean(ConfigBeanName.COMMON_WEB_CONFIG_NAME, CommonWebProperties.class);
         SessionCacheProxy sessionCacheProxy = getSessionCacheProxy();
         if ( commonWebProperties.getSession().isSingleSession() && (sessionCacheProxy != null) ) {
             String activeSessionId = sessionCacheProxy.getActiveSessionId(userAgent, sessionData.getUserId());
-            return userAgent.getSessionId().equals(activeSessionId);
+            boolean sessionStatus = userAgent.getSessionId().equals(activeSessionId);
+            if ( !sessionStatus ) {
+                logErrorMsg(request.getRequestURI(), userAgent, activeSessionId);
+            }
+            return sessionStatus;
         }
         return true;
     }
@@ -142,5 +151,11 @@ public class UserApiRequestInterceptor extends HandlerInterceptorAdapter{
             sessionCacheProxyInstance =ContextBeanUtil.getBean(SessionCacheProxy.class);
         }
         return sessionCacheProxyInstance;
+    }
+
+    private void logErrorMsg(String apiPath, Object extraData, String errorMsg){
+        if ( log.isInfoEnabled() ) {
+            log.info("{}; {}; {}", apiPath, extraData, errorMsg);
+        }
     }
 }

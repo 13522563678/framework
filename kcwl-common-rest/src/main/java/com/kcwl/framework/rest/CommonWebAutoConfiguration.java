@@ -137,7 +137,7 @@ public class CommonWebAutoConfiguration {
     public KcBeanRepository jwtConfigRepository() {
         KcBeanRepository kcBeanRepository = KcBeanRepository.getInstance();
         kcBeanRepository.saveBean(ConfigBeanName.JWT_CONFIG_NAME, webProperties.getJwt());
-        log.info("kcwl-framework version：6.0.0-RELEASE, minor version:230914");
+        log.info("kcwl-framework version：6.0.0-RELEASE, minor version:230915");
         log.info("jwtConfig: {}", kcBeanRepository.getBean(ConfigBeanName.JWT_CONFIG_NAME));
         return kcBeanRepository;
     }

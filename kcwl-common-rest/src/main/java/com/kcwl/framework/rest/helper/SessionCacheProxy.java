@@ -62,7 +62,7 @@ public class SessionCacheProxy {
         String sessionKey = getSessionKey(sessionData.getProduct(), sessionData.getSessionId());
         userTokenCache.save(sessionKey, sessionData, timeout);
 
-        if ( !KcRequestContextUtil.isInternalRequest() ) {
+        if ( !KcRequestContextUtil.isInternalRequest() || isTrackActiveSession() ) {
             //把当前会话设置为有效的会话
             String activeSessionKey = getSessionKey(sessionData.getProduct(), sessionData.getUserId());
             userTokenCache.save(activeSessionKey, sessionData.getSessionId());
@@ -78,7 +78,7 @@ public class SessionCacheProxy {
     public void saveSession(SessionData sessionData, String platformNo, int timeout) {
         String sessionKey = getSessionKey(platformNo, sessionData.getProduct(), sessionData.getSessionId());
         userTokenCache.save(sessionKey, sessionData, timeout);
-        if ( !KcRequestContextUtil.isInternalRequest() ) {
+        if ( !KcRequestContextUtil.isInternalRequest() || isTrackActiveSession() ) {
             //把当前会话设置为有效的会话
             String activeSessionKey = getSessionKey(platformNo, sessionData.getProduct(), sessionData.getUserId());
             userTokenCache.save(activeSessionKey, sessionData.getSessionId());
@@ -168,6 +168,11 @@ public class SessionCacheProxy {
     public String getActiveSessionId(UserAgent userAgent, Long userId) {
         String activeSessionKey = determineSessionKey(userAgent, userId);
         return (String)userTokenCache.get(activeSessionKey);
+    }
+
+    private boolean isTrackActiveSession(){
+        CommonWebProperties.SessionConfig sessionConfig = KcBeanRepository.getInstance().getBean(ConfigBeanName.SESSION_CONFIG_NAME, CommonWebProperties.SessionConfig.class);
+        return (sessionConfig != null) && sessionConfig.isTrackActiveSession();
     }
 
     private ISessionEventListener getSessionEventListener() {

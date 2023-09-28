@@ -3,6 +3,7 @@ package com.kcwl.framework.rest;
 import com.kcwl.framework.cache.config.UserTokenRedisProperties;
 import com.kcwl.framework.rest.aop.PlatformFieldCheckAspect;
 import com.kcwl.framework.rest.helper.ConfigBeanName;
+import com.kcwl.framework.rest.web.CommonErrorProperties;
 import com.kcwl.framework.rest.web.CommonWebConfig;
 import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.framework.rest.web.filter.ContentCacheFilter;
@@ -38,7 +39,7 @@ import java.util.Collections;
  */
 @Slf4j
 @Configuration
-@EnableConfigurationProperties({CommonWebProperties.class, UserTokenRedisProperties.class})
+@EnableConfigurationProperties({CommonWebProperties.class, UserTokenRedisProperties.class, CommonErrorProperties.class})
 @Import({CommonWebConfig.class})
 public class CommonWebAutoConfiguration {
 

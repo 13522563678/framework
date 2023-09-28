@@ -6,6 +6,7 @@ import com.kcwl.ddd.domain.entity.UserAgent;
 import com.kcwl.ddd.infrastructure.api.IErrorPromptDecorator;
 import com.kcwl.ddd.infrastructure.constants.GlobalConstant;
 import com.kcwl.ddd.infrastructure.session.SessionContext;
+import com.kcwl.framework.rest.web.CommonErrorProperties;
 import com.kcwl.framework.rest.web.CommonWebProperties;
 import com.kcwl.framework.utils.StringPaddingBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,8 @@ public class ResponseDecorator {
 
     @Resource
     CommonWebProperties commonWebProperties;
+    @Resource
+    CommonErrorProperties commonErrorProperties;
 
     @Value("${kcwl.common.web.error.prompt.enable:false}")
     private Boolean hotUpdateEnable;
@@ -51,22 +54,26 @@ public class ResponseDecorator {
     }
 
     public String getErrorPromptMessage(String code, String defaultMessage) {
+        return commonErrorProperties.decoratorMessageWithTraceId(code, getHotPromptMessage(code, defaultMessage));
+    }
+
+    private String getHotPromptMessage(String code, String defaultMessage) {
         if (!hotUpdateEnable) {
             return defaultMessage;
         }
         String productType = getProductCode();
         // 货主Web和货主app 不区分，统一使用货主app的编码
         // 2023/8/3 又区分了...
-//        if (Objects.toString(ProductEnum.SHIPPER_WEB.getId()).equals(productType)) {
-//            productType = ProductEnum.SHIPPER_APP.getId().toString();
-//        }
+        //        if (Objects.toString(ProductEnum.SHIPPER_WEB.getId()).equals(productType)) {
+        //            productType = ProductEnum.SHIPPER_APP.getId().toString();
+        //        }
         try {
             if (!StrUtil.EMPTY.equals(productType)) {
                 String finalProductType = productType;
                 return Optional.ofNullable(promptDecorator)
-                        .map(errorPromptDecorator -> errorPromptDecorator.getErrorPrompt(code, finalProductType))
-                        .filter(StrUtil::isNotBlank)
-                        .orElse(defaultMessage);
+                    .map(errorPromptDecorator -> errorPromptDecorator.getErrorPrompt(code, finalProductType))
+                    .filter(StrUtil::isNotBlank)
+                    .orElse(defaultMessage);
             } else {
                 log.warn("处理错误码提示语，未获取到product，UserAgent: {}", SessionContext.getRequestUserAgent());
                 return defaultMessage;
@@ -75,7 +82,6 @@ public class ResponseDecorator {
             log.error("获取错误码提示语异常，入参, code:{}, message：{}, product: {}", code, defaultMessage, productType, exception);
             return defaultMessage;
         }
-
     }
 
     private String getProductCode() {

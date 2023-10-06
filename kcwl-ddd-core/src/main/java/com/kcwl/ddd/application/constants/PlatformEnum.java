@@ -20,6 +20,8 @@ public enum PlatformEnum {
     PLATFORM_QS("210", "沁水", "沁水网络货运平台"),
     PLATFORM_WH("213", "乌海", "乌海网络货运平台"),
     PLATFORM_BT("211", "包头", "包头网络货运平台"),
+    PLATFORM_NMJT("216", "蒙马", "蒙马网络货运平台"),
+
 
     PLATFORM_UNION_V1("100", "快成", "快成联盟(旧)"),
     PLATFORM_UNION_V2("200", "快成", "快成联盟(新)");

@@ -3,8 +3,10 @@ package com.kcwl.framework.rest;
 import com.kcwl.framework.cache.config.UserTokenRedisProperties;
 import com.kcwl.framework.rest.aop.PlatformFieldCheckAspect;
 import com.kcwl.framework.rest.helper.ConfigBeanName;
+import com.kcwl.framework.rest.web.CommonErrorProperties;
 import com.kcwl.framework.rest.web.CommonWebConfig;
 import com.kcwl.framework.rest.web.CommonWebProperties;
+import com.kcwl.framework.rest.web.SensitiveMaskConfig;
 import com.kcwl.framework.rest.web.filter.ContentCacheFilter;
 import com.kcwl.framework.rest.web.filter.DecryptParamFilter;
 import com.kcwl.framework.rest.web.filter.XSSFilter;
@@ -38,7 +40,7 @@ import java.util.Collections;
  */
 @Slf4j
 @Configuration
-@EnableConfigurationProperties({CommonWebProperties.class, UserTokenRedisProperties.class})
+@EnableConfigurationProperties({CommonWebProperties.class, UserTokenRedisProperties.class, CommonErrorProperties.class})
 @Import({CommonWebConfig.class})
 public class CommonWebAutoConfiguration {
 
@@ -50,6 +52,9 @@ public class CommonWebAutoConfiguration {
                     CommonWebAutoConfiguration.class.getClassLoader());
     @Resource
     private CommonWebProperties webProperties;
+
+    @Resource
+    SensitiveMaskConfig sensitiveMaskConfig;
 
     @Bean("highCorsFilter")
     public FilterRegistrationBean<CorsFilter> highCorsFilter() {
@@ -78,7 +83,6 @@ public class CommonWebAutoConfiguration {
     public FilterRegistrationBean<DecryptParamFilter> decryptParamFilter() {
         KcBeanRepository kcBeanRepository = KcBeanRepository.getInstance();
         kcBeanRepository.saveBean(ConfigBeanName.COMMON_WEB_CONFIG_NAME, webProperties);
-
         DecryptParamFilter decryptParamFilter = new DecryptParamFilter();
         decryptParamFilter.setHttpContent(webProperties.getHttpContent());
         FilterRegistrationBean<DecryptParamFilter> bean = new FilterRegistrationBean<>(decryptParamFilter);
@@ -137,7 +141,8 @@ public class CommonWebAutoConfiguration {
     public KcBeanRepository jwtConfigRepository() {
         KcBeanRepository kcBeanRepository = KcBeanRepository.getInstance();
         kcBeanRepository.saveBean(ConfigBeanName.JWT_CONFIG_NAME, webProperties.getJwt());
-        log.info("kcwl-framework version：6.0.0-RELEASE, minor version:230915");
+        kcBeanRepository.saveBean("sensitiveMaskConfig", sensitiveMaskConfig);
+        log.info("kcwl-framework version：6.0.0-RELEASE, minor version:231007");
         log.info("jwtConfig: {}", kcBeanRepository.getBean(ConfigBeanName.JWT_CONFIG_NAME));
         return kcBeanRepository;
     }

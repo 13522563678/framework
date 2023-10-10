@@ -38,7 +38,7 @@ public class FeignClientErrorDecoder implements ErrorDecoder {
                 exception = baseException;
             } else {
                 log.error("errorCode={}, httpStatus={}, errorMessage={}", CommonCode.PARAM_VALID_ERROR_CODE.getCode(), httpStatus, responseBody);
-                exception = new BaseException(CommonCode.FAIL.getCode(), CommonCode.FAIL.getDescription());
+                exception = new BaseException(CommonCode.SERVICE_UNAVAILABLE.getCode(), CommonCode.SERVICE_UNAVAILABLE.getDescription());
             }
         } catch ( Exception e ) {
             log.error("responseBody={}, exp={}", responseBody, e.getMessage());

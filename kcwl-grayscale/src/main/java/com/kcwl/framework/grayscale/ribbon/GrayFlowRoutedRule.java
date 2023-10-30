@@ -38,6 +38,8 @@ public class GrayFlowRoutedRule extends AbstractLoadBalancerRule {
 
     @Override
     public Server choose(Object key) {
+        // TODO: 2023/8/17 是否考虑delegate模式，在当前Rule异常时，委托其他Rule做负载均衡？？？ 而不是在这里强行阻断调用链路！！！
+        // TODO: 2023/8/17 如果涉及调整，注意同步到 网关
         try {
             ILoadBalancer loadBalancer = getLoadBalancer();
 
@@ -81,6 +83,7 @@ public class GrayFlowRoutedRule extends AbstractLoadBalancerRule {
                 !StringUtils.isEmpty(((ServletRequestAttributes) (RequestContextHolder.getRequestAttributes())).getRequest().getHeader(GrayConstant.GRAY_REQUEST_HEADER_KEY))) {
             remoteHost = ((ServletRequestAttributes) (RequestContextHolder.getRequestAttributes())).getRequest().getHeader(GrayConstant.GRAY_REQUEST_HEADER_KEY);
         }
+        log.info("灰度发布 当前流量标记：{}", remoteHost);
         remoteHost = remoteHost == null ? "default" : remoteHost;
 
         Server selectedServer = null;

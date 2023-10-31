@@ -142,7 +142,7 @@ public class CommonWebAutoConfiguration {
         KcBeanRepository kcBeanRepository = KcBeanRepository.getInstance();
         kcBeanRepository.saveBean(ConfigBeanName.JWT_CONFIG_NAME, webProperties.getJwt());
         kcBeanRepository.saveBean("sensitiveMaskConfig", sensitiveMaskConfig);
-        log.info("kcwl-framework version：6.0.0-RELEASE, minor version:231010");
+        log.info("kcwl-framework version：6.0.0-RELEASE, minor version:231031");
         log.info("jwtConfig: {}", kcBeanRepository.getBean(ConfigBeanName.JWT_CONFIG_NAME));
         return kcBeanRepository;
     }

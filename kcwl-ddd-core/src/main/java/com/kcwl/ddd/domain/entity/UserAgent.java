@@ -160,6 +160,14 @@ public class UserAgent {
         userAgent.put(FILED_CLIENT_IP, ip);
     }
 
+    public String getAppId() {
+        return userAgent.get(GlobalConstant.KC_APP_ID);
+    }
+
+    public void setAppId(String appId) {
+        userAgent.put(GlobalConstant.KC_APP_ID, appId);
+    }
+
     public int getRequestDepth() {
         String depth = userAgent.get(FILED_REQUEST_DEPTH);
         return (depth !=null ) ? Integer.parseInt(depth) : 0;

@@ -47,7 +47,7 @@ public class RestTemplateInterceptor implements ClientHttpRequestInterceptor {
         headers.add(UserAgent.REQUEST_AGENT_CLIENT_FIELD_NAME, UserAgent.AGENT_CLIENT_FEIGN);
 
         if ( appAuthInfo.isEnabled() ) {
-            headers.add(GlobalConstant.KC_APP_ID, appAuthInfo.getAppId());
+            headers.add(GlobalConstant.KC_APP_KEY, appAuthInfo.getAppId());
         }
         // 请求灰度标记
         if (null != RequestContextHolder.getRequestAttributes() &&

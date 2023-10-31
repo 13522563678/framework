@@ -64,6 +64,7 @@ public class RequestUserAgentHelper {
         if ( requestUserAgent != null ) {
             requestUserAgent.setKcToken(getHeaderOrParam(request, GlobalConstant.KC_TOKEN));
             requestUserAgent.setKcTrace(getHeaderOrParam(request, GlobalConstant.KC_TRACE));
+            requestUserAgent.setAppId(getHeaderOrParam(request, GlobalConstant.KC_APP_ID));
         }
     }
     private static String getHeaderOrParam(HttpServletRequest request, String name) {

@@ -18,7 +18,7 @@ public enum IdentityTypeEnum {
     CARRIER_TCOM_MANAGER(6, 5,"承运方-物流公司管理者"),
     CARRIER_SFLTOP(7, 3,"承运方-车老板"),
     CARRIER_DRIVER(2, 1,"承运方-个体司机"),
-    CARRIER_BRKR(8, 4,"承运方-运力辅助人(代收人)"),
+    CARRIER_BRKR(8, 4,"承运方-运力辅助人"),
     CARRIER_TDSPR(9, 7,"承运方-辅助服务商");
 
     private Integer  type;

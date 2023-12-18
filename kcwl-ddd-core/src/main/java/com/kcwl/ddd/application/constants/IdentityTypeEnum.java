@@ -19,7 +19,7 @@ public enum IdentityTypeEnum {
     CARRIER_SFLTOP(7, 3,"承运方-车老板"),
     CARRIER_DRIVER(2, 1,"承运方-个体司机"),
     CARRIER_BRKR(8, 4,"承运方-运力辅助人"),
-    CARRIER_TDSPR(9, 7,"承运方-辅助服务商");
+    CARRIER_TDSPR(9, 7,"承运方-辅助服务商"),
     SERVICES_PROVIDER_INDIVIDUAL(10, 10,"物流服务商-个人"),
     SERVICES_PROVIDER_COMPANY(11, 11,"物流服务商-企业"),
     SERVICES_LOGISTICS_COMPANY(12, 12,"物流企业");

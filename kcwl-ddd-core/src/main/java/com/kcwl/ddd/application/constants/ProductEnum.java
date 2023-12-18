@@ -23,6 +23,7 @@ public enum ProductEnum {
     DA_WEB(11, "DA","数据资产管理平台"),
     API_CALL_BACK(12, "CALLBACK","接口回调"),
     API_PARTNER(13, "PARTNER","三方接口"),
+    SERVICES_WEB(14, "SERVICES_WEB","综合服务端Web"),
     KFB_APP(21, "KFB-APP","快福宝APP");
 
     private Integer id;

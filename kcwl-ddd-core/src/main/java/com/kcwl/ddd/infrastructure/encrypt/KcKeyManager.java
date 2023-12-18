@@ -36,6 +36,7 @@ public class KcKeyManager {
         paramPriKeyMap.put(ProductEnum.BPMS_WEB.getId().toString(), "bp6114$kcwl#jymm");
         paramPriKeyMap.put(ProductEnum.FMGT_WEB.getId().toString(), "fg1102$kcwl#sxty");
         paramPriKeyMap.put(ProductEnum.DA_WEB.getId().toString(), "da1102$kcwl#sxty");
+        paramPriKeyMap.put(ProductEnum.SERVICES_WEB.getId().toString(), "se1102$kcwl#sxty");
 
     }
 }

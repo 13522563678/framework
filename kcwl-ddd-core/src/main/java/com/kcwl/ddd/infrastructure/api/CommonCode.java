@@ -9,10 +9,10 @@ public enum CommonCode {
      * 定义接口错误码
      */
     SUCCESS("000000200", "请求成功"),
-    FAIL("00099", "系统开小差请稍后再试"),
+    FAIL("00099", "发生内部错误"),
     DATA_MESSAGE_NULL("00001","数据报文为空"),
-    DATA_MESSAGE_UN_EXIST("00002","报文指令不存在"),
-    DATA_MESSAGE_DECODE_FAIL("00003","报文无法解密"),
+    DATA_MESSAGE_ENCODE_FAIL("00002","数据加密失败"),
+    DATA_MESSAGE_DECODE_FAIL("00003","数据解密失败"),
     JSON_DECODE_FAIL("00004","JSON decode失败"),
     SYS_ERROR("00005","系统繁忙"),
     FIELD_NULL("00006","字段为空"),
@@ -34,10 +34,13 @@ public enum CommonCode {
     API_MOCK_FAIL("00022","执行mock接口失败"),
     CONTAIN_SENSITIVE_WORDS("00023","您输入的内容包含违禁词!"),
     REQUEST_UNDER_RISK("00024","请求存在风险"),
+    DATA_MESSAGE_UN_EXIST("00025","报文指令不存在"),
+    ASSERT_FAILED("00026","断言失败"),
     INVALID_USER_AGENT("00900","该功能需要升级您的APP版本。"),
     APP_VERSION_UPDATE("00901","该功能需要升级您的APP版本。"),
     APP_MAINTENANCE("00902","系统正在升级中，给您带来的不便，敬请谅解。"),
     API_VERSION_NOT_SUPPORT("00903","不支持该请求"),
+    SERVICE_UNAVAILABLE("00998","系统开小差请稍后再试"),
     UNKNOWN_ERROR_CODE("00999","未知错误类型");
 
     private String code;

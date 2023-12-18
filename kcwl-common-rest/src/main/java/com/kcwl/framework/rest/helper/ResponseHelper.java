@@ -56,7 +56,7 @@ public class ResponseHelper {
         ResponseDecorator decorator = ResponseDecorator.getDecorator();
         if (decorator != null) {
             responseMessage.setCode(decorator.paddingResponseCode(code));
-            responseMessage.setMessage(decorator.getErrorPromptMessage(code, message));
+            responseMessage.setMessage(decorator.getErrorPromptMessage(responseMessage.getCode(), message));
         } else {
             responseMessage.setCode(code);
             responseMessage.setMessage(message);

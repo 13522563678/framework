@@ -9,10 +9,10 @@ import com.kcwl.ddd.infrastructure.exception.BaseException;
 public class Preconditions {
 
     /**
-     * @throws BaseException 抛出 CommonCode.FAIL
+     * @throws BaseException 抛出 CommonCode.ASSERT_FAILED
      */
     public static void check(boolean expression, String message) {
-        check(expression, CommonCode.FAIL, message);
+        check(expression, CommonCode.ASSERT_FAILED, message);
     }
 
     /**

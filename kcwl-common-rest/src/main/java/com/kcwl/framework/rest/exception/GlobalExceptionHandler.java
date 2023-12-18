@@ -145,7 +145,7 @@ public class GlobalExceptionHandler extends AbstractExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity exceptionHandler(HttpServletRequest request, Exception e) {
         printRequest(request, e);
-        return fail(CommonCode.FAIL.getCode(), CommonCode.FAIL.getDescription(), e);
+        return fail(CommonCode.SERVICE_UNAVAILABLE.getCode(), CommonCode.SERVICE_UNAVAILABLE.getDescription(), e);
     }
 
     public ResponseEntity fail(String code, String message, Exception exception) {

@@ -96,7 +96,7 @@ public class KcPasswordUtil {
             return bytesToHexString(encipheredData);
         } catch (Exception e) {
             log.error("密码加密失败", e);
-            throw new BizException(CommonCode.FAIL.getCode(), CommonCode.FAIL.getDescription());
+            throw new BizException(CommonCode.DATA_MESSAGE_ENCODE_FAIL.getCode(), CommonCode.DATA_MESSAGE_ENCODE_FAIL.getDescription());
         }
     }
 
@@ -121,7 +121,7 @@ public class KcPasswordUtil {
             return new String(passDec);
         } catch (Exception e) {
             log.error("密码解密失败", e);
-            throw new BizException(CommonCode.FAIL.getCode(), CommonCode.FAIL.getDescription());
+            throw new BizException(CommonCode.DATA_MESSAGE_DECODE_FAIL.getCode(), CommonCode.DATA_MESSAGE_DECODE_FAIL.getDescription());
         }
     }
 

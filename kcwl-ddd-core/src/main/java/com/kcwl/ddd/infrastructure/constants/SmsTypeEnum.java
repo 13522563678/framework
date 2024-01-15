@@ -33,11 +33,11 @@ public enum SmsTypeEnum {
     BPMS_RETRIEVE_PASSWORD_VERILY(82, "业绩系统找回密码短信验证码"),
     OPMS_LOGIN_VERILY(91, "综合管理平台登录短信验证码"),
     OPMS_RETRIEVE_PASSWORD_VERILY(92, "综合管理平台找回密码短信验证码"),
-    SERVICES_LOGIN_SIMS_VERILY(100, "综合服务端web用户登录短信验证码"),
-    SERVICES_REGISTER_SIMS_VERILY(101, "综合服务端web用户注册短信验证码"),
-    SERVICES_FORGOT_PASSWORD_SIMS_VERILY(102, "综合服务端web用户忘记密码短信验证码"),
-    SERVICES_CHANGE_PASSWORD_SIMS_VERILY(103, "综合服务端web用户修改密码短信验证码"),
-    SERVICES_CHANGE_MOBILE_SIMS_VERILY(104, "综合服务端web用户修改手机号短信验证码");
+    SERVICES_LOGIN_SIMS_VERILY(300, "综合服务端web用户登录短信验证码"),
+    SERVICES_REGISTER_SIMS_VERILY(301, "综合服务端web用户注册短信验证码"),
+    SERVICES_FORGOT_PASSWORD_SIMS_VERILY(302, "综合服务端web用户忘记密码短信验证码"),
+    SERVICES_CHANGE_PASSWORD_SIMS_VERILY(303, "综合服务端web用户修改密码短信验证码"),
+    SERVICES_CHANGE_MOBILE_SIMS_VERILY(304, "综合服务端web用户修改手机号短信验证码");
 
     private int code;
     private String desc;

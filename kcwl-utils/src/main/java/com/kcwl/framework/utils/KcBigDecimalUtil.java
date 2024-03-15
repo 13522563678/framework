@@ -1,6 +1,6 @@
 package com.kcwl.framework.utils;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -251,7 +251,7 @@ public class KcBigDecimalUtil {
         if (StringUtil.isEmpty(str)) {
             return new BigDecimal(0);
         }
-        if (!StringUtils.isNumeric(str)) {
+        if ( !NumberUtils.isCreatable(str)) {
             throw new NumberFormatException("this string is not a valid number");
         }
         return new BigDecimal(str);

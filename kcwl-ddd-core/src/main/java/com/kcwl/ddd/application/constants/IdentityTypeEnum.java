@@ -24,7 +24,8 @@ public enum IdentityTypeEnum {
     SERVICES_PROVIDER_COMPANY(11, 11,"物流辅助服务商-企业"),
     SERVICES_LOGISTICS_COMPANY(12, 12,"物流承运服务商"),
     SERVICES_SECONDARY_COMPANY(13, 13,"二级公司"),
-    SERVICES_COLLIERY_COMPANY(14, 14,"二级公司-煤矿")
+    SERVICES_COLLIERY_COMPANY(14, 14,"二级公司-煤矿"),
+    SERVICES_GROUP(15, 15,"综合服务端集团用户")
     ;
 
     private Integer  type;

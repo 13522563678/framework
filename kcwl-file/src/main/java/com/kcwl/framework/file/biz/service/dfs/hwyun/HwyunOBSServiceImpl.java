@@ -137,12 +137,19 @@ public class HwyunOBSServiceImpl implements IFileService {
         request.setRequestDate(new Date());
         request.setExpires(BeanMapUtil.getLong(descriptions, "expiredTime", hwyun.getExpiredTime()));
 
-        int compressType = BeanMapUtil.getInteger(descriptions, "compressType", IMGConstant.IMG_COMPRESS_TYPE_YT);
+        /*int compressType = BeanMapUtil.getInteger(descriptions, "compressType", IMGConstant.IMG_COMPRESS_TYPE_YT);
         String compressTypeValue = getCompressTypeValue(compressType);
 
         if  ( compressTypeValue != null ) {
             Map<String, Object> queryMap = new HashMap<>();
             queryMap.put("x-image-process",compressTypeValue);
+            request.setQueryParams(queryMap);
+        }*/
+
+        String style = BeanMapUtil.getString(descriptions, "style", null);
+        if  ( style != null ) {
+            Map<String, Object> queryMap = new HashMap<>();
+            queryMap.put("x-image-process",style);
             request.setQueryParams(queryMap);
         }
 

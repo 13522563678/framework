@@ -1,14 +1,19 @@
 package com.kcwl.framework.file.biz.service.dfs.hwyun;
 
+import com.aliyun.oss.model.ResponseHeaderOverrides;
 import com.kcwl.framework.file.FileProperties;
 import com.kcwl.framework.file.biz.service.IFileService;
 import com.kcwl.framework.file.biz.service.IMGConstant;
 import com.kcwl.framework.utils.BeanMapUtil;
+import com.kcwl.framework.utils.CollectionUtil;
 import com.obs.services.ObsClient;
+import com.obs.services.internal.Constants;
 import com.obs.services.model.*;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -128,6 +133,7 @@ public class HwyunOBSServiceImpl implements IFileService {
         }
     }
 
+    @SneakyThrows
     private String getUrl(ObsClient obsClient, String  filename, Map<String, String> descriptions) {
         TemporarySignatureRequest request = new TemporarySignatureRequest();
         String bucketName=getBucketName(descriptions);
@@ -146,10 +152,17 @@ public class HwyunOBSServiceImpl implements IFileService {
             request.setQueryParams(queryMap);
         }*/
 
+        Map<String, Object> queryMap = new HashMap<>();
         String style = BeanMapUtil.getString(descriptions, "style", null);
         if  ( style != null ) {
-            Map<String, Object> queryMap = new HashMap<>();
             queryMap.put("x-image-process",style);
+        }
+
+        String attachFileName = BeanMapUtil.getString(descriptions, "attachFileName", null);
+        if ( attachFileName != null ) {
+            queryMap.put(Constants.ObsRequestParams.RESPONSE_CONTENT_DISPOSITION, "attachment;filename="+attachFileName);
+        }
+        if (!CollectionUtil.isEmpty(queryMap)) {
             request.setQueryParams(queryMap);
         }
 

@@ -160,7 +160,7 @@ public class HwyunOBSServiceImpl implements IFileService {
 
         String attachFileName = BeanMapUtil.getString(descriptions, "attachFileName", null);
         if ( attachFileName != null ) {
-            queryMap.put(Constants.ObsRequestParams.RESPONSE_CONTENT_DISPOSITION, "attachment;filename="+attachFileName);
+            queryMap.put(Constants.ObsRequestParams.RESPONSE_CONTENT_DISPOSITION, String.format("attachment;filename=%s", URLEncoder.encode(attachFileName, "UTF-8")));
         }
         if (!CollectionUtil.isEmpty(queryMap)) {
             request.setQueryParams(queryMap);

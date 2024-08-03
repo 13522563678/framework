@@ -86,6 +86,7 @@
         <!--引入第三方包 -->
         <kcwl-assembly.version>6.0.0-RELEASE</kcwl-assembly.version>
         <kcwl-framework.version>6.0.0-RELEASE</kcwl-framework.version>
+        <kcwl-grayscale.version>6.0.0-RELEASE</kcwl-grayscale.version>
         <spring-boot.version>2.3.12.RELEASE</spring-boot.version>
         <spring-cloud.version>2.2.9.RELEASE</spring-cloud.version>
         <spring-platform.version>Cairo-SR7</spring-platform.version>

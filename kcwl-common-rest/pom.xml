@@ -111,7 +111,7 @@
         <dependency>
             <groupId>com.kcwl.framework</groupId>
             <artifactId>kcwl-grayscale</artifactId>
-            <version>${kcwl-framework.version}</version>
+            <version>${kcwl-grayscale.version}</version>
         </dependency>
         <dependency>
             <groupId>com.kcwl.app</groupId>

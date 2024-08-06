@@ -6,7 +6,9 @@ import com.kcwl.framework.file.biz.service.IFileService;
 import com.kcwl.framework.file.biz.service.IMGConstant;
 import com.kcwl.framework.utils.BeanMapUtil;
 import com.kcwl.framework.utils.CollectionUtil;
+import com.kcwl.framework.utils.StringUtil;
 import com.obs.services.ObsClient;
+import com.obs.services.ObsConfiguration;
 import com.obs.services.internal.Constants;
 import com.obs.services.model.*;
 import lombok.SneakyThrows;
@@ -183,7 +185,15 @@ public class HwyunOBSServiceImpl implements IFileService {
     }
 
     private ObsClient createOBSClient() {
-        return new ObsClient(hwyun.getAccessKey(),hwyun.getSecretKey(), hwyun.getEndpoint());
+        ObsConfiguration config = new ObsConfiguration();
+        if ( !StringUtil.isEmpty(hwyun.getImgEndpoint()) ) {
+            config.setEndPoint(hwyun.getImgEndpoint());
+            config.setCname(true);
+        } else {
+            config.setEndPoint(hwyun.getEndpoint());
+        }
+
+        return new ObsClient(hwyun.getAccessKey(),hwyun.getSecretKey(), config);
     }
 
     private String getCompressTypeValue(int type) {

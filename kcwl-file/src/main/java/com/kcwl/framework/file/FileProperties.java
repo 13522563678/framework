@@ -76,6 +76,7 @@ public class FileProperties {
     @Data
     public static class Hwyun{
         private   String endpoint;
+        private   String imgEndpoint;
         private  String accessKey;
         private  String secretKey;
         private int maxFileSize = 500 * 1024 * 1024;

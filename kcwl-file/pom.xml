@@ -45,6 +45,11 @@
             <version>${obs.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.huaweicloud.sdk</groupId>
+            <artifactId>huaweicloud-sdk-mpc</artifactId>
+            <version>${hwmpc.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.kcwl.framework</groupId>
             <artifactId>kcwl-utils</artifactId>
             <version>${kcwl-framework.version}</version>

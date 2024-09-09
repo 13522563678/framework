@@ -1,4 +1,7 @@
 package com.kcwl.framework.file.biz.service;
+
+import com.huaweicloud.sdk.mpc.v1.model.CreateTranscodingTaskResponse;
+import com.huaweicloud.sdk.mpc.v1.model.ListTranscodingTaskResponse;
 import com.kcwl.framework.file.FileConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -192,4 +196,54 @@ public interface IFileService {
         }
         return false;
     }
+
+    default String removeQueryParam(String url, List<String> paramNamesToRemove) {
+        int i = url.indexOf("?");
+        if (i < 0) {
+            return url;
+        }
+
+        Map<String, String> queryPairs = new HashMap<>();
+        String[] pairs = url.substring(i + 1).split("&");
+        for (String pair : pairs) {
+            int idx = pair.indexOf('=');
+            if (idx > -1) {
+                queryPairs.put(pair.substring(0, idx), pair.substring(idx + 1));
+            } else {
+                // 没有等号的情况，视为键名，值为空
+                queryPairs.put(pair, "");
+            }
+        }
+
+        for (String param : paramNamesToRemove) {
+            queryPairs.remove(param);
+        }
+
+        // 重建查询字符串
+        StringBuilder newQueryString = new StringBuilder();
+        boolean firstParam = true;
+        for (Map.Entry<String, String> entry : queryPairs.entrySet()) {
+            if (!firstParam) {
+                newQueryString.append("&");
+            }
+            newQueryString.append(entry.getKey()).append("=").append(entry.getValue());
+            firstParam = false;
+        }
+
+        String newUrl = url.substring(0, i);
+        if (newQueryString.length() > 0) {
+            newUrl += "?" + newQueryString.toString();
+        }
+        return newUrl;
+    }
+
+    default CreateTranscodingTaskResponse createTranscodingTask(String fileKey, List<Map<String, String>> watermarkObjects, Map<String, String> outFileInfo) {
+        return null;
+    }
+
+    default ListTranscodingTaskResponse listTranscodingTask(List<Long> taskIds) {
+        return null;
+    }
+
+
 }

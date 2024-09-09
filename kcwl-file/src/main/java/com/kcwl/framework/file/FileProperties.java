@@ -64,6 +64,7 @@ public class FileProperties {
 
     @Data
     public static class Aliyun {
+        private String projectId;
         private   String endpoint;
         private   String imgEndpoint;
         private  String accessKey;
@@ -75,6 +76,8 @@ public class FileProperties {
 
     @Data
     public static class Hwyun{
+        private String projectId;
+        private String region;
         private   String endpoint;
         private   String imgEndpoint;
         private  String accessKey;

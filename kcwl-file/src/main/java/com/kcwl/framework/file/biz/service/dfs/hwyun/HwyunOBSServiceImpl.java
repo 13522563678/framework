@@ -286,6 +286,7 @@ public class HwyunOBSServiceImpl implements IFileService {
                 watermarkRequest.setInput(imageInput);
                 ImageWatermark imageWatermark = new ImageWatermark();
                 watermarkRequest.setImageWatermark(imageWatermark);
+                imageWatermark.setImageProcess("Transparent");
                 if (StringUtils.isNotBlank(watermarkInfo.get("x"))) {
                     imageWatermark.setDx(watermarkInfo.get("x"));
                 }

@@ -287,6 +287,7 @@ public class HwyunOBSServiceImpl implements IFileService {
                 ImageWatermark imageWatermark = new ImageWatermark();
                 watermarkRequest.setImageWatermark(imageWatermark);
                 imageWatermark.setImageProcess("Transparent");
+                imageWatermark.setBase(ImageWatermark.BaseEnum.OUTPUT);
                 if (StringUtils.isNotBlank(watermarkInfo.get("x"))) {
                     imageWatermark.setDx(watermarkInfo.get("x"));
                 }
@@ -296,6 +297,12 @@ public class HwyunOBSServiceImpl implements IFileService {
                 if (StringUtils.isNotBlank(watermarkInfo.get("referpos"))) {
                     imageWatermark.setReferpos(watermarkInfo.get("referpos"));
                 }
+                if (StringUtils.isNotBlank(watermarkInfo.get("width"))) {
+                    imageWatermark.setWidth(watermarkInfo.get("width"));
+                }
+                if (StringUtils.isNotBlank(watermarkInfo.get("height"))) {
+                    imageWatermark.setHeight(watermarkInfo.get("height"));
+                }
                 requestList.add(watermarkRequest);
             }
             if ("text".equals(watermarkInfo.get("watermarkType"))) {
@@ -303,7 +310,7 @@ public class HwyunOBSServiceImpl implements IFileService {
                 watermarkRequest.setTextContext(watermarkInfo.get("textContent"));
                 TextWatermark textWatermark = new TextWatermark();
                 watermarkRequest.setTextWatermark(textWatermark);
-
+                textWatermark.setBase(TextWatermark.BaseEnum.OUTPUT);
                 if (StringUtils.isNotBlank(watermarkInfo.get("x"))) {
                     textWatermark.setDx(watermarkInfo.get("x"));
                 }

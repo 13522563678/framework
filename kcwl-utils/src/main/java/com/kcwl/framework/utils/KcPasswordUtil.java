@@ -206,10 +206,10 @@ public class KcPasswordUtil {
     /**
      * 密码正则
      */
-    private static final String PASSWORD_REGEX_3 = "^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z,.;:?/'\"|_~`!@#$%^&=+\\-)(\\]\\[\\{\\}*]+$)(?![a-z0-9]+$)(?![a-z,.;:?/'\"|_~`!@#$%^&=+\\-)(\\]\\[\\{\\}*]+$)(?![0-9,.;:?/'\"|_~`!@#$%^&=+\\-)(\\]\\[\\{\\}*]+$)[a-zA-Z0-9,.;:?/'\"|_~`!@#$%^&=+\\-)(\\]\\[\\{\\}*]{8,12}$";
-    private static final Pattern PWD_PATTERN3 = Pattern.compile(PASSWORD_REGEX_3);
+    private static final String PASSWORD_REGEX_3 = "^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z,.;:?/'\"|_~`!@#$%^&=+\\-)(\\]\\[\\{\\}*]+$)(?![a-z0-9]+$)(?![a-z,.;:?/'\"|_~`!@#$%^&=+\\-)(\\]\\[\\{\\}*]+$)(?![0-9,.;:?/'\"|_~`!@#$%^&=+\\-)(\\]\\[\\{\\}*]+$)[a-zA-Z0-9,.;:?/'\"|_~`!@#$%^&=+\\-)(\\]\\[\\{\\}*]{8,20}$";
 
-    private static final String PASSWORD_REGEX_4 = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[,.;:?/'\"|_~`!@#$%^&=+\\-)(\\]\\[\\{\\}*])[a-zA-Z0-9,.;:?/'\"|_~`!@#$%^&=+\\-)(\\]\\[\\{\\}*]{8,16}$";
+    private static final String PASSWORD_REGEX_4 = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[,.;:?/'\"|_~`!@#$%^&=+\\-)(\\]\\[\\{\\}*])[a-zA-Z0-9,.;:?/'\"|_~`!@#$%^&=+\\-)(\\]\\[\\{\\}*]{8,16}$";    private static final Pattern PWD_PATTERN3 = Pattern.compile(PASSWORD_REGEX_3);
+
     private static final Pattern PWD_PATTERN4 = Pattern.compile(PASSWORD_REGEX_4);
 
     /**

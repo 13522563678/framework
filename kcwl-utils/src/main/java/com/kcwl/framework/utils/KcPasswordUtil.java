@@ -229,4 +229,12 @@ public class KcPasswordUtil {
         }
         return matcher.matches();
     }
+
+    public static void main(String[] args) {
+        String pwd = "1Abc#4121.@~AAbc#412";
+        boolean b = checkPasswordRex(3, pwd);
+        System.out.println(b);
+
+
+    }
 }
